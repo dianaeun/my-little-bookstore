@@ -1,8 +1,20 @@
 import React, { Component } from "react";
+<<<<<<< HEAD
 import { Navbar, Nav, NavItem, Button} from "react-bootstrap";
 import { Link} from "react-router-dom";
 import LogoutModal from './LogoutModal';
 const bookIcon = require('../icons/book.png');
+||||||| merged common ancestors
+import { Navbar, Nav, NavItem, Button, Image} from "react-bootstrap";
+import { Link} from "react-router-dom";
+import LogoutModal from './LogoutModal';
+const bookIcon = require('../icons/book.png');
+=======
+import { Navbar, Nav, NavItem, Button, Image } from "react-bootstrap";
+import { Link } from "react-router-dom";
+
+const bookIcon = require("../icons/book.png");
+>>>>>>> 77aecc7f0a69be2e6f62f7aad09a48bf2e0404a4
 
 class MlbNavbar extends Component {
   state={
@@ -17,26 +29,105 @@ class MlbNavbar extends Component {
   render() {
      return (
       <div>
-        <div style={{background: "#56a2b5"}}>
-            <h1 style={{margin: 0, padding: "25px", textAlign: "left", fontFamily: "fantasy", color: "white", fontWeight: "bold" }}><img src= {bookIcon} style={{width: "70px", marginRight: "600px"}} alt="this is book" /> My Little Bookstore</h1>
+        <div style={{ background: "#56a2b5" }}>
+          <h1
+            style={{
+              margin: 0,
+              padding: "25px",
+              fontFamily: "fantasy",
+              color: "white",
+              fontWeight: "bold",
+            }}
+          >
+            <div>
+              <img
+                src={bookIcon}
+                style={{ width: "60px", float: "left" }}
+                alt="this is book"
+              />
+            </div>
+            <div style={{ textAlign: "center"}}>My Little Bookstore</div>
+          </h1>
         </div>
-        <LogoutModal show={this.state.show} handleClose={this.handleClose}/>
-        <Navbar style={{background: "#2E7384"}} >
+        <Navbar style={{ background: "#2E7384" }}>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <NavItem>  <Link className="nav-link" style={{color: "white", fontWeight: "bold", fontSize: "20px"}} to="/">Home</Link> </NavItem> 
-              <NavItem>  <Link className="nav-link" style={{color: "white", fontWeight: "bold", fontSize: "20px"}} to="/Browse">Browse</Link> </NavItem> 
-              <NavItem>  <Link className="nav-link" style={{color: "white", fontWeight: "bold", fontSize: "20px"}} to="/MyBookstore">My Bookstore</Link> </NavItem>
-              <NavItem>  <Link className="nav-link" style={{color: "white", fontWeight: "bold", fontSize: "20px"}} to="/Discussion">Discussion</Link> </NavItem>
-              <NavItem>  <Link className="nav-link" style={{color: "white", fontWeight: "bold", fontSize: "20px"}} to="/Profile">Profile</Link> </NavItem>
+              <NavItem>
+                {" "}
+                <Link
+                  className="nav-link"
+                  style={{
+                    color: "white",
+                    fontWeight: "bold",
+                    fontSize: "20px",
+                  }}
+                  to="/"
+                >
+                  Home
+                </Link>{" "}
+              </NavItem>
+              <NavItem>
+                {" "}
+                <Link
+                  className="nav-link"
+                  style={{
+                    color: "white",
+                    fontWeight: "bold",
+                    fontSize: "20px",
+                  }}
+                  to="/Browse"
+                >
+                  Browse
+                </Link>{" "}
+              </NavItem>
+              <NavItem>
+                {" "}
+                <Link
+                  className="nav-link"
+                  style={{
+                    color: "white",
+                    fontWeight: "bold",
+                    fontSize: "20px",
+                  }}
+                  to="/MyBookstore"
+                >
+                  My Bookstore
+                </Link>{" "}
+              </NavItem>
+              <NavItem>
+                {" "}
+                <Link
+                  className="nav-link"
+                  style={{
+                    color: "white",
+                    fontWeight: "bold",
+                    fontSize: "20px",
+                  }}
+                  to="/Discussion"
+                >
+                  Discussion
+                </Link>{" "}
+              </NavItem>
+              <NavItem>
+                {" "}
+                <Link
+                  className="nav-link"
+                  style={{
+                    color: "white",
+                    fontWeight: "bold",
+                    fontSize: "20px",
+                  }}
+                  to="/Profile"
+                >
+                  Profile
+                </Link>{" "}
+              </NavItem>
             </Nav>
-            <Button onClick={this.handleOpen}>Logout</Button>
-
+            <Button>Logout</Button>
           </Navbar.Collapse>
         </Navbar>
       </div>
-      
     );
   }
 }
