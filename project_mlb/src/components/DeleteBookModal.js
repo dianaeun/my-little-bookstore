@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Modal, Button} from 'react-bootstrap';
 
-class LogoutModal extends Component{
+class DeleteBookModal extends Component{
     render(){
         return(
             <Modal
@@ -9,22 +9,23 @@ class LogoutModal extends Component{
                 onHide={this.props.handleClose}
                 backdrop="static"
                 keyboard={false}
+                centered
             >
                 <Modal.Header closeButton>
-                <Modal.Title>Are you sure you want to Logout?</Modal.Title>
+                <Modal.Title>Are you sure you want to delete this book?</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                Click yes to logout
+                You cannot take it back once you delete it.
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="secondary" onClick={this.props.handleClose}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={this.props.handleClose}>Yes</Button>
+                <Button variant="danger" onClick={this.props.handleClose}>Delete</Button>
                 </Modal.Footer>
             </Modal>
         )
     }
 }
 
-export default LogoutModal;
+export default DeleteBookModal;

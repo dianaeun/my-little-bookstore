@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Navbar, Nav, NavItem, Button, Image} from "react-bootstrap";
+import { Navbar, Nav, NavItem, Button} from "react-bootstrap";
 import { Link} from "react-router-dom";
 import LogoutModal from './LogoutModal';
 const bookIcon = require('../icons/book.png');
@@ -14,7 +14,6 @@ class MlbNavbar extends Component {
   handleOpen = () => {
     this.setState({show: true});
   }
-
   render() {
      return (
       <div>
