@@ -25,7 +25,7 @@ class MlbNavbar extends Component {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <NavItem>  <Link className="nav-link" style={{color: "white", fontWeight: "bold", fontSize: "20px"}} to="/">Home</Link> </NavItem> 
+              <NavItem>  <Link className="nav-link" style={{color: "white", fontWeight: "bold", fontSize: "20px"}} to="/Main">Home</Link> </NavItem> 
               <NavItem>  <Link className="nav-link" style={{color: "white", fontWeight: "bold", fontSize: "20px"}} to="/Browse">Browse</Link> </NavItem> 
               <NavItem>  <Link className="nav-link" style={{color: "white", fontWeight: "bold", fontSize: "20px"}} to="/MyBookstore">My Bookstore</Link> </NavItem>
               <NavItem>  <Link className="nav-link" style={{color: "white", fontWeight: "bold", fontSize: "20px"}} to="/Discussion">Discussion</Link> </NavItem>

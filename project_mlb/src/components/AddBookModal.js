@@ -14,7 +14,7 @@ class AddBookModal extends Component{
       { name: 'Manual Entry', value: '2' },
       { name: 'Upload E-Book', value: '3' },
     ];
-  
+    
     render(){
         return(
             <Modal
