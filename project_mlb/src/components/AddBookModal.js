@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Modal, Button} from 'react-bootstrap';
+import {Modal, Button, ButtonGroup, ToggleButton} from 'react-bootstrap';
 
 class AddBookModal extends Component{
     state = {
@@ -7,12 +7,14 @@ class AddBookModal extends Component{
         manual : false,
         ebook: false
     };
-    const radios = [
+    radios = [
       { name: 'Active', value: '1' },
       { name: 'Radio', value: '2' },
       { name: 'Radio', value: '3' },
     ];
-  
+    setRadioValue = () => {
+        return 0;
+    }
     render(){
         return(
             <Modal
@@ -27,15 +29,15 @@ class AddBookModal extends Component{
                 </Modal.Header>
                 <Modal.Body>
                 <ButtonGroup toggle>
-                    {radios.map((radio, idx) => (
+                    {this.radios.map((radio, idx) => (
                     <ToggleButton
                         key={idx}
                         type="radio"
                         variant="secondary"
                         name="radio"
                         value={radio.value}
-                        checked={radioValue === radio.value}
-                        onChange={(e) => setRadioValue(e.currentTarget.value)}
+                        checked={radio.Value === radio.value}
+                        onChange={(e) => this.setRadioValue(e.currentTarget.value)}
                     >
                         {radio.name}
                     </ToggleButton>

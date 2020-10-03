@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+#root {
+  height: 100%
+}
+
+.outer-container {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}

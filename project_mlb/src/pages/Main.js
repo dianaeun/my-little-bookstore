@@ -12,7 +12,8 @@ class Main extends Component {
           <Badge
             style={{
               fontFamily: "fantasy",
-              padding: "30px",
+              paddingLeft: "50px",
+              paddingRight: "50px",
               background: "#22525F",
               paddingTop: "10px",
               paddingBottom: "10px",
@@ -28,10 +29,11 @@ class Main extends Component {
               SF, Fantasy, Romance books in Songdo
             </h4>
           </div>
+          <br/>
           <div>
             <Table size="sm" style={{ width: "800px", marginLeft: "auto", marginRight: "auto"}}>
               <thead>
-                <tr>
+                <tr style={{fontFamily: "serif"}}>
                   <th></th>
                   <th>Title</th>
                   <th>Author</th>
@@ -41,7 +43,7 @@ class Main extends Component {
               </thead>
               <tbody>
                 <tr>
-                  <td></td>
+                  <td>1</td>
                   <td>Dune</td>
                   <td>Frank Herbert</td>
                   <td>SF & Fantasy</td>
@@ -54,7 +56,7 @@ class Main extends Component {
                   </td>
                 </tr>
                 <tr>
-                  <td></td>
+                  <td>2</td>
                   <td>A Witch In Time</td>
                   <td>Constance Sayers</td>
                   <td>SF & Fantasy</td>
@@ -67,7 +69,7 @@ class Main extends Component {
                   </td>
                 </tr>
                 <tr>
-                  <td></td>
+                  <td>3</td>
                   <td>The Sandman</td>
                   <td>Neil Gaiman</td>
                   <td>SF & Fantasy</td>
@@ -80,7 +82,7 @@ class Main extends Component {
                   </td>
                 </tr>
                 <tr>
-                  <td></td>
+                  <td>4</td>
                   <td>Harry Potter and The Goblet of Fire</td>
                   <td>J.K. Rowling</td>
                   <td>SF & Fantasy</td>
@@ -93,9 +95,26 @@ class Main extends Component {
                   </td>
                 </tr>
                 <tr>
-                  <td></td>
+                  <td>5</td>
                   <td>59 Memory Lane</td>
                   <td>Celia Anderson</td>
+                  <td>Romance</td>
+                  <td>
+                    <img src={star} alt="star" style={{ width: "22px" }} />
+                    <img src={star} alt="star" style={{ width: "22px" }} />
+                    <img src={star} alt="star" style={{ width: "22px" }} />
+                    <img src={star} alt="star" style={{ width: "22px" }} />
+                    <img
+                      src={blankStar}
+                      alt="blank star"
+                      style={{ width: "22px" }}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>Playing With Fire</td>
+                  <td>L.J. Shen</td>
                   <td>Romance</td>
                   <td>
                     <img src={star} alt="star" style={{ width: "22px" }} />
