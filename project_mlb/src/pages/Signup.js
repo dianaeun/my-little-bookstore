@@ -31,7 +31,7 @@ class Signup extends Component {
               <Form.Label column sm={2}>
                 Username
               </Form.Label>
-              <Col sm={4}>
+              <Col sm={3}>
                 <Form.Control type="username" />
               </Col>
               <Button
@@ -52,7 +52,7 @@ class Signup extends Component {
               <Form.Label column sm={2}>
                 Password
               </Form.Label>
-              <Col sm={4}>
+              <Col sm={3}>
                 <Form.Control type="password" />
               </Col>
             </Form.Group>
@@ -60,11 +60,11 @@ class Signup extends Component {
               <Form.Label column sm={2}>
                 Email
               </Form.Label>
-              <Col sm={3}>
+              <Col sm={2}>
                 <Form.Control type="email1" />
               </Col>
               @
-              <Col sm={3}>
+              <Col sm={2}>
                 <Form.Control type="email2" />
               </Col>
             </Form.Group>
@@ -72,7 +72,7 @@ class Signup extends Component {
               <Form.Label column sm={2}>
                 Location
               </Form.Label>
-              <Col sm={3}>
+              <Col sm={2}>
                 <Form.Control type="location" />
               </Col>
             </Form.Group>
