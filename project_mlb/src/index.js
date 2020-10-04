@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from "./pages/Login";
 import Premain from "./pages/Premain";
 import Signup from "./pages/Signup";
+import MyBookstore from "./pages/MyBookstore";
 
 
 ReactDOM.render(
@@ -17,6 +18,7 @@ ReactDOM.render(
         <Route path="/Premain" component={Premain} />
         <Route path="/Signup" component={Signup} />
         <Route path="/Main" component={App} />
+        <Route path="/MyBookstore" component={MyBookstore} />
       </div>
     </BrowserRouter>
   </React.StrictMode>,

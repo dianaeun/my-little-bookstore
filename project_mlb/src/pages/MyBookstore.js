@@ -1,33 +1,44 @@
 import React, {Component} from 'react';
 import {Button, Table, Jumbotron, Container} from 'react-bootstrap';
+import { Link} from "react-router-dom";
+
 import AddBookModal from '../components/AddBookModal';
 import DeleteBookModal from '../components/DeleteBookModal';
 import Advertisement from '../components/Advertisement';
+import EditBookModal from '../components/EditBookModal';
 const star = require("../icons/star.png");
+const edit = require("../icons/edit.png");
+const delIcon = require("../icons/delete.png");
 
 class MyBookstore extends Component{
     state={
         addBook : false,
-        deleteBook : false
+        deleteBook : false,
+        editBook : false,
+        bookSelected: null
     }
     books = [
-      { date: '2019/09/04', title: 'Harry Potter and the Philosopher', author: 'J.K. Rowling', price: 15.00, rate: 5 },
-      { date: '2019/09/04',title: 'Harry Potter and the Chamber of Secrets', author: 'J.K. Rowling', price: 16.00, rate: 5 },
-      { date: '2019/09/28',title: 'Harry Potter and the Prisoner of Azkaban', author: 'J.K. Rowling', price: 15.00, rate: 4 },
-      { date: '2020/01/05',title: 'Harry Potter and the Order of the Phoenix', author: 'J.K. Rowling', price: 17.00, rate: 5 },
-      { date: '2020/05/17',title: 'Harry Potter and The Goblet of Fire', author: 'J.K. Rowling', price: 20.00, rate: 3 },
-      { date: '2020/06/25',title: 'Harry Potter and the Half-Blood Prince', author: 'J.K. Rowling', price: 10.00, rate: 4 },
-      { date: '2020/07/30',title: 'Harry Potter and the Deathly Hallows – Part 1', author: 'J.K. Rowling', price: 13.00, rate: 4 },
-      { date: '2020/08/01',title: 'Harry Potter and the Deathly Hallows – Part 2', author: 'J.K. Rowling', price: 30.00, rate: 3 },
+      { date: '2019/09/04', title: 'Harry Potter and the Philosopher', author: 'J.K. Rowling', price: 15.00, rate: 5 , publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A"},
+      { date: '2019/09/04',title: 'Harry Potter and the Chamber of Secrets', author: 'J.K. Rowling', price: 16.00, rate: 5 , publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A"},
+      { date: '2019/09/28',title: 'Harry Potter and the Prisoner of Azkaban', author: 'J.K. Rowling', price: 15.00, rate: 4, publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A" },
+      { date: '2020/01/05',title: 'Harry Potter and the Order of the Phoenix', author: 'J.K. Rowling', price: 17.00, rate: 5, publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A" },
+      { date: '2020/05/17',title: 'Harry Potter and The Goblet of Fire', author: 'J.K. Rowling', price: 20.00, rate: 3 , publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A"},
+      { date: '2020/06/25',title: 'Harry Potter and the Half-Blood Prince', author: 'J.K. Rowling', price: 10.00, rate: 4, publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A" },
+      { date: '2020/07/30',title: 'Harry Potter and the Deathly Hallows – Part 1', author: 'J.K. Rowling', price: 13.00, rate: 4, publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A" },
+      { date: '2020/08/01',title: 'Harry Potter and the Deathly Hallows – Part 2', author: 'J.K. Rowling', price: 30.00, rate: 3, publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A" },
     ];
     handleClose = () => {
-      this.setState({deleteBook: false, addBook: false});
+      this.setState({deleteBook: false, addBook: false, editBook: false});
     }
     handleAddBook = () => {
       this.setState({addBook: true});
     }
     handleDeleteBook = () => {
       this.setState({deleteBook: true});
+    }
+    handleEditBook = (book) => {
+      console.log(book);
+      this.setState({editBook: true, bookSelected: book});
     }
     createStar = (n) => {
       let stars = [];
@@ -41,12 +52,13 @@ class MyBookstore extends Component{
             <div>
                 <AddBookModal show={this.state.addBook} handleClose={this.handleClose}/>
                 <DeleteBookModal show={this.state.deleteBook} handleClose={this.handleClose}/>
+                {this.state.bookSelected && <EditBookModal show={this.state.editBook} handleClose={this.handleClose} book={this.state.bookSelected}/>}
                 <Jumbotron fluid>
                   <Container>
                     <h1>DongHun's Bookstore</h1>
                   </Container>
                 </Jumbotron>
-                <Table size="sm" style={{ width: "1000px", marginLeft: "auto", marginRight: "auto"}}>
+                <Table size="sm" style={{ width: "1000px", marginLeft: "auto", marginRight: "auto", paddingTop: "1rem"}}>
                   <thead>
                     <tr>
                       <th>Date Added</th>
@@ -55,25 +67,36 @@ class MyBookstore extends Component{
                       <th>Price</th>
                       <th>Rating</th>
                       <th></th>
+                      <th></th>
+
                     </tr>
                   </thead>
                   <tbody>
                     {this.books.map((book) => (    
                       <tr>
                         <td>{book.date}</td>
-                        <td>{book.title}</td>
+                        <td>
+                            <Link className="nav-link" style={{color: "black", padding: "0rem"}} to={{pathname: "/IndividualBookpage" , book:book}} >{book.title}</Link>
+                        </td>
                         <td>{book.author}</td>
                         <td>{book.price}</td>
                         {this.createStar(book.rate)}                       
-                        <td><Button variant="danger" onClick={this.handleDeleteBook}>Delete Books</Button></td>
+                        <td>
+                            <Button variant="light" onClick={()=>{this.handleEditBook(book)}}>
+                              <img src={edit} alt="Edit Book" style={{ width: "1.5rem", padding: "0rem" }} />
+                            </Button>
+                        </td>
+                        <td>
+                            <Button variant="light" onClick={this.handleDeleteBook}>
+                              <img src={delIcon} alt="Delete Book" style={{ width: "1.5rem", padding: "0rem" }} />
+                            </Button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
                   <Button variant="info" onClick={this.handleAddBook}>Add Books</Button>
                 </Table>
-                <Advertisement/>
-                
-                
+                <Advertisement/>     
             </div>
         )
     }
