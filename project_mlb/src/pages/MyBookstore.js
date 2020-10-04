@@ -7,6 +7,7 @@ import DeleteBookModal from '../components/DeleteBookModal';
 import Advertisement from '../components/Advertisement';
 import EditBookModal from '../components/EditBookModal';
 const star = require("../icons/star.png");
+const blankStar = require("../icons/blank_star.png");
 const edit = require("../icons/edit.png");
 const delIcon = require("../icons/delete.png");
 
@@ -43,7 +44,10 @@ class MyBookstore extends Component{
     createStar = (n) => {
       let stars = [];
       for (let i = 0; i < n; i++){
-        stars.push(<img src={star} alt="star" style={{ width: "22px" }} />);
+          stars.push(<img src={star} alt="star" style={{ width: "22px" }} />);
+      }
+      for (let i = n; i < 5; i++) {
+          stars.push(<img src={blankStar} alt="star" style={{ width: "22px" }} />);
       }
       return <td>{stars}</td>
     }
