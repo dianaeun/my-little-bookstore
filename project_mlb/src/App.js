@@ -7,6 +7,7 @@ import Browse from "./pages/Browse";
 import MyBookstore from "./pages/MyBookstore";
 import Discussion from "./pages/Discussion";
 import Profile from "./pages/Profile";
+import IndividualBookpage from "./pages/IndividualBookpage";
 
 class App extends Component {
   render() {
@@ -20,6 +21,7 @@ class App extends Component {
             <Route  path='/MyBookstore' component={MyBookstore} />
             <Route  path='/Discussion' component={Discussion} />
             <Route  path='/Profile' component={Profile} />
+            <Route  path='/IndividualBookpage' component={IndividualBookpage} />
           </Switch> 
         </BrowserRouter>
       </div>

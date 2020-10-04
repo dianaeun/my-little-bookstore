@@ -48,7 +48,6 @@ class Browse extends Component{
                     <td><Link href="#">{value[1]}</Link></td>
                     {this.createStar(value[2])}
                     <td>$ {value[3]}</td></tr>)
-
         }
         
 

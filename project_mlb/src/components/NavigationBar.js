@@ -30,6 +30,7 @@ class MlbNavbar extends Component {
               <NavItem>  <Link className="nav-link" style={{color: "white", fontWeight: "bold", fontSize: "20px"}} to="/MyBookstore">My Bookstore</Link> </NavItem>
               <NavItem>  <Link className="nav-link" style={{color: "white", fontWeight: "bold", fontSize: "20px"}} to="/Discussion">Discussion</Link> </NavItem>
               <NavItem>  <Link className="nav-link" style={{color: "white", fontWeight: "bold", fontSize: "20px"}} to="/Profile">Profile</Link> </NavItem>
+              <NavItem>  <Link className="nav-link" style={{color: "white", fontWeight: "bold", fontSize: "20px"}} to="/IndividualBookpage">IndividualBookpage</Link> </NavItem>
             </Nav>
             <Button onClick={this.handleOpen}>Logout</Button>
 
