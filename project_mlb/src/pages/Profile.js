@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import Button from 'react-bootstrap/Button';
-import Table from 'react-bootstrap/Table';
+import { Jumbotron, Button, Table, Container } from 'react-bootstrap';
 import EditProfileModal from '../components/EditProfileModal'
 class Profile extends Component{
     state = {
@@ -26,22 +25,26 @@ class Profile extends Component{
         const prefList = []
 
         for (const [_index, value] of this.person.preference.entries()) {
-            prefList.push(<Button>{value}</Button>)
+            prefList.push(<Button variant="info" style={{margin:"0.1rem"}}>{value}</Button>)
         }
 
         return (
             <div>
                 <EditProfileModal  show={this.state.editProfile} handleClose={this.handleClose} person={this.person}/>
-                <h2>Profile</h2>
-                <table>
+                <Jumbotron fluid>
+                  <Container>
+                <h3>Profile</h3>
+                <Table>
                     <tr><td>Name: </td><td>{this.person.name}</td></tr>
                     <tr><td>Location: </td><td>{this.person.location}</td></tr>
                     <tr><td>Contact: </td><td>{this.person.contact}</td></tr>
                     <tr><td>Preference: </td><td>{prefList}</td></tr>
-                </table>
-                <Button onClick={this.handleEditProfile}>Edit Profile</Button>
-                <br></br><br></br>
+                    <tr><td></td><td></td><td><Button onClick={this.handleEditProfile}>Edit Profile</Button></td></tr>
+                </Table>
+                </Container>
+                </Jumbotron>
 
+                <Container>
                 <h3>My Requests</h3>
                 <Table size="sm" style={{ width: "1000px", marginLeft: "auto", marginRight: "auto"}}>
                   <thead>
@@ -63,6 +66,7 @@ class Profile extends Component{
                     ))}
                   </tbody>
                 </Table>
+                </Container>
             </div>
         )
     }
