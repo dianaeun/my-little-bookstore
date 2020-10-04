@@ -18,8 +18,8 @@ class Profile extends Component{
     person = {name: 'Daye Eun', location: 'Incheon Yeonsu', 
             contact: '010-0113-0328', preference: ['Romance', 'Science', 'Horror']};
 
-    requests = [{date: '2019/09/04', title: 'Harry Potter and the Philosopher', owner: 'DongHun Kim'},
-               {date: '2019/09/28', title: 'Harry Potter and the Prisoner of Azkaban', owner: 'DongHun Kim'}]
+    requests = [{date: '2019/09/04', status: 'Accepted', title: 'Harry Potter and the Philosopher', owner: 'DongHun Kim'},
+               {date: '2019/09/28', status: 'Pending', title: 'Harry Potter and the Prisoner of Azkaban', owner: 'DongHun Kim'}]
 
     render(){
         const prefList = []
@@ -50,6 +50,7 @@ class Profile extends Component{
                   <thead>
                     <tr>
                       <th>Request Date</th>
+                      <th>Request Status</th>
                       <th>Book Title</th>
                       <th>Owner</th>
                       <th></th>
@@ -59,6 +60,7 @@ class Profile extends Component{
                     {this.requests.map((request) => (    
                       <tr>
                         <td>{request.date}</td>
+                        <td>{request.status}</td>
                         <td>{request.title}</td>
                         <td>{request.owner}</td>                     
                         <td><Button onClick={this.viewMoreInfo}>View More Information</Button></td>
