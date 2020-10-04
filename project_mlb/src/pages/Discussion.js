@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import { Card, Button, Form, Row, Col } from "react-bootstrap";
-
+import AddDiscussion from "../components/AddDiscussion";
 const thumbsup = require("../icons/thumbs-up.png");
 const comment = require("../icons/comment.png");
 const tag = require("../icons/tag.png");
+
 class Discussion extends Component {
   state = {
     shown: [],
+    addDiscussion: false
   };
   handleShow = (target) => {
     let index = this.state.shown.indexOf(target);
@@ -15,6 +17,12 @@ class Discussion extends Component {
     } else this.state.shown.splice(index, 1);
     this.setState({ shown: this.state.shown });
   };
+  handleClose = () => {
+    this.setState({addDiscussion: false});
+  }
+  handleAddDiscussion = () => {
+    this.setState({addDiscussion: true});
+  }
   discussions = [
     {
       name: "Hyeon Joon Lee",
@@ -38,6 +46,7 @@ class Discussion extends Component {
   render() {
     return (
       <div>
+        <AddDiscussion show={this.state.addDiscussion} handleClose={this.handleClose}/>
         <Card
           style={{width: "60%", marginLeft: "20%", marginTop: "3%", background: "#CEE4E9"}}
         >
@@ -45,14 +54,15 @@ class Discussion extends Component {
             <Card.Title>Hyeon Joon Lee</Card.Title>
             <Button
               variant="primary"
-              style={{width: "50%", marginLeft: "25%", fontFamily: "fantasy", background: "#2E7384", border: 0, padding: "10px"}}
+              style={{width: "50%", marginLeft: "25%", fontFamily: "fantasy", background: "#2E7384", border: 0, padding: "0.7rem"}}
+              onClick={this.handleAddDiscussion}
             >
               Start Your Discussion
             </Button>
           </Card.Body>
         </Card>
         <div
-          style={{marginLeft: "23%", marginTop: "30px", marginBottom: "30px" }}
+          style={{marginLeft: "23%", marginTop: "2rem", marginBottom: "2rem" }}
         >
           <Form>
             <Form.Group as={Row}>
@@ -66,7 +76,7 @@ class Discussion extends Component {
         <div style={{ width: "60%", marginLeft: "20%" }}>
           <h2>Discussions</h2>
           <hr
-            style={{color: "black", backgroundColor: "black", height: "2px", margin: 0}}
+            style={{color: "black", backgroundColor: "black", height: "0.1rem", margin: 0}}
           />
         </div>
         {this.discussions.map((discussion, i) => (
@@ -75,33 +85,33 @@ class Discussion extends Component {
           >
             <Card.Body>
               <Card.Title style={{ display: "flex" }}>
-                <div style={{ display: "flex", minWidth: "100%" }}>
+                <div style={{ display: "flex", minWidth: "100%", fontSize: "80%" }}>
                   {discussion.name}
                   <div
-                    style={{ width: "50%", fontSize: "80%", marginLeft: "5%"}}
+                    style={{ width: "50%", marginLeft: "5%"}}
                   >
                     {discussion.date}
                     <img
                       src={tag}
                       alt="tag"
-                      style={{width: "20px", height: "20px", marginLeft: "10%"}}
+                      style={{width: "1.4rem", height: "1.4rem", marginLeft: "10%"}}
                     />
                     {discussion.book}
                   </div>
                 </div>
               </Card.Title>
               <Card.Text style={{ marginLeft: "3%" }}>
-                <div style={{ fontStyle: "italic", display: "flex"}}>
+                <p style={{ fontStyle: "italic", fontSize: "1.3rem"}}>
                     {discussion.title}                
                     <Button
                         id={"button" + i}
                         variant="outline-primary"
                         onClick={(event) => this.handleShow(event.target.id.slice(6))}
-                        style={{paddingTop: "0px", paddingBottom: "0px", marginBottom: "20px", marginLeft: "10px"}}
+                        style={{paddingTop: 0, paddingBottom: 0, marginLeft: "0.6rem", marginBottom: "0.2rem"}}
                     >
                         {this.state.shown.includes(i + "") ? "hide" : "read"}
                     </Button>
-                </div>
+                </p>
 
                 <p
                   style={
@@ -114,13 +124,13 @@ class Discussion extends Component {
               <img
                 src={thumbsup}
                 alt="thumbs up"
-                style={{ width: "25px", marginRight: "5px" }}
+                style={{ width: "1.5rem", marginRight: "0.2rem" }}
               />
               {discussion.likes}
               <img
                 src={comment}
                 alt="comment"
-                style={{width: "25px", marginLeft: "15px", marginRight: "5px"}}
+                style={{width: "1.5rem", marginLeft: "1rem", marginRight: "0.2rem"}}
               />
               {discussion.comments}
             </Card.Body>

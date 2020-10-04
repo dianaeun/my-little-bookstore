@@ -4,11 +4,28 @@ import { Badge, Table } from "react-bootstrap";
 const star = require("../icons/star.png");
 const blankStar = require("../icons/blank_star.png");
 class Main extends Component {
-  stars = [1, 2];
+  books = [
+    {title: "Dune", author: "Frank Herbert", genre: ["SF", "Fantasy"], rating: 5}, 
+    {title: "A Witch in Time", author: "Constance Sayers", genre: ["SF", "Fantasy"], rating: 5},
+    {title: "The Sandman", author: "Neil Gaiman", genre: ["SF", "Fantasy"], rating: 5},
+    {title: "Harry Potter and the Goblet of Fire", author: "J.K. Rowling", genre: ["SF", "Fantasy"], rating: 5},
+    {title: "59 Memory Lane", author: "Celia Anderson", genre: ["Romance"], rating: 4},
+    {title: "Playing With Fire", author: "L.J. Shen", genre: ["Romance"], rating: 3},
+  ];
+  createStar = (n) => {
+    let stars = [];
+    for (let i = 0; i < n; i++){
+        stars.push(<img src={star} alt="star" style={{ width: "22px" }} />);
+    }
+    for (let i = n; i < 5; i++) {
+        stars.push(<img src={blankStar} alt="star" style={{ width: "22px" }} />);
+    }
+    return stars;
+  }
   render() {
     return (
       <div>
-        <h1 style={{ textAlign: "center", marginTop: "30px" }}>
+        <h1 style={{ textAlign: "center", marginTop: "2rem" }}>
           <Badge
             style={{
               fontFamily: "fantasy",
@@ -23,13 +40,9 @@ class Main extends Component {
             Recommended Books
           </Badge>
         </h1>
-        <br/>
-          <div style={{textAlign: "center"}}>
-            <h4 style={{ fontFamily: "cursive"}}>
-              SF, Fantasy, Romance books in Songdo
-            </h4>
-          </div>
-          <br/>
+        <h4 style={{ fontFamily: "cursive", textAlign: "center", marginTop: "2rem", marginBottom: "2rem"}}>
+          SF, Fantasy, Romance books in Songdo
+        </h4>
           <div>
             <Table size="sm" style={{ width: "800px", marginLeft: "auto", marginRight: "auto"}}>
               <thead>
@@ -42,92 +55,17 @@ class Main extends Component {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Dune</td>
-                  <td>Frank Herbert</td>
-                  <td>SF & Fantasy</td>
-                  <td>
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>A Witch In Time</td>
-                  <td>Constance Sayers</td>
-                  <td>SF & Fantasy</td>
-                  <td>
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>The Sandman</td>
-                  <td>Neil Gaiman</td>
-                  <td>SF & Fantasy</td>
-                  <td>
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Harry Potter and The Goblet of Fire</td>
-                  <td>J.K. Rowling</td>
-                  <td>SF & Fantasy</td>
-                  <td>
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td>59 Memory Lane</td>
-                  <td>Celia Anderson</td>
-                  <td>Romance</td>
-                  <td>
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                    <img
-                      src={blankStar}
-                      alt="blank star"
-                      style={{ width: "22px" }}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>6</td>
-                  <td>Playing With Fire</td>
-                  <td>L.J. Shen</td>
-                  <td>Romance</td>
-                  <td>
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                    <img src={star} alt="star" style={{ width: "22px" }} />
-                    <img
-                      src={blankStar}
-                      alt="blank star"
-                      style={{ width: "22px" }}
-                    />
-                  </td>
-                </tr>
+                {this.books.map((book, i) => (
+                  <tr>
+                    <td>{i+1}</td>
+                    <td>{book.title}</td>
+                    <td>{book.author}</td>
+                    <td>{book.genre.join(", ")}</td>
+                    <td>
+                      {this.createStar(book.rating)}
+                    </td>
+                  </tr>                  
+                ))}
               </tbody>
             </Table>
           </div>
