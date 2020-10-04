@@ -84,11 +84,8 @@ class EditBookModal extends Component{
                                 </Form.Group>
                             </Col>
                         </Form.Group>
-                                
                     </Form>
-                        
                 </Modal.Body>
-                
                 <Modal.Footer>
                     <Button variant="secondary" onClick={this.props.handleClose}> Close </Button>
                     <Button variant="success" onClick={this.props.handleClose}> Save </Button>
