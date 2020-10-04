@@ -5,11 +5,11 @@ import RequestModal from '../components/RequestModal';
 const star = require("../icons/star.png");
 
 class IndividualBookpage extends Component{
-    state={
-        addreview : false,
-        request : false
+    state = {
+        addreview: false,
+        request: false,
     }
-
+    
     createStar = (n) => {
         let stars = [];
         for (let i = 0; i < n; i++){
@@ -20,38 +20,34 @@ class IndividualBookpage extends Component{
 
     handleClose = () => {
         this.setState({addreview: false, request: false});
-      }
-      handleAddreview = () => {
-        this.setState({addreview: true});
-      }
-      handleRequestmodal = () => {
-        this.setState({request: true});
-      }
+    }
+    handleAddreview = () => {
+      this.setState({addreview: true});
+    }
+    handleRequestmodal = () => {
+      this.setState({request: true});
+    }
 
-      componentWillMount() {
-        this.state = {
-          isOpen: false,
-        };
-        this.items = [
-         ['Book for beginners. Important!'],
-         ['Easy to understand and easy to read']         
-        ];
-      }
-      
-      toggle = () => {
-        this.setState({ isOpen: !this.state.isOpen });
-      }
+    componentWillMount() {
+      this.state = {
+        isOpen: false,
+      };
+      this.items = [
+        ['Book for beginners. Important!'],
+        ['Easy to understand and easy to read']         
+      ];
+    }
+    
+    toggle = () => {
+      this.setState({ isOpen: !this.state.isOpen });
+    }
 
-      getRenderedItems() {
-        if (this.state.isOpen) {
-          return this.items;
-        }
-        return this.items.slice(6);
+    getRenderedItems() {
+      if (this.state.isOpen) {
+        return this.items;
       }
-      
-
-      bookinfo = {booktitle: 'Introduction To Java Programming', author: 'Y. Daniel Liang', 
-            publisher: 'Prentice Hall', publishedyear: '2009', ISBN: '9780136042587', genre: 'Textbook',rate: 5,description: 'NA'};
+      return this.items.slice(6);
+    }
     render(){
 
         return (
@@ -60,14 +56,13 @@ class IndividualBookpage extends Component{
                 <RequestModal show={this.state.request} handleClose={this.handleClose}/>
                 <h1>BOOK INFORMATION</h1>
                 <table>
-                    <tr><td>BOOK TITLE: </td><td>{this.bookinfo.booktitle}</td></tr>
-                    <tr><td>AUTHOR: </td><td>{this.bookinfo.author}</td></tr>
-                    <tr><td>PUBLISHER: </td><td>{this.bookinfo.publisher}</td></tr>
-                    <tr><td>ISBN: </td><td>{this.bookinfo.publishedyear}</td></tr>
-                    <tr><td>GENRE: </td><td>{this.bookinfo.ISBN}</td></tr>
-                    <tr><td>RATE: </td><td>{this.createStar(this.bookinfo.rate)}</td></tr>
-                    <tr><td>GENRE: </td><td>{this.bookinfo.genre}</td></tr>
-                    <tr><td>DESCRITION: </td><td>{this.bookinfo.description}</td></tr>
+                    <tr><td>BOOK TITLE: </td><td>{this.props.location.book.title}</td></tr>
+                    <tr><td>AUTHOR: </td><td>{this.props.location.book.author}</td></tr>
+                    <tr><td>PUBLISHER: </td><td>{this.props.location.book.publisher}</td></tr>
+                    <tr><td>ISBN: </td><td>{this.props.location.book.isbn}</td></tr>
+                    <tr><td>GENRE: </td><td>{this.props.location.book.genre}</td></tr>
+                    <tr><td>RATE: </td><td>{this.createStar(this.props.location.book.rate)}</td></tr>
+                    <tr><td>DESCRITION: </td><td>{this.props.location.book.description}</td></tr>
                 </table>
                 
                 <br></br><br></br>

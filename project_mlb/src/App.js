@@ -17,11 +17,11 @@ class App extends Component {
           <MlbNavbar/>
           <Switch>
             <Route exact path='/Main' component={Main} />
-            <Route  path='/Browse' component={Browse} />
-            <Route  path='/MyBookstore' component={MyBookstore} />
-            <Route  path='/Discussion' component={Discussion} />
-            <Route  path='/Profile' component={Profile} />
-            <Route  path='/IndividualBookpage' component={IndividualBookpage} />
+            <Route exact path='/Browse' component={Browse} />
+            <Route exact path='/MyBookstore' component={MyBookstore} />
+            <Route exact path='/Discussion' component={Discussion} />
+            <Route exact path='/Profile' component={Profile} />
+            <Route path='/IndividualBookpage' component={IndividualBookpage} />
           </Switch> 
         </BrowserRouter>
       </div>

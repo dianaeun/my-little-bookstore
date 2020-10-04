@@ -1,10 +1,19 @@
 import React, {Component} from 'react';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
-
+import EditProfileModal from '../components/EditProfileModal'
 class Profile extends Component{
+    state = {
+      editProfile: false
+    }
     viewMoreInfo = () => {
         // shows more information
+    }
+    handleEditProfile = () => {
+      this.setState({editProfile: true});
+    }
+    handleClose = () => {
+      this.setState({editProfile: false});
     }
     // dummy data for profile
     person = {name: 'Daye Eun', location: 'Incheon Yeonsu', 
@@ -22,6 +31,7 @@ class Profile extends Component{
 
         return (
             <div>
+                <EditProfileModal  show={this.state.editProfile} handleClose={this.handleClose} person={this.person}/>
                 <h2>Profile</h2>
                 <table>
                     <tr><td>Name: </td><td>{this.person.name}</td></tr>
@@ -29,7 +39,7 @@ class Profile extends Component{
                     <tr><td>Contact: </td><td>{this.person.contact}</td></tr>
                     <tr><td>Preference: </td><td>{prefList}</td></tr>
                 </table>
-                <Button>Edit Profile</Button>
+                <Button onClick={this.handleEditProfile}>Edit Profile</Button>
                 <br></br><br></br>
 
                 <h3>My Requests</h3>
