@@ -6,7 +6,7 @@ class Signup extends Component {
       };
       handleSubmit = (e) => {
         e.preventDefault();
-        let path = `/Login`;
+        let path = `/`;
         this.props.history.push(path);
       };
   render() {
@@ -112,7 +112,7 @@ class Signup extends Component {
             <Button type="submit" style={{background: "#0D4B78", color: "white"}}>SUBMIT</Button>
             <Nav>
               <Nav.Item>
-                <Nav.Link href="/Login" style={{color:"black", fontWeight: "bold", marginLeft: "20px"}}>Already have an account? (Login)</Nav.Link>
+                <Nav.Link href="/" style={{color:"black", fontWeight: "bold", marginLeft: "20px"}}>Already have an account? (Login)</Nav.Link>
               </Nav.Item>
             </Nav>                
             </div>
