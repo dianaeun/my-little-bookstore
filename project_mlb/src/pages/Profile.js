@@ -24,6 +24,7 @@ class Profile extends Component{
             contact: '010-0113-0328', preference: ['Romance', 'Science', 'Horror']};
 
     requests = [{date: '2019/09/04', status: 'Accepted', title: 'Harry Potter and the Philosopher', owner: 'DongHun Kim'},
+                {date: '2019/09/05', status: 'Declined', title: 'Life', owner: 'Simok Hwang'},
                {date: '2019/09/28', status: 'Pending', title: 'Harry Potter and the Prisoner of Azkaban', owner: 'DongHun Kim'}]
 
     render(){

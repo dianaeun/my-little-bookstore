@@ -1,7 +1,26 @@
 import React, {Component} from 'react';
-import {Modal, Button, ButtonGroup, ToggleButton, Form, Card, Row, Col, Table} from 'react-bootstrap';
+import {Modal, Button, Table} from 'react-bootstrap';
 
 class ViewRequestInfoModal extends Component{
+    showAdditionalInfo = (status) => {
+        let info = [];
+        if(status === "Accepted") {
+            info.push(<td colSpan = '2'>Owner Contact Info: 010-0000-0000</td>);
+        }
+        else if(status === "Pending") {
+            info.push(<td colSpan = '2'>Owner Contact Informaton is not available yet.</td>);
+        }
+        else if(status === "Declined") {
+            info.push(<td>Owner Declined your request.</td>);
+            info.push(<td><Button variant="danger" onClick={()=>this.sendNewRequest}> Request Again </Button></td>);
+        }
+        return <tr>{info}</tr>
+    }
+
+    sendNewRequest = () => {
+        // handle new request
+    }
+    
     
     render(){
         return(
@@ -22,6 +41,7 @@ class ViewRequestInfoModal extends Component{
                         <tr><td>Request Status </td><td>{this.props.request.status}</td></tr>
                         <tr><td>Book Title </td><td>{this.props.request.title}</td></tr>
                         <tr><td>Owner </td><td>{this.props.request.owner}</td></tr>
+                        {this.showAdditionalInfo(this.props.request.status)}
                     </Table>  
                 </Modal.Body>
                 
