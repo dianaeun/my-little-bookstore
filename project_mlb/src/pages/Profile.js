@@ -1,18 +1,23 @@
 import React, {Component} from 'react';
 import { Jumbotron, Button, Table, Container } from 'react-bootstrap';
-import EditProfileModal from '../components/EditProfileModal'
+import EditProfileModal from '../components/EditProfileModal';
+import ViewRequestInfoModal from '../components/ViewRequestInfoModal';
 class Profile extends Component{
     state = {
-      editProfile: false
+      editProfile: false,
+      viewrequestInfo : false,
+      requestSelected: null
     }
-    viewMoreInfo = () => {
-        // shows more information
+    handleViewMoreInfo = (request) => {
+      // shows more information
+      console.log(request);
+      this.setState({viewrequestInfo: true, requestSelected: request});
     }
     handleEditProfile = () => {
       this.setState({editProfile: true});
     }
     handleClose = () => {
-      this.setState({editProfile: false});
+      this.setState({editProfile: false, viewrequestInfo : false});
     }
     // dummy data for profile
     person = {name: 'Daye Eun', location: 'Incheon Yeonsu', 
@@ -31,6 +36,7 @@ class Profile extends Component{
         return (
             <div>
                 <EditProfileModal  show={this.state.editProfile} handleClose={this.handleClose} person={this.person}/>
+                {this.state.requestSelected && <ViewRequestInfoModal show={this.state.viewrequestInfo} handleClose={this.handleClose} request={this.state.requestSelected}/>}
                 <Jumbotron fluid>
                   <Container>
                 <h3>Profile</h3>
@@ -63,7 +69,7 @@ class Profile extends Component{
                         <td>{request.status}</td>
                         <td>{request.title}</td>
                         <td>{request.owner}</td>                     
-                        <td><Button onClick={this.viewMoreInfo}>View More Information</Button></td>
+                        <td><Button onClick={()=>{this.handleViewMoreInfo(request)}}>View More Information</Button></td>
                       </tr>
                     ))}
                   </tbody>
