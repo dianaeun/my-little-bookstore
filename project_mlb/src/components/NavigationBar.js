@@ -17,8 +17,11 @@ class MlbNavbar extends Component {
   render() {
      return (
       <div>
-        <div style={{background: "#56a2b5"}}>
-            <h1 style={{margin: 0, padding: "25px", textAlign: "left", fontFamily: "fantasy", color: "white", fontWeight: "bold" }}><img src= {bookIcon} style={{width: "70px", marginRight: "600px"}} alt="this is book" /> My Little Bookstore</h1>
+        <div style={{background: "#56a2b5", position: "relative"}}>
+          <img src= {bookIcon} style={{width: "70px", position: "absolute", marginTop: "1rem", marginLeft: "1rem"}} alt="this is book" />
+          <h1 style={{margin: 0, padding: "25px", textAlign: "center", fontFamily: "fantasy", color: "white", fontWeight: "bold" }}>
+            My Little Bookstore
+          </h1>
         </div>
         <LogoutModal show={this.state.show} handleClose={this.handleClose}/>
         <Navbar style={{background: "#2E7384"}} >
