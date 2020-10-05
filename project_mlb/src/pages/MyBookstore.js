@@ -19,14 +19,14 @@ class MyBookstore extends Component{
         bookSelected: null
     }
     books = [
-      { date: '2019/09/04', title: 'Harry Potter and the Philosopher', author: 'J.K. Rowling', price: 15.00, rate: 5 , publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A"},
-      { date: '2019/09/04',title: 'Harry Potter and the Chamber of Secrets', author: 'J.K. Rowling', price: 16.00, rate: 5 , publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A"},
-      { date: '2019/09/28',title: 'Harry Potter and the Prisoner of Azkaban', author: 'J.K. Rowling', price: 15.00, rate: 4, publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A" },
-      { date: '2020/01/05',title: 'Harry Potter and the Order of the Phoenix', author: 'J.K. Rowling', price: 17.00, rate: 5, publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A" },
-      { date: '2020/05/17',title: 'Harry Potter and The Goblet of Fire', author: 'J.K. Rowling', price: 20.00, rate: 3 , publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A"},
-      { date: '2020/06/25',title: 'Harry Potter and the Half-Blood Prince', author: 'J.K. Rowling', price: 10.00, rate: 4, publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A" },
-      { date: '2020/07/30',title: 'Harry Potter and the Deathly Hallows – Part 1', author: 'J.K. Rowling', price: 13.00, rate: 4, publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A" },
-      { date: '2020/08/01',title: 'Harry Potter and the Deathly Hallows – Part 2', author: 'J.K. Rowling', price: 30.00, rate: 3, publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A" },
+      { date: '2019/09/04', title: 'Harry Potter and the Philosopher', author: 'J.K. Rowling', price: 15.00, rate: 5 , publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A", Title1: "Philosopher...?", hycomment: "This is not that exciting", Title2: "What is this for?", dayecomment: "I have never seen this book before"},
+      { date: '2019/09/04',title: 'Harry Potter and the Chamber of Secrets', author: 'J.K. Rowling', price: 16.00, rate: 5 , publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A", Title1: "Exciting", hycomment: "This book is really interesting. I really recommend to buy this book!", Title2: "Fantasy is alwasys good", dayecomment: "Easy to read"},
+      { date: '2019/09/28',title: 'Harry Potter and the Prisoner of Azkaban', author: 'J.K. Rowling', price: 15.00, rate: 4, publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A", Title1: "Do not forget?", hycomment: "Harry poter is impressive", Title2: "Still reading", dayecomment: "so interesting to read"},
+      { date: '2020/01/05',title: 'Harry Potter and the Order of the Phoenix', author: 'J.K. Rowling', price: 17.00, rate: 5, publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A", Title1: "You won't regret", hycomment: "to buy Harry poter series", Title2: "Order this book now", dayecomment: "you won't regret"},
+      { date: '2020/05/17',title: 'Harry Potter and The Goblet of Fire', author: 'J.K. Rowling', price: 20.00, rate: 3 , publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A", Title1: "What am I going to talk ", hycomment: "...", Title2: "Nothing to say", dayecomment: "Incredible"},
+      { date: '2020/06/25',title: 'Harry Potter and the Half-Blood Prince', author: 'J.K. Rowling', price: 10.00, rate: 4, publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A" , Title1: "who is the main character", hycomment: "Harry poter?", Title2: "No", dayecomment: "That is secret"},
+      { date: '2020/07/30',title: 'Harry Potter and the Deathly Hallows – Part 1', author: 'J.K. Rowling', price: 13.00, rate: 4, publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A" , Title1: "Nothing to mention", hycomment: "No idea", Title2: "Let's skip", dayecomment: "okay?"},
+      { date: '2020/08/01',title: 'Harry Potter and the Deathly Hallows – Part 2', author: 'J.K. Rowling', price: 30.00, rate: 3, publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A" , Title1: "Test!", hycomment: "Okay test", Title2: "Last commnet", dayecomment: "Success"},
     ];
     handleClose = () => {
       this.setState({deleteBook: false, addBook: false, editBook: false});
@@ -51,6 +51,8 @@ class MyBookstore extends Component{
       }
       return <td>{stars}</td>
     }
+
+
     render(){
         return (
             <div>

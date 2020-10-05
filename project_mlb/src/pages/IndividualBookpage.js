@@ -1,23 +1,34 @@
 import React, {Component} from 'react';
-import { Form, Button, Table, Collapse } from "react-bootstrap";
+import {Collapse,Button, Table, Card } from "react-bootstrap";
 import Addreview from '../components/Addreview';
 import RequestModal from '../components/RequestModal';
 const star = require("../icons/star.png");
+const harry = require("../icons/harrypotter.png");
+const blankStar = require("../icons/blank_star.png");
 
 class IndividualBookpage extends Component{
     state = {
         addreview: false,
         request: false,
     }
+
+    constructor(){
+      super();
+      
+        this.state = { showText: false };
+
+    }
     
     createStar = (n) => {
-        let stars = [];
-        for (let i = 0; i < n; i++){
+      let stars = [];
+      for (let i = 0; i < n; i++){
           stars.push(<img src={star} alt="star" style={{ width: "22px" }} />);
-        }
-        return <td>{stars}</td>
       }
-
+      for (let i = n; i < 5; i++) {
+          stars.push(<img src={blankStar} alt="star" style={{ width: "22px" }} />);
+      }
+      return <td>{stars}</td>
+    }
     handleClose = () => {
         this.setState({addreview: false, request: false});
     }
@@ -28,43 +39,29 @@ class IndividualBookpage extends Component{
       this.setState({request: true});
     }
 
-    componentWillMount() {
-      this.state = {
-        isOpen: false,
-      };
-      this.items = [
-        ['Book for beginners. Important!'],
-        ['Easy to understand and easy to read']         
-      ];
-    }
-    
-    toggle = () => {
-      this.setState({ isOpen: !this.state.isOpen });
-    }
-
-    getRenderedItems() {
-      if (this.state.isOpen) {
-        return this.items;
-      }
-      return this.items.slice(6);
-    }
     render(){
 
         return (
             <div>
                 <Addreview show={this.state.addreview} handleClose={this.handleClose}/>
                 <RequestModal show={this.state.request} handleClose={this.handleClose}/>
-                <h1>BOOK INFORMATION</h1>
-                <table>
-                    <tr><td>BOOK TITLE: </td><td>{this.props.location.book.title}</td></tr>
-                    <tr><td>AUTHOR: </td><td>{this.props.location.book.author}</td></tr>
-                    <tr><td>PUBLISHER: </td><td>{this.props.location.book.publisher}</td></tr>
-                    <tr><td>ISBN: </td><td>{this.props.location.book.isbn}</td></tr>
-                    <tr><td>GENRE: </td><td>{this.props.location.book.genre}</td></tr>
-                    <tr><td>RATE: </td><td>{this.createStar(this.props.location.book.rate)}</td></tr>
-                    <tr><td>DESCRITION: </td><td>{this.props.location.book.description}</td></tr>
-                </table>
-                
+                <Card style={{ width: '30rem', marginLeft: '2rem', marginTop: "2rem"}}>
+                  <Card.Img variant="top" src={harry} style={{ width: "15rem", padding: "0rem", marginLeft: "7.5rem"}} />
+                  <Card.Body>
+                    <Card.Title>Book Information</Card.Title>
+                    <Card.Subtitle className="mb-2 text-muted">{this.props.location.book.title}</Card.Subtitle>
+                    <Table size="sm">
+                      <tr><td>BOOK TITLE: </td><td>{this.props.location.book.title}</td></tr>
+                      <tr><td>AUTHOR: </td><td>{this.props.location.book.author}</td></tr>
+                      <tr><td>PUBLISHER: </td><td>{this.props.location.book.publisher}</td></tr>
+                      <tr><td>ISBN: </td><td>{this.props.location.book.isbn}</td></tr>
+                      <tr><td>GENRE: </td><td>{this.props.location.book.genre}</td></tr>
+                      <tr><td>RATE: </td>{this.createStar(this.props.location.book.rate)}</tr>
+                      <tr><td>DESCRITION: </td><td>{this.props.location.book.description}</td></tr>
+                    </Table>
+                  </Card.Body>
+                </Card>
+
                 <br></br><br></br>
                 <h2>BOOKSTORE OFFERS</h2>
                 <Table striped bordered hover>
@@ -91,40 +88,49 @@ class IndividualBookpage extends Component{
         
                 </tbody>
                 </Table>
-
                 <h3>Reviews</h3>
                 <Table striped bordered hover>
                 <thead>
                     <tr>
                     <th>REVIEWER</th>
-                    <th>TITLE</th>                   
+                    <th>TITLE </th>                   
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                     <td>HYEONJOON LEE</td>
-                    <td>Book for beginners </td>
-                    <td><div>
-                        {this.getRenderedItems().map((item, id) => (
-                        <div key={0}>{this.items[0]}</div>
-                        ))}
-                        <button onClick={this.toggle}>
-                        {this.state.isOpen ? 'less' : 'Read more'}
-                        </button>
-                        </div>
-                        </td>                            
+                    <td>{this.props.location.book.Title1}
+                    <div>
+                    
+                    <a onClick={() => this.setState({ showText: !this.state.showText })}>Read more</a>
+                        <Collapse in={this.state.showText}>
+                          <div>
+                            <span>                          
+                            {this.props.location.book.hycomment}
+                        </span>
+                          </div>
+                            </Collapse>
+                          </div>
+                       </td>
+                   
                     </tr>
                     <tr>
                     <td>DAYE EUN</td>
-                    <td>Easy</td>
-                    <td><div>
-                        {this.getRenderedItems().map((item, id) => (
-                        <div> {this.items[1]}</div>
-                        ))}
-                        <button onClick={this.toggle}>
-                        {this.state.isOpen ? 'less' : 'Read more'}
-                        </button>
-                        </div></td>
+                    <td>{this.props.location.book.Title2}
+                    <div>
+
+                    <a onClick={() => this.setState({ showText: !this.state.showText })}> Read more</a>
+                        <Collapse in={this.state.showText}>
+                          <div>
+                            <span>
+                            {this.props.location.book.dayecomment}
+                        </span>
+                          </div>
+                            </Collapse>
+                          </div>
+
+                    </td>
+                    
                     </tr>
         
                 </tbody>
