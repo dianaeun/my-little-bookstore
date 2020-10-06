@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Button, Form, Row, Col } from "react-bootstrap";
+import { Card, Button, Form, Row, Col, DropdownButton, Dropdown } from "react-bootstrap";
 import AddDiscussion from "../components/AddDiscussion";
 import MlbNavbar from '../components/NavigationBar.js'
 
@@ -11,7 +11,7 @@ const tag = require("../icons/tag.png");
 class Discussion extends Component {
   state = {
     shown: [],
-    addDiscussion: false
+    addDiscussion: false,
   };
   handleShow = (target) => {
     let index = this.state.shown.indexOf(target);
@@ -51,20 +51,6 @@ class Discussion extends Component {
         <div>
           <MlbNavbar/>
           <AddDiscussion show={this.state.addDiscussion} handleClose={this.handleClose}/>
-          {/* <Card
-            style={{width: "60%", marginLeft: "20%", marginTop: "3%", background: "#CEE4E9"}}
-          >
-            <Card.Body>
-              <Card.Title>Hyeon Joon Lee</Card.Title>
-              <Button
-                variant="primary"
-                style={{width: "50%", marginLeft: "25%", fontFamily: "fantasy", background: "#2E7384", border: 0, padding: "0.7rem"}}
-                onClick={this.handleAddDiscussion}
-              >
-                Start Your Discussion
-              </Button>
-            </Card.Body>
-          </Card> */}
           <div style={{ width: "60%", marginLeft: "20%", marginTop: "2rem" }}>
             <div style={{display: "flex"}}>
               <h2>Discussions</h2>
@@ -79,7 +65,13 @@ class Discussion extends Component {
                 <Col sm={5}>
                   <Form.Control type="text" placeholder="Search Term" />
                 </Col>
-                <Button variant="outline-primary">Search</Button>
+                <Button>Search</Button>
+                <DropdownButton variant="outline-secondary" title="All Categories" style={{marginLeft: "1rem"}} >
+                  <Dropdown.Item eventKey='All Categories'>All Categories</Dropdown.Item>
+                  <Dropdown.Item eventKey="Tag">Tag</Dropdown.Item>
+                  <Dropdown.Item eventKey="Title">Title</Dropdown.Item>
+                  <Dropdown.Item eventKey="Content">Content</Dropdown.Item>
+                </DropdownButton>
               </Form.Group>
             </Form>
             <hr
@@ -87,10 +79,10 @@ class Discussion extends Component {
             />
             <Form>
               <div key={`inline-radio`} style={{textAlign: "right"}}>
-                  <Form.Label column sm="3">Sort By</Form.Label>
-                  <Form.Check inline label='Rating' type='radio' id='rating' />
-                  <Form.Check inline label='Price' type='radio' id='price' />
-                  <Form.Check inline label='Alphabet' type='radio' id='alphabet' />
+                  <Form.Label column sm="3" style={{marginRight: "1rem"}}>Sort By</Form.Label>
+                  <Form.Check inline label='Likes' type='radio' id='likes' checked/>
+                  <Form.Check inline label='Comments' type='radio' id='comments' />
+                  <Form.Check inline label='Date' type='radio' id='date' />
               </div>
             </Form>
           </div>
@@ -100,11 +92,9 @@ class Discussion extends Component {
             >
               <Card.Body>
                 <Card.Title style={{ display: "flex" }}>
-                  <div style={{ display: "flex", minWidth: "100%", fontSize: "80%" }}>
+                  {/* <div style={{ display: "flex", minWidth: "100%", fontSize: "80%" }}>
                     {discussion.name}
-                    <div
-                      style={{ width: "50%", marginLeft: "5%"}}
-                    >
+                    <div style={{ width: "50%", marginLeft: "5%"}}>
                       {discussion.date}
                       <img
                         src={tag}
@@ -113,20 +103,41 @@ class Discussion extends Component {
                       />
                       {discussion.book}
                     </div>
-                  </div>
+                  </div> */}
+                  <Row style={{fontSize: "1rem", width: "100%"}}>
+                    <Col sm={3}>
+                      {discussion.name}
+                    </Col>
+                    <Col sm={2}>
+                      {discussion.date}
+                    </Col>
+                    <Col>
+                      <img
+                        src={tag}
+                        alt="tag"
+                        style={{width: "1.4rem", height: "1.4rem", marginLeft: "10%"}}
+                      />
+                      {discussion.book}
+                    </Col>
+                  </Row>
                 </Card.Title>
                 <Card.Text style={{ marginLeft: "3%" }}>
-                  <p style={{ fontStyle: "italic", fontSize: "1.3rem"}}>
-                      {discussion.title}                
+                  <Row style={{ fontStyle: "italic", fontSize: "1.3rem"}}>
+                    <Col sm={10}>
+                      {discussion.title}                      
+                    </Col>
+                    <Col>
                       <Button
-                          id={"button" + i}
-                          variant="outline-primary"
-                          onClick={(event) => this.handleShow(event.target.id.slice(6))}
-                          style={{paddingTop: 0, paddingBottom: 0, marginLeft: "0.6rem", marginBottom: "0.2rem"}}
+                        id={"button" + i}
+                        variant="outline-primary"
+                        onClick={(event) => this.handleShow(event.target.id.slice(6))}
+                        style={{paddingTop: 0, paddingBottom: 0, marginLeft: "0.6rem", marginBottom: "0.2rem"}}
                       >
-                          {this.state.shown.includes(i + "") ? "hide" : "show"}
-                      </Button>
-                  </p>
+                        {this.state.shown.includes(i + "") ? "hide" : "show"}
+                      </Button>                    
+                    </Col>
+
+                  </Row>
                   <p style={this.state.shown.includes(i + "") ? {} : { display: "none" }}>
                     {discussion.content}
                   </p>
