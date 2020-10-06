@@ -53,12 +53,10 @@ class MyBookstore extends Component{
       return <td>{stars}</td>
     }
 
-
     render(){
         return (
             <div>
                 <MlbNavbar/>
-
                 <AddBookModal show={this.state.addBook} handleClose={this.handleClose}/>
                 <DeleteBookModal show={this.state.deleteBook} handleClose={this.handleClose}/>
                 {this.state.bookSelected && <EditBookModal show={this.state.editBook} handleClose={this.handleClose} book={this.state.bookSelected}/>}

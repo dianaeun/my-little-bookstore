@@ -48,11 +48,10 @@ class Discussion extends Component {
   ];
   render() {
     return (
-      <React.Fragment>
-        <MlbNavbar/>
         <div>
+          <MlbNavbar/>
           <AddDiscussion show={this.state.addDiscussion} handleClose={this.handleClose}/>
-          <Card
+          {/* <Card
             style={{width: "60%", marginLeft: "20%", marginTop: "3%", background: "#CEE4E9"}}
           >
             <Card.Body>
@@ -65,28 +64,39 @@ class Discussion extends Component {
                 Start Your Discussion
               </Button>
             </Card.Body>
-          </Card>
-          <div
-            style={{marginLeft: "23%", marginTop: "2rem", marginBottom: "2rem" }}
-          >
-            <Form>
+          </Card> */}
+          <div style={{ width: "60%", marginLeft: "20%", marginTop: "2rem" }}>
+            <div style={{display: "flex"}}>
+              <h2>Discussions</h2>
+              <Button
+                style={{ marginLeft: "2rem", background: "#2E7384", border: 0, }}
+                onClick={this.handleAddDiscussion}
+              >Add Discussion</Button>
+            </div>
+            
+            <Form style={{marginTop: "2rem"}}> 
               <Form.Group as={Row}>
-                <Col sm={4}>
-                  <Form.Control type="text" placeholder="Search by Tag" />
+                <Col sm={5}>
+                  <Form.Control type="text" placeholder="Search Term" />
                 </Col>
                 <Button variant="outline-primary">Search</Button>
               </Form.Group>
             </Form>
-          </div>
-          <div style={{ width: "60%", marginLeft: "20%" }}>
-            <h2>Discussions</h2>
             <hr
               style={{color: "black", backgroundColor: "black", height: "0.1rem", margin: 0}}
             />
+            <Form>
+              <div key={`inline-radio`} style={{textAlign: "right"}}>
+                  <Form.Label column sm="3">Sort By</Form.Label>
+                  <Form.Check inline label='Rating' type='radio' id='rating' />
+                  <Form.Check inline label='Price' type='radio' id='price' />
+                  <Form.Check inline label='Alphabet' type='radio' id='alphabet' />
+              </div>
+            </Form>
           </div>
           {this.discussions.map((discussion, i) => (
             <Card
-              style={{width: "60%", marginLeft: "20%", marginTop: "3%", background: "#CEE4E9"}}
+              style={{width: "60%", marginLeft: "20%", marginTop: "1rem", background: "#CEE4E9"}}
             >
               <Card.Body>
                 <Card.Title style={{ display: "flex" }}>
@@ -114,15 +124,10 @@ class Discussion extends Component {
                           onClick={(event) => this.handleShow(event.target.id.slice(6))}
                           style={{paddingTop: 0, paddingBottom: 0, marginLeft: "0.6rem", marginBottom: "0.2rem"}}
                       >
-                          {this.state.shown.includes(i + "") ? "hide" : "read"}
+                          {this.state.shown.includes(i + "") ? "hide" : "show"}
                       </Button>
                   </p>
-
-                  <p
-                    style={
-                      this.state.shown.includes(i + "") ? {} : { display: "none" }
-                    }
-                  >
+                  <p style={this.state.shown.includes(i + "") ? {} : { display: "none" }}>
                     {discussion.content}
                   </p>
                 </Card.Text>
@@ -142,7 +147,6 @@ class Discussion extends Component {
             </Card>
           ))}
         </div>
-      </React.Fragment>
     );
   }
 }
