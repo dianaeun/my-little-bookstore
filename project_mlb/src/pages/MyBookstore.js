@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Button, Table, Jumbotron, Container} from 'react-bootstrap';
 import { Link} from "react-router-dom";
+import MlbNavbar from '../components/NavigationBar.js'
 
 import AddBookModal from '../components/AddBookModal';
 import DeleteBookModal from '../components/DeleteBookModal';
@@ -56,6 +57,8 @@ class MyBookstore extends Component{
     render(){
         return (
             <div>
+                <MlbNavbar/>
+
                 <AddBookModal show={this.state.addBook} handleClose={this.handleClose}/>
                 <DeleteBookModal show={this.state.deleteBook} handleClose={this.handleClose}/>
                 {this.state.bookSelected && <EditBookModal show={this.state.editBook} handleClose={this.handleClose} book={this.state.bookSelected}/>}

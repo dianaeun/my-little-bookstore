@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {Collapse,Button, Table, Card } from "react-bootstrap";
 import Addreview from '../components/Addreview';
 import RequestModal from '../components/RequestModal';
+import MlbNavbar from '../components/NavigationBar.js'
+
 const star = require("../icons/star.png");
 const harry = require("../icons/harrypotter.png");
 const blankStar = require("../icons/blank_star.png");
@@ -42,6 +44,8 @@ class IndividualBookpage extends Component{
     render(){
 
         return (
+          <React.Fragment>
+            <MlbNavbar/>
             <div>
                 <Addreview show={this.state.addreview} handleClose={this.handleClose}/>
                 <RequestModal show={this.state.request} handleClose={this.handleClose}/>
@@ -137,6 +141,7 @@ class IndividualBookpage extends Component{
                 </Table>
                   <Button variant="info" onClick={this.handleAddreview}>Add Reivew</Button>         
             </div>
+          </React.Fragment>
         );
     }
 }

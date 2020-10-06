@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Table from 'react-bootstrap/Table';
 import { Link } from 'react-router-dom';
 import {Form, InputGroup, FormControl, Dropdown, DropdownButton, Jumbotron, Container, Col} from 'react-bootstrap';
+import MlbNavbar from '../components/NavigationBar.js'
 
 const star = require("../icons/star.png");
 const blankStar = require("../icons/blank_star.png");
@@ -44,72 +45,75 @@ class Browse extends Component{
         
 
         return (
-            <div>
-                <Jumbotron style={{backgroundColor:'lightgray'}}>
-                    <Container>
-                    <InputGroup>
-                        <FormControl
-                        placeholder="Search Term"
-                        aria-label="searchbar"
-                        aria-describedby="basic-addon2"
-                        />
-                        <DropdownButton
-                        as={InputGroup.Append}
-                        variant="outline-secondary"
-                        title="Search"
-                        id="input-group-dropdown-2"
-                        >
-                        <Dropdown.Item href="#">Whole</Dropdown.Item>
-                        <Dropdown.Item href="#">Title</Dropdown.Item>
-                        <Dropdown.Item href="#">Author</Dropdown.Item>
-                        <Dropdown.Item href="#">ISBN</Dropdown.Item>
-                        </DropdownButton>
-                    </InputGroup>
-                    <br></br>
-                    <Form>
-                        <Form.Label column sm="5">Advanced Search</Form.Label>
-                        <Form.Row>
+            <React.Fragment>
+                <MlbNavbar/>
+                <div>
+                    <Jumbotron style={{backgroundColor:'lightgray'}}>
+                        <Container>
+                        <InputGroup>
+                            <FormControl
+                            placeholder="Search Term"
+                            aria-label="searchbar"
+                            aria-describedby="basic-addon2"
+                            />
+                            <DropdownButton
+                            as={InputGroup.Append}
+                            variant="outline-secondary"
+                            title="Search"
+                            id="input-group-dropdown-2"
+                            >
+                            <Dropdown.Item href="#">Whole</Dropdown.Item>
+                            <Dropdown.Item href="#">Title</Dropdown.Item>
+                            <Dropdown.Item href="#">Author</Dropdown.Item>
+                            <Dropdown.Item href="#">ISBN</Dropdown.Item>
+                            </DropdownButton>
+                        </InputGroup>
+                        <br></br>
+                        <Form>
+                            <Form.Label column sm="5">Advanced Search</Form.Label>
+                            <Form.Row>
+                                <Col className="mb-3">
+                                <Form.Label column sm="2">Genre</Form.Label>
+                                {genres.map((gen) => (
+                                    <Form.Check inline label={gen} type='checkbox' id={gen} />
+                                ))}
+                                </Col>
+                            </Form.Row>
+                            <Form.Row>
                             <Col className="mb-3">
-                            <Form.Label column sm="2">Genre</Form.Label>
-                            {genres.map((gen) => (
-                                <Form.Check inline label={gen} type='checkbox' id={gen} />
-                            ))}
-                            </Col>
-                        </Form.Row>
-                        <Form.Row>
-                        <Col className="mb-3">
-                            <Form.Label column sm="2">Location</Form.Label>
-                            <Form.Check inline label='Near Me' type='checkbox' id='nearme' />
-                            </Col>
-                        </Form.Row>
-                    </Form>
-                    </Container>
-                </Jumbotron>
+                                <Form.Label column sm="2">Location</Form.Label>
+                                <Form.Check inline label='Near Me' type='checkbox' id='nearme' />
+                                </Col>
+                            </Form.Row>
+                        </Form>
+                        </Container>
+                    </Jumbotron>
 
-                
-                <Form>
-                    <h5>&nbsp;&nbsp;Search Results</h5>
-                    <div key={`inline-radio`} className="mb-3" style={{textAlign: "right"}}>
-                        <Form.Label column sm="1">Sort By</Form.Label>
-                        <Form.Check inline label='Rating' type='radio' id='rating' />
-                        <Form.Check inline label='Price' type='radio' id='price' />
-                        <Form.Check inline label='Alphabet' type='radio' id='alphabet' />
-                    </div>
-                </Form>
-                <Table size="sm" style={{ width: "1000px", marginLeft: "auto", marginRight: "auto"}}>
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Author</th>
-                            <th>Avg. Rating</th>
-                            <th>Lowest Price</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {items}
-                    </tbody>
-                </Table>
-            </div>
+                    
+                    <Form>
+                        <h5>&nbsp;&nbsp;Search Results</h5>
+                        <div key={`inline-radio`} className="mb-3" style={{textAlign: "right"}}>
+                            <Form.Label column sm="1">Sort By</Form.Label>
+                            <Form.Check inline label='Rating' type='radio' id='rating' />
+                            <Form.Check inline label='Price' type='radio' id='price' />
+                            <Form.Check inline label='Alphabet' type='radio' id='alphabet' />
+                        </div>
+                    </Form>
+                    <Table size="sm" style={{ width: "1000px", marginLeft: "auto", marginRight: "auto"}}>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Avg. Rating</th>
+                                <th>Lowest Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {items}
+                        </tbody>
+                    </Table>
+                </div>
+            </React.Fragment>
         )
     }
 }

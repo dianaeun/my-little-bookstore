@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import { Jumbotron, Button, Table, Container } from 'react-bootstrap';
 import EditProfileModal from '../components/EditProfileModal';
 import ViewRequestInfoModal from '../components/ViewRequestInfoModal';
+import MlbNavbar from '../components/NavigationBar.js'
+
 class Profile extends Component{
     state = {
       editProfile: false,
@@ -36,6 +38,7 @@ class Profile extends Component{
 
         return (
             <div>
+                <MlbNavbar/>
                 <EditProfileModal  show={this.state.editProfile} handleClose={this.handleClose} person={this.person}/>
                 {this.state.requestSelected && <ViewRequestInfoModal show={this.state.viewrequestInfo} handleClose={this.handleClose} request={this.state.requestSelected}/>}
                 <Jumbotron fluid>

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Badge, Table } from "react-bootstrap";
+import MlbNavbar from '../components/NavigationBar.js'
 
 const star = require("../icons/star.png");
 const blankStar = require("../icons/blank_star.png");
@@ -25,6 +26,8 @@ class Main extends Component {
   render() {
     return (
       <div>
+        <MlbNavbar/>
+
         <h1 style={{ textAlign: "center", marginTop: "2rem" }}>
           <Badge
             style={{

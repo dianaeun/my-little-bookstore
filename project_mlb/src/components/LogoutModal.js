@@ -20,7 +20,7 @@ class LogoutModal extends Component{
                 <Button variant="secondary" onClick={this.props.handleClose}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={this.props.handleClose}>Yes</Button>
+                <Button variant="primary" onClick={this.props.logout}>Yes</Button>
                 </Modal.Footer>
             </Modal>
         )

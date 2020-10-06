@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button } from "react-bootstrap";
-import { Redirect } from "react-router";
+import {Redirect} from "react-router";
+// import { NavLink } from "react-router-dom";
 const book = require("../icons/book.png");
 
 class Premain extends Component {
@@ -51,6 +52,7 @@ class Premain extends Component {
             >
               Get Started
             </Button>
+            {/* <NavLink className="nav-link" to="/Main">Get Started</NavLink> */}
             {this.renderRedirect()}
           </div>
         </div>
