@@ -24,6 +24,8 @@ npm start
 
 ## Notice
 
-Few functioning requirements are implemented in this project. (Modals, logout, login, etc.)
+Several functional interactions are implemented in this project. (Modals, logout, login, etc.)
 
-Also, you will see different navigation bar when you are logged-in or logged out.
+Also, the contents of the navigation bar will differ depending on whether you are logged-in or logged out.  
+Please login to access all functionalities.  
+*My Bookstore & Profile* pages are not visible when logged out.
