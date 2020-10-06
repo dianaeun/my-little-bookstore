@@ -1,0 +1,27 @@
+
+
+.main-navigation__items ul {
+  display: flex;
+  list-style: none;
+  align-items: center; 
+}
+.main-navigation__items a{
+  font-size: 1.2rem;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  font-weight: bold;
+  background: transparent;
+  vertical-align: middle;
+  cursor: pointer;
+  border-radius: 3rem;
+}
+
+.main-navigation__items a:hover,
+.main-navigation__items a:active,
+.main-navigation__items a.active {
+  text-decoration: none;
+  background: #0a3e4b;
+  color: #ecf00e;
+}

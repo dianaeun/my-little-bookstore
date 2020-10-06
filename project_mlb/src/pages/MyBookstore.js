@@ -7,6 +7,9 @@ import AddBookModal from '../components/AddBookModal';
 import DeleteBookModal from '../components/DeleteBookModal';
 import Advertisement from '../components/Advertisement';
 import EditBookModal from '../components/EditBookModal';
+import './MyBookstore.css';
+
+
 const star = require("../icons/star.png");
 const blankStar = require("../icons/blank_star.png");
 const edit = require("../icons/edit.png");
@@ -20,14 +23,14 @@ class MyBookstore extends Component{
         bookSelected: null
     }
     books = [
-      { date: '2019/09/04', title: 'Harry Potter and the Philosopher', author: 'J.K. Rowling', price: 15.00, rate: 5 , publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A", Title1: "Philosopher...?", hycomment: "This is not that exciting", Title2: "What is this for?", dayecomment: "I have never seen this book before"},
-      { date: '2019/09/04',title: 'Harry Potter and the Chamber of Secrets', author: 'J.K. Rowling', price: 16.00, rate: 5 , publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A", Title1: "Exciting", hycomment: "This book is really interesting. I really recommend to buy this book!", Title2: "Fantasy is alwasys good", dayecomment: "Easy to read"},
-      { date: '2019/09/28',title: 'Harry Potter and the Prisoner of Azkaban', author: 'J.K. Rowling', price: 15.00, rate: 4, publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A", Title1: "Do not forget?", hycomment: "Harry poter is impressive", Title2: "Still reading", dayecomment: "so interesting to read"},
-      { date: '2020/01/05',title: 'Harry Potter and the Order of the Phoenix', author: 'J.K. Rowling', price: 17.00, rate: 5, publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A", Title1: "You won't regret", hycomment: "to buy Harry poter series", Title2: "Order this book now", dayecomment: "you won't regret"},
-      { date: '2020/05/17',title: 'Harry Potter and The Goblet of Fire', author: 'J.K. Rowling', price: 20.00, rate: 3 , publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A", Title1: "What am I going to talk ", hycomment: "...", Title2: "Nothing to say", dayecomment: "Incredible"},
-      { date: '2020/06/25',title: 'Harry Potter and the Half-Blood Prince', author: 'J.K. Rowling', price: 10.00, rate: 4, publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A" , Title1: "who is the main character", hycomment: "Harry poter?", Title2: "No", dayecomment: "That is secret"},
-      { date: '2020/07/30',title: 'Harry Potter and the Deathly Hallows – Part 1', author: 'J.K. Rowling', price: 13.00, rate: 4, publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A" , Title1: "Nothing to mention", hycomment: "No idea", Title2: "Let's skip", dayecomment: "okay?"},
-      { date: '2020/08/01',title: 'Harry Potter and the Deathly Hallows – Part 2', author: 'J.K. Rowling', price: 30.00, rate: 3, publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A" , Title1: "Test!", hycomment: "Okay test", Title2: "Last commnet", dayecomment: "Success"},
+      { date: '2019/09/04', title: 'Harry Potter and the Philosopher', author: 'J.K. Rowling', price: 15.00, rate: 5 , publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A", Title1: "Philosopher...?", hycomment: "This is not that exciting", Title2: "What is this for?", dayecomment: "I have never seen this book before", status: "Request Received"},
+      { date: '2019/09/04',title: 'Harry Potter and the Chamber of Secrets', author: 'J.K. Rowling', price: 16.00, rate: 5 , publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A", Title1: "Exciting", hycomment: "This book is really interesting. I really recommend to buy this book!", Title2: "Fantasy is alwasys good", dayecomment: "Easy to read", status: "Selling"},
+      { date: '2019/09/28',title: 'Harry Potter and the Prisoner of Azkaban', author: 'J.K. Rowling', price: 15.00, rate: 4, publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A", Title1: "Do not forget?", hycomment: "Harry poter is impressive", Title2: "Still reading", dayecomment: "so interesting to read", status: "Selling"},
+      { date: '2020/01/05',title: 'Harry Potter and the Order of the Phoenix', author: 'J.K. Rowling', price: 17.00, rate: 5, publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A", Title1: "You won't regret", hycomment: "to buy Harry poter series", Title2: "Order this book now", dayecomment: "you won't regret", status: "Selling"},
+      { date: '2020/05/17',title: 'Harry Potter and The Goblet of Fire', author: 'J.K. Rowling', price: 20.00, rate: 3 , publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A", Title1: "What am I going to talk ", hycomment: "...", Title2: "Nothing to say", dayecomment: "Incredible", status: "Selling"},
+      { date: '2020/06/25',title: 'Harry Potter and the Half-Blood Prince', author: 'J.K. Rowling', price: 10.00, rate: 4, publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A" , Title1: "who is the main character", hycomment: "Harry poter?", Title2: "No", dayecomment: "That is secret", status: "Selling"},
+      { date: '2020/07/30',title: 'Harry Potter and the Deathly Hallows – Part 1', author: 'J.K. Rowling', price: 13.00, rate: 4, publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A" , Title1: "Nothing to mention", hycomment: "No idea", Title2: "Let's skip", dayecomment: "okay?", status: "Selling"},
+      { date: '2020/08/01',title: 'Harry Potter and the Deathly Hallows – Part 2', author: 'J.K. Rowling', price: 30.00, rate: 3, publisher: "Bloomsbury", isbn: "9781408883730", genre: "fantasy", description: "N/A" , Title1: "Test!", hycomment: "Okay test", Title2: "Last commnet", dayecomment: "Success", status: "Request Received"},
     ];
     handleClose = () => {
       this.setState({deleteBook: false, addBook: false, editBook: false});
@@ -50,10 +53,11 @@ class MyBookstore extends Component{
       for (let i = n; i < 5; i++) {
           stars.push(<img src={blankStar} alt="star" style={{ width: "22px" }} />);
       }
-      return <td>{stars}</td>
+      return <td style={{paddingLeft: "2rem"}}>{stars}</td>
     }
-
-
+    createStatusCol = (status) => {
+      return status === "Request Received" ? <p style={{color: "#2c0000", fontWeight: "bold"}}>{status}</p> : <p>{status}</p>
+    }
     render(){
         return (
             <div>
@@ -62,19 +66,20 @@ class MyBookstore extends Component{
                 <AddBookModal show={this.state.addBook} handleClose={this.handleClose}/>
                 <DeleteBookModal show={this.state.deleteBook} handleClose={this.handleClose}/>
                 {this.state.bookSelected && <EditBookModal show={this.state.editBook} handleClose={this.handleClose} book={this.state.bookSelected}/>}
-                <Jumbotron fluid>
-                  <Container>
+                <Jumbotron fluid style={{height: "7rem", fontSize: "1rem", padding: "0rem"}}>
+                  <Container style={{padding: "2rem"}}>
                     <h1>DongHun's Bookstore</h1>
                   </Container>
                 </Jumbotron>
-                <Table size="sm" style={{ width: "1000px", marginLeft: "auto", marginRight: "auto", paddingTop: "1rem"}}>
+                <Table className="myTable" size="sm" style={{ width: "70%", marginLeft: "auto", marginRight: "auto", paddingTop: "1rem"}}>
                   <thead>
                     <tr>
                       <th>Date Added</th>
                       <th>Title</th>
                       <th>Author</th>
-                      <th>Price</th>
-                      <th>Rating</th>
+                      <th style={{paddingLeft: "2rem"}}>Price</th>
+                      <th style={{paddingLeft: "2rem"}}>Rating</th>
+                      <th>Status</th>
                       <th></th>
                       <th></th>
 
@@ -83,17 +88,20 @@ class MyBookstore extends Component{
                   <tbody>
                     {this.books.map((book) => (    
                       <tr>
-                        <td>{book.date}</td>
+                        <td style={{paddingTop: "0.5rem"}}>{book.date}</td>
                         <td>
-                            <Link className="nav-link" style={{color: "black", padding: "0rem"}} to={{pathname: "/IndividualBookpage" , book:book}} >{book.title}</Link>
+                            <Link className="nav-link" style={{padding: "0rem", paddingTop: "0.3rem"}} to={{pathname: "/IndividualBookpage" , book:book}} >{book.title}</Link>
                         </td>
-                        <td>{book.author}</td>
-                        <td>{book.price}</td>
+                        <td style={{paddingTop: "0.5rem"}}>{book.author}</td>
+                        <td style={{paddingLeft: "2rem", paddingTop: "0.5rem"}}>${book.price}</td>
                         {this.createStar(book.rate)}                       
+                        <td style={{paddingTop: "0.5rem"}}>{this.createStatusCol(book.status)}</td>
                         <td>
-                            <Button variant="light" onClick={()=>{this.handleEditBook(book)}}>
+                            {book.status === "Request Received" ? <Button size="sm" variant="outline-success">See Request</Button>
+                            : <Button variant="light" onClick={()=>{this.handleEditBook(book)}}>
                               <img src={edit} alt="Edit Book" style={{ width: "1.5rem", padding: "0rem" }} />
                             </Button>
+                            }
                         </td>
                         <td>
                             <Button variant="light" onClick={this.handleDeleteBook}>

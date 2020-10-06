@@ -3,6 +3,7 @@ import { Navbar, Nav, NavItem, Button} from "react-bootstrap";
 import { Link, NavLink} from "react-router-dom";
 import LogoutModal from './LogoutModal';
 import AuthContext from '../context/AuthContext';
+import './NavigationBar.css';
 const bookIcon = require('../icons/book.png');
 
 class MlbNavbar extends Component {
@@ -27,22 +28,21 @@ class MlbNavbar extends Component {
           </h1>
         </div>
         {this.context.isLogin && <LogoutModal show={this.state.show} handleClose={this.handleClose} logout={this.context.logout}/>}
-        <Navbar style={{background: "#2E7384"}} >
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              <NavItem>  <Link className="nav-link" style={{color: "white", fontWeight: "bold", fontSize: "20px"}} to="/Main">Home</Link> </NavItem> 
-              <NavItem>  <Link className="nav-link" style={{color: "white", fontWeight: "bold", fontSize: "20px"}} to="/Browse">Browse</Link> </NavItem> 
-              {this.context.isLogin && <NavItem>  <Link className="nav-link" style={{color: "white", fontWeight: "bold", fontSize: "20px"}} to="/MyBookstore">My Bookstore</Link> </NavItem>}
-              <NavItem>  <Link className="nav-link" style={{color: "white", fontWeight: "bold", fontSize: "20px"}} to="/Discussion">Discussion</Link> </NavItem>
-              {this.context.isLogin && <NavItem>  <Link className="nav-link" style={{color: "white", fontWeight: "bold", fontSize: "20px"}} to="/Profile">Profile</Link> </NavItem>}
-            </Nav>
-            {!this.context.isLogin && <NavLink className="nav-link" to="/Login">Sign-up/Login</NavLink>}
+        <Navbar className="main-navigation__items " style={{background: "#2E7384", display: "flex", alignItems: "center", justifyContent: "space-between"}} >
+            <div>
+              <NavLink to="/Main"> Home </NavLink>
+              <NavLink to="/Browse"> Browse </NavLink>
+              <NavLink to="/Discussion"> Discussion </NavLink>
+              {this.context.isLogin && <NavLink to="/MyBookstore"> My Bookstore </NavLink> }
+              {this.context.isLogin && <NavLink to="/Profile"> Profile </NavLink> }
+            </div>
+            <div>
+              {!this.context.isLogin && <NavLink className="nav-link" to="/Login">Sign-up/Login</NavLink>}
+              {this.context.isLogin && <Button onClick={this.handleOpen}>Logout</Button>}
+            </div>
 
-            {this.context.isLogin && <Button onClick={this.handleOpen}>Logout</Button>}
-            
-          </Navbar.Collapse>
         </Navbar>
+        
       </div>
     );
   }
