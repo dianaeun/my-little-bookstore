@@ -37,7 +37,7 @@ class MlbNavbar extends Component {
               {this.context.isLogin && <NavLink to="/Profile"> Profile </NavLink> }
             </div>
             <div>
-              {!this.context.isLogin && <NavLink className="nav-link" to="/Login">Sign-up/Login</NavLink>}
+              {!this.context.isLogin && <NavLink className="nav-link" to="/Login">Login</NavLink>}
               {this.context.isLogin && <Button onClick={this.handleOpen}>Logout</Button>}
             </div>
 
