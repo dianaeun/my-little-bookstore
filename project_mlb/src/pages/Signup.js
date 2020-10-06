@@ -6,64 +6,48 @@ class Signup extends Component {
     state = {
         isLogin: true,
       };
-      handleSubmit = (e) => {
-        e.preventDefault();
-        let path = `/Login`;
-        this.props.history.push(path);
-      };
+    handleSubmit = (e) => {
+      e.preventDefault();
+      let path = `/Login`;
+      this.props.history.push(path);
+    };
   render() {
     return (
-      <React.Fragment>
-        <MlbNavbar/>
         <div class="outer-container">
-          <div style={{ textAlign: "center", background: "#56a2b5" }}>
-            <h1
-              style={{
-                color: "white",
-                padding: "25px",
-                fontFamily: "fantasy",
-                fontWeight: "bold",
-              }}
-            >
-              My Little Bookstore
-            </h1>
-          </div>
+          <MlbNavbar/>
           <div style={{ paddingLeft: "10%", paddingTop: "5%" }}>
-            <h3 style={{ marginBottom: "30px", fontWeight: "bold" }}>CREATE ACCOUNT</h3>
+            <h3 style={{ marginBottom: "30px", fontWeight: "bold", fontStyle: "italic" }}>CREATE ACCOUNT</h3>
             <Form onSubmit={this.handleSubmit} style={{ width: "100%" }}>
-              <Form.Group controlId="formBasicUsername" as={Row}>
-                <Form.Label column sm={2}>
-                  Username
-                </Form.Label>
-                <Col sm={3}>
-                  <Form.Control type="username" />
+              <Form.Group controlId="formBasicName" as={Row}>
+                <Form.Label column sm={1} style={{fontWeight: "bold"}}> First Name </Form.Label>
+                <Col sm={2}>
+                  <Form.Control type="firstName" />
                 </Col>
-                <Button
+                <Form.Label column sm={1} style={{fontWeight: "bold"}}> Last Name </Form.Label>
+                <Col sm={2}>
+                  <Form.Control type="lastName" />
+                </Col>
+              </Form.Group>
+              <Form.Group controlId="formBasicuserID" as={Row}>
+                <Form.Label column sm={1} style={{fontWeight: "bold"}}> userID </Form.Label>
+                <Col sm={3}>
+                  <Form.Control type="userID" />
+                </Col>
+                <Button 
                   size="sm"
-                  style={{
-                    background: "#47CDD6",
-                    color: "white",
-                    border: "0px",
-                    paddingLeft: "20px",
-                    paddingRight: "20px",
-                  }}
+                  style={{background: "#22525F", border: "0px", paddingLeft: "20px", paddingRight: "20px"}}
                 >
-                  Verify
+                  VERIFY
                 </Button>
               </Form.Group>
-
               <Form.Group controlId="formBasicPassword" as={Row}>
-                <Form.Label column sm={2}>
-                  Password
-                </Form.Label>
+                <Form.Label column sm={1} style={{fontWeight: "bold"}}> Password </Form.Label>
                 <Col sm={3}>
                   <Form.Control type="password" />
                 </Col>
               </Form.Group>
               <Form.Group controlId="formBasicEmail" as={Row}>
-                <Form.Label column sm={2}>
-                  Email
-                </Form.Label>
+                <Form.Label column sm={1} style={{fontWeight: "bold"}}> Email </Form.Label>
                 <Col sm={2}>
                   <Form.Control type="email1" />
                 </Col>
@@ -73,18 +57,14 @@ class Signup extends Component {
                 </Col>
               </Form.Group>
               <Form.Group controlId="formBasicLocation" as={Row}>
-                <Form.Label column sm={2}>
-                  Location
-                </Form.Label>
+                <Form.Label column sm={1} style={{fontWeight: "bold"}}> Location </Form.Label>
                 <Col sm={2}>
                   <Form.Control type="location" />
                 </Col>
               </Form.Group>
               <Form.Group controlId="formBasicGenre" as={Row}>
-                <Form.Label column sm={2}>
-                  Preferred Genre
-                </Form.Label>
-              <Col key={`inline-checkbox`} className="mb-3">
+                <Form.Label column sm={1} style={{fontWeight: "bold"}}> Preferred Genre </Form.Label>
+              <Col key={`inline-checkbox`} className="mb-3" style={{paddingTop: "1rem"}}>
                 <Form.Check
                   inline
                   label="Romance"
@@ -112,8 +92,8 @@ class Signup extends Component {
                 />
               </Col>
               </Form.Group>
-              <div style={{display: "flex", paddingLeft: "20px"}}>
-              <Button type="submit" style={{background: "#0D4B78", color: "white"}}>SUBMIT</Button>
+              <div style={{display: "flex"}}>
+              <Button type="submit" style={{background: "#22525F", border: "0px"}}>SUBMIT</Button>
               <Nav>
                 <Nav.Item>
                   <Nav.Link href="/Login" style={{color:"black", fontWeight: "bold", marginLeft: "20px"}}>Already have an account? (Login)</Nav.Link>
@@ -124,7 +104,6 @@ class Signup extends Component {
             </Form>
           </div>
         </div>
-      </React.Fragment>
     );
   }
 }

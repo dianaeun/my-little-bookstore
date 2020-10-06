@@ -1,78 +1,53 @@
 import React, { Component } from "react";
-import { Form, Button, Nav } from "react-bootstrap";
+import { Form, Button, Nav, Card } from "react-bootstrap";
 import AuthContext from '../context/AuthContext';
 import MlbNavbar from '../components/NavigationBar.js'
+import {Redirect} from "react-router";
+import { Link, NavLink} from "react-router-dom";
 
 class Login extends Component {
   state = {
     isLogin: true,
   };
   static contextType = AuthContext;
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-    let path = `/Premain`;
-    this.props.history.push(path);
-  };
   render() {
     return (
-      <React.Fragment>
-        <MlbNavbar/>
-
-        <div
-          class="outer-container"
-          style={{ display: "flex", justifyContent: "center" }}
-        >
-          <div style={{ textAlign: "center" }}>
-            <h2
-              style={{
-                fontFamily: "cursive",
-                fontWeight: "bold",
-                color: "#47CDD6",
-                marginTop: "45%",
-              }}
-            >
-              My Little Bookstore
-            </h2>
-            <div style={{ marginTop: "10%" }}>
-              <Form onSubmit={this.handleSubmit}>
-                <Form.Group controlId="formBasicEmail">
-                  <Form.Control
-                    type="username"
-                    placeholder="User Name or Email"
-                  />
-                  <Form.Text className="text-muted"></Form.Text>
-                </Form.Group>
-
-                <Form.Group controlId="formBasicPassword">
-                  <Form.Control type="password" placeholder="Password" />
-                </Form.Group>
-                {/* <Form.Group controlId="formBasicCheckbox">
-                    <Form.Check type="checkbox" label="Check me out" />
-                  </Form.Group> */}
-                <Button
-                  style={{
-                    width: "100%",
-                    background: "#47CDD6",
-                    fontWeight: "bold",
-                  }}
-                  onClick={this.context.login}
-                >
-                  LOGIN
-                </Button>
-              </Form>
-              <Nav>
-                <Nav.Item>
-                  <Nav.Link href="/Signup" style={{color:"grey", fontWeight: "bold"}}>Register</Nav.Link>
-                </Nav.Item>
-                <Nav.Item className="ml-auto" >
-                  <Nav.Link style={{color:"grey", fontWeight: "bold"}} >Forgot Password</Nav.Link>
-                </Nav.Item>
-              </Nav>
-            </div>
-          </div>
+        <div class="outer-container">
+          <MlbNavbar/>
+            <Card style={{width: "40%", marginLeft: "30%", marginTop: "4rem", border: "1px solid #22525F"}}>
+              <Card.Body>
+              <Card.Title style={{marginBottom: "2rem", fontFamily: "fantasy", fontSize: "2rem"}}> Login to Your Account </Card.Title>
+                <Form onSubmit={this.handleSubmit}>
+                  <Form.Group controlId="formBasicUserID">
+                    <Form.Label style={{fontWeight: "bold"}}>UserID / Email</Form.Label>
+                    <Form.Control type="userID" style={{background: "#EFEFEF"}}/>
+                    <Form.Text className="text-muted"></Form.Text>
+                  </Form.Group>
+                  <Form.Group controlId="formBasicPassword">
+                    <Form.Label style={{fontWeight: "bold"}}>Password</Form.Label>
+                    <Form.Control type="password" style={{background: "#EFEFEF"}}/>
+                  </Form.Group>
+                  <Button
+                    style={{width: "100%", background: "#22525F", border: 0, fontWeight: "bold", marginTop: "1.5rem", padding: "0.6rem", float: "left"}}
+                    onClick={this.context.login}
+                  >
+                    LOGIN
+                  </Button>
+                </Form>
+              </Card.Body>
+              <Card.Footer style={{background: "white"}}>
+                <Nav >
+                  <Nav.Item>
+                    <Nav.Link href="/Signup" style={{color:"#2252FA", fontWeight: "bold"}}>Create Account</Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item className="ml-auto">
+                    <Nav.Link style={{color:"#2252FA", fontWeight: "bold"}}>Forgot Password</Nav.Link>
+                  </Nav.Item>
+                </Nav>                    
+              </Card.Footer>
+                               
+            </Card>
         </div>
-      </React.Fragment>
     );
   }
 }

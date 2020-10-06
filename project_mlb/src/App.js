@@ -33,18 +33,20 @@ class App extends Component {
                 login: this.login,
                 logout: this.logout
               }}>
-              <Switch>
-                <Route exact path="/" component={Premain} /> 
-                {!this.state.isLogin && <Route exact path='/Login' component={Login}/>}
-                {!this.state.isLogin && <Route exact path='/Signup' component={Signup}/>}
-                <Route exact path='/Main' component={Main} />
-                <Route exact path='/Browse' component={Browse} />
-                {this.state.isLogin && <Route exact path='/MyBookstore' component={MyBookstore} />}
-                <Route exact path='/Discussion' component={Discussion} />
-                {this.state.isLogin &&  <Route exact path='/Profile' component={Profile} />}
-                <Route path='/IndividualBookpage' component={IndividualBookpage} />
-                <Redirect to="/Main" />
-              </Switch>
+                <main className="vh-100">
+                  <Switch>
+                    <Route exact path="/" component={Premain} /> 
+                    {!this.state.isLogin && <Route exact path='/Login' component={Login}/>}
+                    {!this.state.isLogin && <Route exact path='/Signup' component={Signup}/>}
+                    <Route exact path='/Main' component={Main} />
+                    <Route exact path='/Browse' component={Browse} />
+                    {this.state.isLogin && <Route exact path='/MyBookstore' component={MyBookstore} />}
+                    <Route exact path='/Discussion' component={Discussion} />
+                    {this.state.isLogin &&  <Route exact path='/Profile' component={Profile} />}
+                    <Route path='/IndividualBookpage' component={IndividualBookpage} />
+                    <Redirect to="/Main" />
+                  </Switch>
+                </main>
           </AuthContext.Provider>    
         </BrowserRouter>
       </React.Fragment>
