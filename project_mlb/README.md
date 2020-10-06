@@ -12,6 +12,7 @@ git clone https://github.com/CSE416-Traders/CSE416_Group_Project.git
 Go to the 'project_mlb' folder and use the npm to install the required libraries.
 
 ```bash
+cd project_mlb
 npm install
 ```
 
