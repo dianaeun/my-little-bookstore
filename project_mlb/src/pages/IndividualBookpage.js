@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Collapse,Button, Table, Card } from "react-bootstrap";
+import {Collapse,Button, Table, Card, CardGroup, CardDeck } from "react-bootstrap";
 import Addreview from '../components/Addreview';
 import RequestModal from '../components/RequestModal';
 import MlbNavbar from '../components/NavigationBar.js'
@@ -20,6 +20,10 @@ class IndividualBookpage extends Component{
         this.state = { showText: false };
         this.state = { showText1: false};
 
+    }
+
+    toggle = () => {
+      this.setState({ isOpen: !this.state.isOpen });
     }
     
     createStar = (n) => {
@@ -52,12 +56,12 @@ class IndividualBookpage extends Component{
               <Addreview show={this.state.addreview} handleClose={this.handleClose}/>
                 <RequestModal show={this.state.request} handleClose={this.handleClose}/>
                 {/* style={{ width: '30rem', marginLeft: '2rem', marginTop: "2rem"}} */}
-                <Card className="text-center" style={{width: "50%", marginLeft: "auto", marginRight: "auto", marginTop: "1rem", background: "#CEE4E9"}}>
+                  <CardGroup>
+                  <Card className="text-center" style={{width: "50%", marginTop: "2rem", background: "#CEE4E9"}}>
                   <Card.Body>
-                    <Card.Title><b>Book Information</b></Card.Title>
+                    <Card.Title><b>BOOK TITLE: {this.props.location.book.title}</b></Card.Title>
                     <Card.Img variant="top" src={harry} style={{ width: "20rem", padding: "1rem"}} />
                     <Table className="myTable" size="sm">
-                      <tr><td><b>BOOK TITLE:</b></td><td>{this.props.location.book.title}</td></tr>
                       <tr><td><b>AUTHOR:</b> </td><td>{this.props.location.book.author}</td></tr>
                       <tr><td><b>PUBLISHER:</b> </td><td>{this.props.location.book.publisher}</td></tr>
                       <tr><td><b>ISBN:</b> </td><td>{this.props.location.book.isbn}</td></tr>
@@ -67,50 +71,58 @@ class IndividualBookpage extends Component{
                     </Table>
                   </Card.Body>
                 </Card>
-              
-                
+                    
 
-                <br></br><br></br>
-                <h2 style={{ textAlign: "center", marginTop: "2rem" }}>
-                      BOOKSTORE OFFERS
-                </h2>
-
-                <Table size="sm" style={{ width: "70%", marginLeft: "auto", marginRight: "auto", paddingTop: "1rem"}}>
-                <thead style={{ textAlign: "center", marginTop: "2rem" }}>
+                <Card className="text-center" style={{width: "50%", marginTop: "2rem"}}>
+                  <Card.Body>
+                    <Card.Title><b>BOOKSTORE OFFERS</b></Card.Title>                    
+                    <Table className="myTable" size="sm">
+                    <thead style={{ textAlign: "center", marginTop: "2rem" }}>
                     <tr>
                     <th>BOOKSTORE NAME</th>
                     <th>CONDITION</th>
                     <th>PRICE </th>
                     <th>PURCHASE REQUEST</th>                    
                     </tr>
-                </thead>
-                <tbody style={{ textAlign: "center", marginTop: "2rem" }}>
+                    </thead>
+                    <tbody style={{ textAlign: "center", marginTop: "2rem" }}>
                     <tr>
                     <td>HYEONJOON's BOOKSTORE</td>
                     <td>LIKE NEW</td>
                     <td>$15</td>
-                    <td><Button variant="info" onClick={this.handleRequestmodal}> Request</Button></td>
+                    <td><Button variant="info" onClick={this.handleRequestmodal}> BUY</Button></td>
                     </tr>
                     <tr>
                     <td>DAYE's BOOKSTORE</td>
                     <td>SOME MARKS</td>
                     <td>$5 </td>
-                    <td><Button variant="info" onClick={this.handleRequestmodal}> Request</Button></td>
+                    <td><Button variant="info" onClick={this.handleRequestmodal}> BUY</Button></td>
                     <td></td>
                     <td></td>
                     <td></td>
                     </tr>
-        
-                </tbody>
-                </Table>
+                    </tbody>                    
+                    </Table>
+                  </Card.Body>
+                </Card>
+
+                  </CardGroup>
+          
+
+                <br></br><br></br>
+                {/* <h2 style={{ textAlign: "center", marginTop: "2rem" }}>
+                      BOOKSTORE OFFERS
+                </h2> */}
+
+
                 <h3 style={{ textAlign: "center", marginTop: "2rem" }}>
                   Reviews
                   </h3>
-                <Table size="sm" style={{ width: "70%", marginLeft: "auto", marginRight: "auto", paddingTop: "1rem"}}>
+                <Table size="sm" style={{ width: "70%", marginLeft: "auto", marginRight: "auto", paddingTop: "3rem"}}>
                 <thead style={{ textAlign: "center", marginTop: "2rem" }}>
                     <tr>
                     <th>REVIEWER</th>
-                    <th>CONTENT </th>                   
+                    <th style = {{ width: "80%"}}>CONTENT </th>                   
                     </tr>
                 </thead>
                 <tbody style={{ textAlign: "center", marginTop: "2rem" }}>
@@ -126,10 +138,9 @@ class IndividualBookpage extends Component{
                        </span>
                       </div>
                         </Collapse>
-                        <Button onClick={() => this.setState({ showText: !this.state.showText })}>Read more </Button>
+                        <Button variant="info" onClick={() => this.setState({ showText: !this.state.showText })}> {this.state.showText ? 'Read less' : 'Read more'}</Button>
                       </div>
-                       </td>
-                   
+                       </td>  
                     </tr>
                     <tr>
                     <td>DAYE EUN</td>
@@ -143,7 +154,7 @@ class IndividualBookpage extends Component{
                         </span>
                           </div>
                             </Collapse>
-                            <Button onClick={() => this.setState({ showText1: !this.state.showText1 })}> Read more </Button>
+                            <Button variant="info" onClick={() => this.setState({ showText1: !this.state.showText1 })}> {this.state.showText1 ? 'Read less' : 'Read more'} </Button>
                           </div>
 
                     </td>
