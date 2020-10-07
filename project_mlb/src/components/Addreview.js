@@ -17,7 +17,7 @@ class Addreview extends Component{
                 <Modal.Body>
                 <Form>
                 <Form.Group controlId="exampleForm.ControlTextarea1">
-                <Form.Label>say anything</Form.Label>
+                <Form.Label>Leave your comment</Form.Label>
                 <Form.Control as="textarea" rows="3" />
                 </Form.Group>
                 </Form>
