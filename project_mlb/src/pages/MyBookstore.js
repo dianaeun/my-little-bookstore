@@ -66,12 +66,15 @@ class MyBookstore extends Component{
                 <AddBookModal show={this.state.addBook} handleClose={this.handleClose}/>
                 <DeleteBookModal show={this.state.deleteBook} handleClose={this.handleClose}/>
                 {this.state.bookSelected && <EditBookModal show={this.state.editBook} handleClose={this.handleClose} book={this.state.bookSelected}/>}
-                <Jumbotron fluid style={{height: "7rem", fontSize: "1rem", padding: "0rem"}}>
+                {/* <Jumbotron fluid style={{height: "7rem", fontSize: "1rem", padding: "0rem"}}>
                   <Container style={{padding: "2rem"}}>
                     <h1>DongHun's Bookstore</h1>
                   </Container>
-                </Jumbotron>
-                <Table className="myTable" size="sm" style={{ width: "80%", marginLeft: "auto", marginRight: "auto", paddingTop: "1rem"}}>
+                </Jumbotron> */}
+                <div style={{marginLeft: "10%", marginTop: "2rem", background: "#eeeeee", width: "25%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>
+                  <h1 style={{fontSize: "2rem"}}>DongHun's Bookstore</h1>
+                </div>
+                <Table className="myTable" size="sm" style={{ width: "80%", marginTop: "1.5rem", marginLeft: "auto", marginRight: "auto", paddingTop: "1rem"}}>
                   <thead>
                     <tr>
                       <th>Date Added</th>

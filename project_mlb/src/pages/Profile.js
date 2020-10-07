@@ -42,12 +42,13 @@ class Profile extends Component{
                 <EditProfileModal  show={this.state.editProfile} handleClose={this.handleClose} person={this.person}/>
                 {this.state.requestSelected && <ViewRequestInfoModal show={this.state.viewrequestInfo} handleClose={this.handleClose} request={this.state.requestSelected}/>}
                 <div>
-                <Jumbotron fluid style={{height: "7rem", fontSize: "1rem", padding: "0rem"}}>
-                  <Container style={{padding: "2rem"}}>
-                    <h1>Profile</h1>
-                  </Container>
-                </Jumbotron>
-                <Table style={{ minWidth: "900px", maxWidth: "1100px", marginLeft: "auto", marginRight: "auto"}}>
+                <div style={{marginLeft: "10%", marginTop: "2rem", background: "#eeeeee", width: "15%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>
+                  <h1 style={{fontSize: "2rem"}}>Profile</h1>
+                </div>
+                <Container style={{marginLeft: "10%",  marginTop: "2rem"}}>
+                  <h4>Personal Information</h4>
+                </Container>
+                <Table style={{ minWidth: "900px", maxWidth: "1100px", marginLeft: "10%", marginRight: "auto", marginTop: "1.2rem"}}>
                     <tr><td>Name </td><td>{this.person.name}</td></tr>
                     <tr><td>Location </td><td>{this.person.location}</td></tr>
                     <tr><td>Contact </td><td>{this.person.contact}</td></tr>
@@ -55,10 +56,10 @@ class Profile extends Component{
                     <tr><td></td><td style={{textAlign:"right"}}><Button variant="info" onClick={this.handleEditProfile}>Edit Profile</Button></td></tr>
                 </Table>
 
-                  <Container style={{paddingBottom: "1rem"}}>
-                    <h3>My Requests</h3>
-                  </Container>
-                <Table size="sm" style={{ minWidth: "900px", maxWidth: "1100px", marginLeft: "auto", marginRight: "auto"}}>
+                <Container style={{marginLeft: "10%"}}>
+                  <h4>My Requests</h4>
+                </Container>
+                <Table size="sm" style={{ minWidth: "900px", maxWidth: "1100px", marginLeft: "10%", marginRight: "auto", marginTop: "1.2rem"}}>
                   <thead>
                     <tr>
                       <th>Request Date</th>
