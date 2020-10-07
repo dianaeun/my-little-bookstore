@@ -37,8 +37,8 @@ class MlbNavbar extends Component {
               {this.context.isLogin && <NavLink to="/Profile"> Profile </NavLink> }
             </div>
             <div>
-              {!this.context.isLogin && <NavLink className="nav-link" to="/Login">Login</NavLink>}
-              {this.context.isLogin && <Button onClick={this.handleOpen}>Logout</Button>}
+              {!this.context.isLogin && <NavLink className="nav-link" to="/Login" style={{fontSize: "1rem", background: "#22525F", border: "4px solid #ffffff", borderRadius: "1rem", padding: "0.1 0.4rem", color: "#FAC917"}}>Login</NavLink>}
+              {this.context.isLogin && <Button onClick={this.handleOpen} style={{fontSize: "1rem", fontWeight: "bold", background: "#22525F", border: "4px solid #ffffff", borderRadius: "1rem", padding: "0.1 0.4rem", color: "#FAC917"}}>Logout</Button>}
             </div>
 
         </Navbar>
