@@ -60,7 +60,7 @@ class IndividualBookpage extends Component{
                 </div>
 
                   <CardDeck>
-                  <Card className="text-center" style={{ flex: "1", marginTop: "2rem", background: "#CEE4E9"}}>
+                  <Card className="text-center" style={{ marginLeft: "3%",flex: "1", marginTop: "2rem", background: "#CEE4E9"}}>
                   <Card.Body>
                     <Card.Title><b>{this.props.location.book.title}</b></Card.Title>
                     <Card.Img variant="top" src={harry} style={{ width: "20rem", padding: "1rem"}} />
@@ -105,9 +105,9 @@ class IndividualBookpage extends Component{
                     </Table>
                     </Card.Body>
                     
-                    <Card.Title><b>Reviews</b></Card.Title>      
+                    <Card.Title><b>REVIEWS</b></Card.Title>      
                     <Card.Body>              
-                <Table size="sm" style={{paddingTop: "3rem"}}>
+                <Table size="sm">
                 <thead style={{ textAlign: "center", marginTop: "2rem" }}>
                     <tr>
                     <th>REVIEWER</th>
@@ -160,7 +160,7 @@ class IndividualBookpage extends Component{
                 </tbody>
                 </Table>
                 <h5 style={{ textAlign: "center", marginTop: "5rem",marginBottom:"2rem" }}>                            
-                             <Button variant="info" style={{ marginLeft: "1rem"}} onClick={this.handleAddreview}>Add Reivew</Button>
+                             <Button variant="info" style={{ marginLeft: "1rem"}} onClick={this.handleAddreview}>Add Review</Button>
                            </h5>
                   </Card.Body>
                 </Card>
