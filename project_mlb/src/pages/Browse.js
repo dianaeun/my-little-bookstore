@@ -54,7 +54,7 @@ class Browse extends Component{
                             <Col sm={5}>
                             <Form.Control type="text" placeholder="Search Term" />
                             </Col>
-                            <Button>Search</Button>
+                            <Button variant="secondary">Search</Button>
                             <DropdownButton variant="outline-secondary" title="All Categories" style={{marginLeft: "1rem"}} >
                             <Dropdown.Item eventKey='All Categories'>All Categories</Dropdown.Item>
                             <Dropdown.Item eventKey="Title">Title</Dropdown.Item>
@@ -98,12 +98,7 @@ class Browse extends Component{
                             </Table>
                         </Form>
                     </div>
-                    {/* <hr
-                        style={{color: "black", backgroundColor: "black", height: "0.1rem", margin: "0.1rem"}}
-                        />
-                    
-                        <br></br> */}
-                        <div style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
+                    <div style={{display: "flex", alignItems: "center", justifyContent: "space-between", marginTop:"3rem"}}>
                             <h3>Search Results</h3>
                             <div key={`inline-radio`} >
                                 <Form style={{border:"solid grey", borderRadius:"0.2rem", float:"right", margin:"0.3rem", fontSize: "0.85rem", padding: "0.2rem"}}>
@@ -114,9 +109,7 @@ class Browse extends Component{
                                 </Form>
                             </div>
                         </div>
-                        
-                    
-                    <Table size="sm" style={{ minWidth: "1000px", margin: "auto", marginTop: "2rem"}}>
+                    <Table size="sm" style={{ minWidth: "1000px", margin: "auto", marginTop:"1.5rem"}}>
                         <thead>
                             <tr>
                                 <th>Title</th>

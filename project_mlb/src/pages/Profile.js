@@ -22,18 +22,18 @@ class Profile extends Component{
       this.setState({editProfile: false, viewrequestInfo : false});
     }
     // dummy data for profile
-    person = {name: 'Daye Eun', location: 'Incheon Yeonsu', 
+    person = {name: 'Donghun Kim', location: 'Incheon Yeonsu', 
             contact: '010-0113-0328', preference: ['Romance', 'Science', 'Horror']};
 
-    requests = [{date: '2019/09/04', status: 'Accepted', title: 'Harry Potter and the Philosopher', owner: 'DongHun Kim'},
+    requests = [{date: '2019/09/04', status: 'Accepted', title: 'Harry Potter and the Philosopher', owner: 'Daye Eun'},
                 {date: '2019/09/05', status: 'Declined', title: 'Life', owner: 'Simok Hwang'},
-               {date: '2019/09/28', status: 'Pending', title: 'Harry Potter and the Prisoner of Azkaban', owner: 'DongHun Kim'}]
+               {date: '2019/09/28', status: 'Pending', title: 'Harry Potter and the Prisoner of Azkaban', owner: 'Jongsun Park'}]
 
     render(){
         const prefList = []
 
         for (const [_index, value] of this.person.preference.entries()) {
-            prefList.push(<Button variant="outline-danger" size="sm" style={{marginLeft:"0.2rem"}}>{value}</Button>)
+            prefList.push(<Button variant="outline-danger" size="sm" style={{marginLeft:"0.2rem"}} disabled>{value}</Button>)
         }
 
         return (
@@ -42,9 +42,9 @@ class Profile extends Component{
                 <EditProfileModal  show={this.state.editProfile} handleClose={this.handleClose} person={this.person}/>
                 {this.state.requestSelected && <ViewRequestInfoModal show={this.state.viewrequestInfo} handleClose={this.handleClose} request={this.state.requestSelected}/>}
                 <div>
-                <Jumbotron fluid style={{height: "5rem", fontSize: "1rem", padding: "0rem"}}>
-                  <Container style={{padding: "1.5rem"}}>
-                    <h2>Profile</h2>
+                <Jumbotron fluid style={{height: "7rem", fontSize: "1rem", padding: "0rem"}}>
+                  <Container style={{padding: "2rem"}}>
+                    <h1>Profile</h1>
                   </Container>
                 </Jumbotron>
                 <Table style={{ minWidth: "900px", maxWidth: "1100px", marginLeft: "auto", marginRight: "auto"}}>
@@ -52,15 +52,12 @@ class Profile extends Component{
                     <tr><td>Location </td><td>{this.person.location}</td></tr>
                     <tr><td>Contact </td><td>{this.person.contact}</td></tr>
                     <tr><td>Preference </td><td>{prefList}</td></tr>
-                    <tr><td></td><td style={{textAlign:"right"}}><Button onClick={this.handleEditProfile}>Edit Profile</Button></td></tr>
+                    <tr><td></td><td style={{textAlign:"right"}}><Button variant="info" onClick={this.handleEditProfile}>Edit Profile</Button></td></tr>
                 </Table>
 
-                {/* <Jumbotron fluid style={{height: "5rem", fontSize: "1rem", padding: "0rem"}}>*/}
-                  <Container>
-                    <h4>My Requests</h4>
-                    <br></br>
+                  <Container style={{paddingBottom: "1rem"}}>
+                    <h3>My Requests</h3>
                   </Container>
-                {/*</Jumbotron> */}
                 <Table size="sm" style={{ minWidth: "900px", maxWidth: "1100px", marginLeft: "auto", marginRight: "auto"}}>
                   <thead>
                     <tr>
@@ -78,7 +75,7 @@ class Profile extends Component{
                         <td>{request.status}</td>
                         <td>{request.title}</td>
                         <td>{request.owner}</td>                     
-                        <td style={{textAlign:"center"}}><Button onClick={()=>{this.handleViewMoreInfo(request)}}>View More Information</Button></td>
+                        <td style={{textAlign:"center"}}><Button variant="info" size="sm" onClick={()=>{this.handleViewMoreInfo(request)}}>View More Information</Button></td>
                       </tr>
                     ))}
                   </tbody>
