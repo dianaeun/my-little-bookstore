@@ -52,10 +52,10 @@ class Discussion extends Component {
           <MlbNavbar/>
           <AddDiscussion show={this.state.addDiscussion} handleClose={this.handleClose}/>
           <div style={{ width: "60%", marginLeft: "20%", marginTop: "2rem" }}>
-            <div style={{display: "flex"}}>
+            <div style={{ display: "flex", alignItems: "center"}}>
               <h1>Discussions</h1>
               <Button variant="info"
-                style={{ marginLeft: "2rem", padding: "0.5rem"}}
+                style={{ marginLeft: "2rem", height: "2rem"}}
                 onClick={this.handleAddDiscussion}
               >Add Discussion</Button>
             </div>
@@ -64,7 +64,7 @@ class Discussion extends Component {
                 <Col sm={5}>
                   <Form.Control type="text" placeholder="Search Term" />
                 </Col>
-                <Button variant="secondary">Search</Button>
+                <Button style={{fontWeight: "bold", background: "#FAC917", color: "black", border: "1px solid #FAC917", opacity: "79%"}}>Search</Button>
                 <DropdownButton variant="outline-secondary" title="All Categories" style={{marginLeft: "1rem"}} >
                   <Dropdown.Item eventKey='All Categories'>All Categories</Dropdown.Item>
                   <Dropdown.Item eventKey="Tag">Tag</Dropdown.Item>

@@ -54,7 +54,7 @@ class Browse extends Component{
                             <Col sm={5}>
                             <Form.Control type="text" placeholder="Search Term" />
                             </Col>
-                            <Button variant="secondary">Search</Button>
+                            <Button style={{fontWeight: "bold", background: "#FAC917", color: "black", border: "1px solid #FAC917", opacity: "79%"}}>Search</Button>
                             <DropdownButton variant="outline-secondary" title="All Categories" style={{marginLeft: "1rem"}} >
                             <Dropdown.Item eventKey='All Categories'>All Categories</Dropdown.Item>
                             <Dropdown.Item eventKey="Title">Title</Dropdown.Item>
