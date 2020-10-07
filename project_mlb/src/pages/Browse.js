@@ -65,20 +65,37 @@ class Browse extends Component{
                         </Form>
                         <h5>Advanced Search</h5>
                         <Form>
-                            <Form.Row>
-                                <Col className="mb-3">
-                                <Form.Label column sm="1">Genre</Form.Label>
+                            <Table borderless size="sm" style={{ maxWidth: "700px"}}>
+                            <tr>
+                                <td>
+                                <Form.Label>Genre</Form.Label>
+                                </td>
+                                <td>
                                 {genres.map((gen) => (
                                     <Form.Check inline label={gen} type='checkbox' id={gen} />
                                 ))}
-                                </Col>
-                            </Form.Row>
-                            <Form.Row>
-                            <Col className="mb-3">
-                                <Form.Label column sm="1">Location</Form.Label>
-                                <Form.Check inline label='Near Me' type='checkbox' id='nearme' />
-                                </Col>
-                            </Form.Row>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><Form.Label>Location Level</Form.Label></td>
+                                {/* <td><Form.Control type="range" step="1" min="0" max="4" list="level"/></td>
+                                <datalist id="level">
+                                    <option value="0" label="Dong"></option>
+                                    <option value="1" label="Gu"></option>
+                                    <option value="2" label="City"></option>
+                                    <option value="3" label="Country"></option>
+                                    <option value="4" label="All"></option>
+                                </datalist> */}
+                                <td>
+                                    <Form.Check inline label='Dong' name='level' type='radio' id='Dong' />
+                                    <Form.Check inline label='Gu' name='level' type='radio' id='Gu' />
+                                    <Form.Check inline label='City' name='level' type='radio' id='City' />
+                                    <Form.Check inline label='State' name='level' type='radio' id='State' />
+                                    <Form.Check inline label='Whole' name='level' type='radio' id='Whole' />
+                                    {/* <Form.Check inline label='Near Me' type='checkbox' id='nearme' />    */}
+                                </td>
+                            </tr>
+                            </Table>
                         </Form>
                     </div>
                     {/* <hr
