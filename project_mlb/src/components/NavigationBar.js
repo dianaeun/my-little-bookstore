@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Navbar, Nav, NavItem, Button} from "react-bootstrap";
-import { Link, NavLink} from "react-router-dom";
+import { Navbar, Button} from "react-bootstrap";
+import { NavLink} from "react-router-dom";
 import LogoutModal from './LogoutModal';
 import AuthContext from '../context/AuthContext';
 import './NavigationBar.css';
@@ -23,7 +23,7 @@ class MlbNavbar extends Component {
       <div>
         <div style={{background: "#56a2b5", position: "relative"}}>
           <img src= {bookIcon} style={{width: "70px", position: "absolute", marginTop: "1rem", marginLeft: "1rem"}} alt="this is book" />
-          <h1 style={{margin: 0, padding: "25px", textAlign: "center", fontFamily: "fantasy", color: "white", fontWeight: "bold", fontFamily: 'Kurale' }}>
+          <h1 style={{margin: 0, padding: "25px", textAlign: "center", color: "white", fontWeight: "bold", fontFamily: 'Kurale' }}>
             My Little Bookstore
           </h1>
         </div>

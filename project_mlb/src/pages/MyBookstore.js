@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Table, Jumbotron, Container} from 'react-bootstrap';
+import {Button, Table} from 'react-bootstrap';
 import { Link} from "react-router-dom";
 import MlbNavbar from '../components/NavigationBar.js'
 

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Button, Form, Row, Col, DropdownButton, Dropdown, Jumbotron, Container } from "react-bootstrap";
+import { Card, Button, Form, Row, Col, DropdownButton, Dropdown} from "react-bootstrap";
 import AddDiscussion from "../components/AddDiscussion";
 import MlbNavbar from '../components/NavigationBar.js'
 

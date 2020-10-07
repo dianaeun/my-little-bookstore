@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Jumbotron, Button, Table, Container } from 'react-bootstrap';
+import { Button, Table, Container } from 'react-bootstrap';
 import EditProfileModal from '../components/EditProfileModal';
 import ViewRequestInfoModal from '../components/ViewRequestInfoModal';
 import MlbNavbar from '../components/NavigationBar.js'

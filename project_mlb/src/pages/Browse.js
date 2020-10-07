@@ -35,7 +35,12 @@ class Browse extends Component{
 
         const items = []
 
-
+        // books.map((book) => {
+        //     items.push(<tr><td><Link href="#">{book[0]}</Link></td>
+        //                    <td><Link href="#">{book[1]}</Link></td>
+        //                    {this.createStar(book[2])}
+        //                    <td>$ {book[3]}</td></tr>)
+        // })
         for (const [_index, value] of books.entries()) {
           items.push(<tr><td><Link href="#">{value[0]}</Link></td>
                     <td><Link href="#">{value[1]}</Link></td>
