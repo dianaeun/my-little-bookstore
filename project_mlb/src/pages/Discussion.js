@@ -52,12 +52,13 @@ class Discussion extends Component {
           <MlbNavbar/>
           <AddDiscussion show={this.state.addDiscussion} handleClose={this.handleClose}/>
           <div style={{ width: "60%", marginLeft: "20%", marginTop: "2rem" }}>
-            <div style={{display: "flex"}}>
+            <div style={{display: "flex", alignItems: "center"}}>
               <h1>Discussions</h1>
-              <Button variant="info"
-                style={{ marginLeft: "2rem", padding: "0.5rem"}}
+              <Button variant="info" size="md"
+                style={{ marginLeft: "2rem", marginBottom: 0, height: "2rem"}}
                 onClick={this.handleAddDiscussion}
               >Add Discussion</Button>
+            
             </div>
             <Form style={{marginTop: "2rem"}}> 
               <Form.Group as={Row}>
