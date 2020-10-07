@@ -108,7 +108,7 @@ class MyBookstore extends Component{
                             </Button>
                         </td>
                         <td style={{paddingTop: "0.5rem", paddingLeft: "4rem"}}>{this.createRequestsCol(book.request)}</td>
-                        <td>{book.request > 0  && <Button size="sm" variant="outline-success">See Request</Button>}</td> 
+                        <td>{book.request > 0  && <Button size="sm" variant="outline-info" style={{ marginTop: "0.5rem"}}>See Request</Button>}</td> 
                       </tr>
                     ))}
                   </tbody>
