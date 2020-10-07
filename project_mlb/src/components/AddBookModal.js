@@ -24,8 +24,8 @@ class AddBookModal extends Component{
                 keyboard={false}
                 centered
             >
-                <Modal.Header closeButton>
-                    <Modal.Title>Add Books</Modal.Title>
+                <Modal.Header closeButton style={{background: "#348093"}}>
+                    <Modal.Title style={{color: "white"}}>Add Books</Modal.Title>
                 </Modal.Header>
                 
                 <Modal.Body>
@@ -36,7 +36,9 @@ class AddBookModal extends Component{
                                     <ToggleButton
                                         key={idx}
                                         type="radio"
-                                        variant= {this.state.radioValue === radio.value ? 'primary' : 'secondary'}
+                                        style={{background: this.state.radioValue === radio.value ? "#22525F" : '#666666'
+                                                ,color: this.state.radioValue === radio.value ? '#FAC917' : '#ffffff'}}
+                                        // variant= {this.state.radioValue === radio.value ? 'primary' : 'secondary'}
                                         name="radio"
                                         value={radio.value}
                                         checked={this.state.radioValue === radio.value}
