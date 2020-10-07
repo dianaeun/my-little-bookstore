@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Collapse,Button, Table, Card, CardGroup, CardDeck } from "react-bootstrap";
+import {Collapse,Button, Table, Card, CardGroup, CardDeck, CardColumns } from "react-bootstrap";
 import Addreview from '../components/Addreview';
 import RequestModal from '../components/RequestModal';
 import MlbNavbar from '../components/NavigationBar.js'
@@ -56,10 +56,11 @@ class IndividualBookpage extends Component{
               <Addreview show={this.state.addreview} handleClose={this.handleClose}/>
                 <RequestModal show={this.state.request} handleClose={this.handleClose}/>
                 {/* style={{ width: '30rem', marginLeft: '2rem', marginTop: "2rem"}} */}
+
                   <CardGroup>
-                  <Card className="text-center" style={{width: "50%", marginTop: "2rem", background: "#CEE4E9"}}>
+                  <Card className="text-center" style={{ marginRight: "10%", marginTop: "2rem", marginBottom: "10rem", background: "#CEE4E9"}}>
                   <Card.Body>
-                    <Card.Title><b>BOOK TITLE: {this.props.location.book.title}</b></Card.Title>
+                    <Card.Title><b>{this.props.location.book.title}</b></Card.Title>
                     <Card.Img variant="top" src={harry} style={{ width: "20rem", padding: "1rem"}} />
                     <Table className="myTable" size="sm">
                       <tr><td><b>AUTHOR:</b> </td><td>{this.props.location.book.author}</td></tr>
@@ -71,9 +72,8 @@ class IndividualBookpage extends Component{
                     </Table>
                   </Card.Body>
                 </Card>
-                    
 
-                <Card className="text-center" style={{width: "50%", marginTop: "15rem", marginBottom: "15rem"}}>
+                <Card className="text-center" style={{ marginTop: "12rem"}}>
                   <Card.Body>
                     <Card.Title><b>BOOKSTORE OFFERS</b></Card.Title>                    
                     <Table className="myTable" size="sm">
@@ -103,22 +103,9 @@ class IndividualBookpage extends Component{
                     </tr>
                     </tbody>                    
                     </Table>
-                  </Card.Body>
-                </Card>
-
-                  </CardGroup>
-          
-
-                <br></br><br></br>
-                {/* <h2 style={{ textAlign: "center", marginTop: "2rem" }}>
-                      BOOKSTORE OFFERS
-                </h2> */}
-
-
-                <h3 style={{ textAlign: "center", marginTop: "2rem" }}>
-                  Reviews
-                  </h3>
-                <Table size="sm" style={{ width: "70%", marginLeft: "auto", marginRight: "auto", paddingTop: "3rem"}}>
+                    
+                    <Card.Title style = {{marginTop: "5rem"}}><b>Reviews</b></Card.Title>                    
+                <Table size="sm" style={{paddingTop: "3rem"}}>
                 <thead style={{ textAlign: "center", marginTop: "2rem" }}>
                     <tr>
                     <th>REVIEWER</th>
@@ -159,18 +146,24 @@ class IndividualBookpage extends Component{
 
                     </td>
                     
-                    </tr>
-                    <tr>
-                    <td></td>
-                    <td></td>
-                    </tr>
+                    </tr>                    
+                    
+                    
 
                 </tbody>
                 </Table>
-                          <h5 style={{ textAlign: "center", marginTop: "2rem",marginBottom:"2rem" }}>
+                <h5 style={{ textAlign: "center", marginTop: "2rem",marginBottom:"2rem" }}>
                              If you want to leave the comment
-                             <Button variant="info" onClick={this.handleAddreview}>Add Reivew</Button>
+                             <Button variant="info" style={{ marginLeft: "1rem"}} onClick={this.handleAddreview}>Add Reivew</Button>
                            </h5>
+                  </Card.Body>
+                </Card>
+
+                  </CardGroup>
+        
+                
+           
+                          
             </div>
           </React.Fragment>
         );
