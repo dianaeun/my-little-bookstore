@@ -31,7 +31,7 @@ class Main extends Component {
         <h1 style={{ textAlign: "center", marginTop: "2rem" }}>
           <Badge
             style={{
-              fontFamily: "fantasy",
+              fontFamily: "Kurale",
               paddingLeft: "50px",
               paddingRight: "50px",
               background: "#22525F",
@@ -43,7 +43,7 @@ class Main extends Component {
             Recommended Books
           </Badge>
         </h1>
-        <h4 style={{ fontFamily: "cursive", textAlign: "center", marginTop: "2rem", marginBottom: "2rem"}}>
+        <h4 style={{ fontFamily: "Kurale", textAlign: "center", marginTop: "2rem", marginBottom: "2rem"}}>
           SF, Fantasy, Romance books in Songdo
         </h4>
           <div>
