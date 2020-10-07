@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import { Form, Button, Nav, Card } from "react-bootstrap";
 import AuthContext from '../context/AuthContext';
-import MlbNavbar from '../components/NavigationBar.js'
-import {Redirect} from "react-router";
-import { Link, NavLink} from "react-router-dom";
+import MlbNavbar from '../components/NavigationBar.js';
 
 class Login extends Component {
   state = {

@@ -1,23 +1,20 @@
 import React, { Component } from "react";
 import { Form, Button, Col, Row, Nav } from "react-bootstrap";
 import MlbNavbar from '../components/NavigationBar.js'
+import AuthContext from '../context/AuthContext';
 
 class Signup extends Component {
-    state = {
-        isLogin: true,
-      };
-    handleSubmit = (e) => {
-      e.preventDefault();
-      let path = `/Login`;
-      this.props.history.push(path);
-    };
+  state = {
+    isLogin: true,
+  };
+  static contextType = AuthContext;
   render() {
     return (
         <div class="outer-container">
           <MlbNavbar/>
           <div style={{ paddingLeft: "10%", paddingTop: "5%" }}>
             <h3 style={{ marginBottom: "30px", fontWeight: "bold", fontStyle: "italic" }}>CREATE ACCOUNT</h3>
-            <Form onSubmit={this.handleSubmit} style={{ width: "100%" }}>
+            <Form onSubmit={this.context.login} style={{ width: "100%" }}>
               <Form.Group controlId="formBasicName" as={Row}>
                 <Form.Label column sm={1} style={{fontWeight: "bold"}}> First Name </Form.Label>
                 <Col sm={2}>
