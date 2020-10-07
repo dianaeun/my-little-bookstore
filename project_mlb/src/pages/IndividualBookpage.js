@@ -73,7 +73,7 @@ class IndividualBookpage extends Component{
                 </Card>
                     
 
-                <Card className="text-center" style={{width: "50%", marginTop: "2rem"}}>
+                <Card className="text-center" style={{width: "50%", marginTop: "15rem", marginBottom: "15rem"}}>
                   <Card.Body>
                     <Card.Title><b>BOOKSTORE OFFERS</b></Card.Title>                    
                     <Table className="myTable" size="sm">
