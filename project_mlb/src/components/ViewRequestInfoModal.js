@@ -5,7 +5,8 @@ class ViewRequestInfoModal extends Component{
     showAdditionalInfo = (status) => {
         let info = [];
         if(status === "Accepted") {
-            info.push(<td colSpan = '2'>Owner Contact Info: 010-0000-0000</td>);
+            info.push(<td>Owner Contact Info</td>);
+            info.push(<td>010-0000-0000</td>);
         }
         else if(status === "Pending") {
             info.push(<td colSpan = '2'>Owner Contact Informaton is not available yet.</td>);
