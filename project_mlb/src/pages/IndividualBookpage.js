@@ -55,10 +55,12 @@ class IndividualBookpage extends Component{
               
               <Addreview show={this.state.addreview} handleClose={this.handleClose}/>
                 <RequestModal show={this.state.request} handleClose={this.handleClose}/>
-                {/* style={{ width: '30rem', marginLeft: '2rem', marginTop: "2rem"}} */}
+                <div style={{marginLeft: "10%", marginTop: "2rem", background: "#eeeeee", width: "30%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>
+                  <h1 style={{fontSize: "2rem"}}>Book Information</h1>
+                </div>
 
                   <CardGroup>
-                  <Card className="text-center" style={{ marginRight: "10%", marginTop: "2rem", marginBottom: "10rem", background: "#CEE4E9"}}>
+                  <Card className="text-center" style={{ flex: "1", marginTop: "2rem", background: "#CEE4E9"}}>
                   <Card.Body>
                     <Card.Title><b>{this.props.location.book.title}</b></Card.Title>
                     <Card.Img variant="top" src={harry} style={{ width: "20rem", padding: "1rem"}} />
@@ -73,7 +75,7 @@ class IndividualBookpage extends Component{
                   </Card.Body>
                 </Card>
 
-                <Card className="text-center" style={{ marginTop: "12rem"}}>
+                <Card className="text-center" style={{flex: "2", marginTop: "2rem"}}>
                   <Card.Body>
                     <Card.Title><b>BOOKSTORE OFFERS</b></Card.Title>                    
                     <Table className="myTable" size="sm">
@@ -103,8 +105,10 @@ class IndividualBookpage extends Component{
                     </tr>
                     </tbody>                    
                     </Table>
+                    </Card.Body>
                     
-                    <Card.Title style = {{marginTop: "5rem"}}><b>Reviews</b></Card.Title>                    
+                    <Card.Title><b>Reviews</b></Card.Title>      
+                    <Card.Body>              
                 <Table size="sm" style={{paddingTop: "3rem"}}>
                 <thead style={{ textAlign: "center", marginTop: "2rem" }}>
                     <tr>
