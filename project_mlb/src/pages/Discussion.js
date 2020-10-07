@@ -79,9 +79,9 @@ class Discussion extends Component {
             <Form>
               <div key={`inline-radio`} style={{textAlign: "right"}}>
                   <Form.Label column sm="3" style={{marginRight: "1rem"}}>Sort By</Form.Label>
-                  <Form.Check inline label='Likes' type='radio' id='likes' checked/>
-                  <Form.Check inline label='Comments' type='radio' id='comments' />
-                  <Form.Check inline label='Date' type='radio' id='date' />
+                  <Form.Check inline label='Likes' type='radio' name='category' id='likes' checked/>
+                  <Form.Check inline label='Comments' type='radio' name='category' id='comments' />
+                  <Form.Check inline label='Date' type='radio' name='category' id='date' />
               </div>
             </Form>
           </div>
