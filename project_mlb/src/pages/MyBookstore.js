@@ -95,7 +95,7 @@ class MyBookstore extends Component{
                         <td>
                             <Link className="nav-link" style={{padding: "0rem", paddingTop: "0.3rem"}} to={{pathname: "/IndividualBookpage" , book:book}} >{book.title}</Link>
                         </td>
-                        <td style={{paddingTop: "0.5rem"}}>{book.author}</td>
+                        <td style={{paddingTop: "0.5rem"}}><Link href="#">{book.author}</Link></td>
                         <td style={{paddingLeft: "2rem", paddingTop: "0.5rem"}}>${book.price}</td>
                         {this.createStar(book.rate)}                  
                         {book.request ? <td style={{paddingLeft: "1.1rem", paddingTop: "0.5rem"}}><img src={edit_no} alt="Edit Disabled" style={{ width: "1.5rem", padding: "0rem"}} /></td>

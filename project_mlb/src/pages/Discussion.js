@@ -54,8 +54,8 @@ class Discussion extends Component {
           <div style={{ width: "60%", marginLeft: "20%", marginTop: "2rem" }}>
             <div style={{display: "flex"}}>
               <h1>Discussions</h1>
-              <Button
-                style={{ marginLeft: "2rem", background: "#2E7384", border: 0, }}
+              <Button variant="info"
+                style={{ marginLeft: "2rem", padding: "0.5rem"}}
                 onClick={this.handleAddDiscussion}
               >Add Discussion</Button>
             </div>
@@ -116,7 +116,7 @@ class Discussion extends Component {
                     <Col>
                       <Button
                         id={"button" + i}
-                        variant="outline-primary"
+                        variant="info"
                         onClick={(event) => this.handleShow(event.target.id.slice(6))}
                         style={{paddingTop: 0, paddingBottom: 0, marginLeft: "0.6rem", marginBottom: "0.2rem"}}
                       >

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Badge, Table } from "react-bootstrap";
+import { Badge, Table, Button } from "react-bootstrap";
 import MlbNavbar from '../components/NavigationBar.js'
+import { Link } from 'react-router-dom';
 
 const star = require("../icons/star.png");
 const blankStar = require("../icons/blank_star.png");
@@ -43,11 +44,13 @@ class Main extends Component {
             Recommended Books
           </Badge>
         </h1>
-        <h4 style={{ fontFamily: "Kurale", textAlign: "center", marginTop: "2rem", marginBottom: "2rem"}}>
-          SF, Fantasy, Romance books in Songdo
-        </h4>
-          <div>
-            <Table size="sm" style={{ width: "800px", marginLeft: "auto", marginRight: "auto"}}>
+          <div style={{ width: "800px", marginLeft: "auto", marginRight: "auto"}}>
+            <h3 style={{ fontFamily: "Kurale", textAlign: "center", marginTop: "2rem", marginBottom: "1rem"}}>
+              <Button variant="outline-danger" size="sm" style={{marginLeft:"0.2rem"}} disabled>SF</Button> , 
+              <Button variant="outline-danger" size="sm" style={{marginLeft:"0.2rem"}} disabled>Fantasy</Button> , 
+              <Button variant="outline-danger" size="sm" style={{marginLeft:"0.2rem"}} disabled>Romance</Button> books in Songdo
+            </h3>
+            <Table size="sm">
               <thead>
                 <tr style={{fontFamily: "serif"}}>
                   <th></th>
@@ -61,9 +64,11 @@ class Main extends Component {
                 {this.books.map((book, i) => (
                   <tr>
                     <td>{i+1}</td>
-                    <td>{book.title}</td>
-                    <td>{book.author}</td>
-                    <td>{book.genre.join(", ")}</td>
+                    <td><Link href="#">{book.title}</Link></td>
+                    <td><Link href="#">{book.author}</Link></td>
+                    <td>{book.genre.map((genre) => (
+                      <Button variant="outline-danger" size="sm" style={{marginLeft:"0.2rem"}} disabled>{genre}</Button>
+                    ))}</td>
                     <td>
                       {this.createStar(book.rating)}
                     </td>
