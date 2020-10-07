@@ -25,7 +25,7 @@ class Profile extends Component{
       this.setState({editProfile: false, viewrequestInfo : false});
     }
     // dummy data for profile
-    person = {name: 'Donghun Kim', location: 'Incheon Yeonsu', 
+    person = {name: 'Donghun Kim', location: 'Incheon Songdo', 
               iD: 'donghun123', password: '0000', email: 'Donghun.kim@stonybrook.edu',
             phone: '010-0113-0328', preference: ['Romance', 'Science', 'Horror']};
 
