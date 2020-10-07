@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Button, Form, Row, Col, DropdownButton, Dropdown } from "react-bootstrap";
+import { Card, Button, Form, Row, Col, DropdownButton, Dropdown, Jumbotron, Container } from "react-bootstrap";
 import AddDiscussion from "../components/AddDiscussion";
 import MlbNavbar from '../components/NavigationBar.js'
 
@@ -53,19 +53,18 @@ class Discussion extends Component {
           <AddDiscussion show={this.state.addDiscussion} handleClose={this.handleClose}/>
           <div style={{ width: "60%", marginLeft: "20%", marginTop: "2rem" }}>
             <div style={{display: "flex"}}>
-              <h2>Discussions</h2>
+              <h1>Discussions</h1>
               <Button
                 style={{ marginLeft: "2rem", background: "#2E7384", border: 0, }}
                 onClick={this.handleAddDiscussion}
               >Add Discussion</Button>
             </div>
-            
             <Form style={{marginTop: "2rem"}}> 
               <Form.Group as={Row}>
                 <Col sm={5}>
                   <Form.Control type="text" placeholder="Search Term" />
                 </Col>
-                <Button>Search</Button>
+                <Button variant="secondary">Search</Button>
                 <DropdownButton variant="outline-secondary" title="All Categories" style={{marginLeft: "1rem"}} >
                   <Dropdown.Item eventKey='All Categories'>All Categories</Dropdown.Item>
                   <Dropdown.Item eventKey="Tag">Tag</Dropdown.Item>
@@ -75,7 +74,7 @@ class Discussion extends Component {
               </Form.Group>
             </Form>
             <hr
-              style={{color: "black", backgroundColor: "black", height: "0.1rem", margin: 0}}
+              style={{color: "black", backgroundColor: "black", height: "0.1rem", marginTop: "3rem", marginBottom: 0}}
             />
             <Form>
               <div key={`inline-radio`} style={{textAlign: "right"}}>
@@ -92,18 +91,6 @@ class Discussion extends Component {
             >
               <Card.Body>
                 <Card.Title style={{ display: "flex" }}>
-                  {/* <div style={{ display: "flex", minWidth: "100%", fontSize: "80%" }}>
-                    {discussion.name}
-                    <div style={{ width: "50%", marginLeft: "5%"}}>
-                      {discussion.date}
-                      <img
-                        src={tag}
-                        alt="tag"
-                        style={{width: "1.4rem", height: "1.4rem", marginLeft: "10%"}}
-                      />
-                      {discussion.book}
-                    </div>
-                  </div> */}
                   <Row style={{fontSize: "1rem", width: "100%"}}>
                     <Col sm={3}>
                       {discussion.name}
