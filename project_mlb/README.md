@@ -32,6 +32,10 @@ Please login to access all functionalities.
 
 When not logged in, the main page displays a list of books in all genres and locations, sorted by rating. Only after logging in the page shows books filtered by the user's preferred genres and location. Nevertheless, for the purpose of showing our functional requirements, our current implementation will assume the user is logged in at all times in the Main page.  
 
+When logged in, refreshing the website results in the logout and redirection to the Main page. This is not our desired interaction for the final implementation will be fixed later on.  
+**Please do not refresh the website on the Book Information page. It results in errors!
+
+
 ## Instruction for Running Our Application
 
 A user will first be directed to the Premain page, in which he/she can click the "Learn" and "Get Started" buttons. Functionalities related to the "Learn" button are not implemented at the moment. By pressing the "Get Started" button, the user proceeds to the Main page and views the list of recommended books, filtered by the user's preferred genres.
