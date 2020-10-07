@@ -59,7 +59,7 @@ class IndividualBookpage extends Component{
                   <h1 style={{fontSize: "2rem"}}>Book Information</h1>
                 </div>
 
-                  <CardGroup>
+                  <CardDeck>
                   <Card className="text-center" style={{ flex: "1", marginTop: "2rem", background: "#CEE4E9"}}>
                   <Card.Body>
                     <Card.Title><b>{this.props.location.book.title}</b></Card.Title>
@@ -79,7 +79,7 @@ class IndividualBookpage extends Component{
                   <Card.Body>
                     <Card.Title><b>BOOKSTORE OFFERS</b></Card.Title>                    
                     <Table className="myTable" size="sm">
-                    <thead style={{ textAlign: "center", marginTop: "2rem" }}>
+                    <thead style={{ textAlign: "center", marginTop: "4rem" }}>
                     <tr>
                     <th>BOOKSTORE NAME</th>
                     <th>CONDITION</th>
@@ -99,9 +99,7 @@ class IndividualBookpage extends Component{
                     <td>SOME MARKS</td>
                     <td>$5 </td>
                     <td><Button variant="info" onClick={this.handleRequestmodal}> BUY</Button></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                   
                     </tr>
                     </tbody>                    
                     </Table>
@@ -129,9 +127,12 @@ class IndividualBookpage extends Component{
                        </span>
                       </div>
                         </Collapse>
-                        <Button variant="info" onClick={() => this.setState({ showText: !this.state.showText })}> {this.state.showText ? 'Read less' : 'Read more'}</Button>
+                        
                       </div>
-                       </td>  
+                       </td>
+                       <td>
+                       <Button variant="info" onClick={() => this.setState({ showText: !this.state.showText })}> {this.state.showText ? 'Read less' : 'Read more'}</Button>
+                       </td>
                     </tr>
                     <tr>
                     <td>DAYE EUN</td>
@@ -145,25 +146,26 @@ class IndividualBookpage extends Component{
                         </span>
                           </div>
                             </Collapse>
-                            <Button variant="info" onClick={() => this.setState({ showText1: !this.state.showText1 })}> {this.state.showText1 ? 'Read less' : 'Read more'} </Button>
+                            
                           </div>
-
+                        
                     </td>
-                    
+                    <td>
+                        <Button variant="info" onClick={() => this.setState({ showText1: !this.state.showText1 })}> {this.state.showText1 ? 'Read less' : 'Read more'} </Button>
+                    </td>
                     </tr>                    
                     
                     
 
                 </tbody>
                 </Table>
-                <h5 style={{ textAlign: "center", marginTop: "2rem",marginBottom:"2rem" }}>
-                             If you want to leave the comment
+                <h5 style={{ textAlign: "center", marginTop: "5rem",marginBottom:"2rem" }}>                            
                              <Button variant="info" style={{ marginLeft: "1rem"}} onClick={this.handleAddreview}>Add Reivew</Button>
                            </h5>
                   </Card.Body>
                 </Card>
 
-                  </CardGroup>
+                  </CardDeck>
         
                 
            
