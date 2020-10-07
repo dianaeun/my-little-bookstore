@@ -47,14 +47,14 @@ class Browse extends Component{
         return (
             <React.Fragment>
                 <MlbNavbar/>
-                <div style={{width: "80%", margin: "auto"}}>
+                <div style={{width: "80%", margin: "auto", marginTop: "2rem"}}>
                     <div style={{}}>
                         <Form style={{marginTop: "1rem"}}> 
                         <Form.Group as={Row}>
                             <Col sm={5}>
                             <Form.Control type="text" placeholder="Search Term" />
                             </Col>
-                            <Button>Search</Button>
+                            <Button variant="secondary">Search</Button>
                             <DropdownButton variant="outline-secondary" title="All Categories" style={{marginLeft: "1rem"}} >
                             <Dropdown.Item eventKey='All Categories'>All Categories</Dropdown.Item>
                             <Dropdown.Item eventKey="Title">Title</Dropdown.Item>
@@ -98,22 +98,18 @@ class Browse extends Component{
                             </Table>
                         </Form>
                     </div>
-                    {/* <hr
-                        style={{color: "black", backgroundColor: "black", height: "0.1rem", margin: "0.1rem"}}
-                        />
-                    
-                        <br></br> */}
-                        <h3 style={{textAlign: "center"}}>Search Results</h3>
-                        <div key={`inline-radio`} className="mb-3">
-                            <Form style={{border:"solid grey", width:"30%", borderRadius:"0.2rem", float:"right", margin:"0.3rem", fontSize: "0.85rem"}}>
-                                <Form.Label column sm="4">Sort By</Form.Label>
-                                <Form.Check inline label='Rating' name='sort' type='radio' id='rating' />
-                                <Form.Check inline label='Price' name='sort' type='radio' id='price' />
-                                <Form.Check inline label='Alphabet' name='sort' type='radio' id='alphabet' />
-                            </Form>
+                    <div style={{display: "flex", alignItems: "center", justifyContent: "space-between", marginTop:"3rem"}}>
+                            <h3>Search Results</h3>
+                            <div key={`inline-radio`} >
+                                <Form style={{border:"solid grey", borderRadius:"0.2rem", float:"right", margin:"0.3rem", fontSize: "0.85rem", padding: "0.2rem"}}>
+                                    <Form.Label style={{margin: "0.3rem"}}>Sort By </Form.Label>
+                                    <Form.Check style={{margin: "0.3rem"}} inline label='Rating' name='sort' type='radio' id='rating' />
+                                    <Form.Check style={{margin: "0.3rem"}} inline label='Price' name='sort' type='radio' id='price' />
+                                    <Form.Check style={{margin: "0.3rem"}} inline label='Alphabet' name='sort' type='radio' id='alphabet' />
+                                </Form>
+                            </div>
                         </div>
-                    
-                    <Table size="sm" style={{ minWidth: "1000px", margin: "auto"}}>
+                    <Table size="sm" style={{ minWidth: "1000px", margin: "auto", marginTop:"1.5rem"}}>
                         <thead>
                             <tr>
                                 <th>Title</th>
