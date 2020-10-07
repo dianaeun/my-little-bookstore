@@ -27,7 +27,7 @@ class Profile extends Component{
     // dummy data for profile
     person = {name: 'Donghun Kim', location: 'Incheon Songdo', 
               iD: 'donghun123', password: '0000', email: 'Donghun.kim@stonybrook.edu',
-            phone: '010-0113-0328', preference: ['Romance', 'Science', 'Horror']};
+            phone: '010-0113-0328', preference: ['SF', 'Fantasy', 'Romance']};
 
     requests = [{date: '2019/09/04', status: 'Accepted', title: 'Harry Potter and the Philosopher', owner: 'Daye Eun'},
                 {date: '2019/09/05', status: 'Declined', title: 'Life', owner: 'Simok Hwang'},
