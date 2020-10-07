@@ -33,7 +33,7 @@ class App extends Component {
                 login: this.login,
                 logout: this.logout
               }}>
-                <main className="vh-100">
+                <main className="vh-100" style={{fontFamily: "Kurale"}}>
                   <Switch>
                     <Route exact path="/" component={Premain} /> 
                     {!this.state.isLogin && <Route exact path='/Login' component={Login}/>}

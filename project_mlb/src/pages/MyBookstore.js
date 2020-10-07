@@ -5,7 +5,7 @@ import MlbNavbar from '../components/NavigationBar.js'
 
 import AddBookModal from '../components/AddBookModal';
 import DeleteBookModal from '../components/DeleteBookModal';
-import Advertisement from '../components/Advertisement';
+// import Advertisement from '../components/Advertisement';
 import EditBookModal from '../components/EditBookModal';
 import './MyBookstore.css';
 
@@ -71,7 +71,7 @@ class MyBookstore extends Component{
                     <h1>DongHun's Bookstore</h1>
                   </Container>
                 </Jumbotron>
-                <Table className="myTable" size="sm" style={{ width: "70%", marginLeft: "auto", marginRight: "auto", paddingTop: "1rem"}}>
+                <Table className="myTable" size="sm" style={{ width: "80%", marginLeft: "auto", marginRight: "auto", paddingTop: "1rem"}}>
                   <thead>
                     <tr>
                       <th>Date Added</th>
@@ -111,7 +111,7 @@ class MyBookstore extends Component{
                   </tbody>
                   <Button variant="info" onClick={this.handleAddBook}>Add Books</Button>
                 </Table>
-                <Advertisement/>     
+                {/* <Advertisement/>      */}
 
             </div>
         )

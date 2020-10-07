@@ -47,7 +47,7 @@ class Browse extends Component{
         return (
             <React.Fragment>
                 <MlbNavbar/>
-                <div style={{width: "80%", margin: "auto"}}>
+                <div style={{width: "80%", margin: "auto", marginTop: "2rem"}}>
                     <div style={{}}>
                         <Form style={{marginTop: "1rem"}}> 
                         <Form.Group as={Row}>
@@ -103,17 +103,20 @@ class Browse extends Component{
                         />
                     
                         <br></br> */}
-                        <h3 style={{textAlign: "center"}}>Search Results</h3>
-                        <div key={`inline-radio`} className="mb-3">
-                            <Form style={{border:"solid grey", width:"27%", borderRadius:"0.2rem", float:"right", margin:"0.3rem", fontSize: "0.85rem"}}>
-                                <Form.Label column sm="3">Sort By</Form.Label>
-                                <Form.Check inline label='Rating' name='sort' type='radio' id='rating' />
-                                <Form.Check inline label='Price' name='sort' type='radio' id='price' />
-                                <Form.Check inline label='Alphabet' name='sort' type='radio' id='alphabet' />
-                            </Form>
+                        <div style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
+                            <h3>Search Results</h3>
+                            <div key={`inline-radio`} >
+                                <Form style={{border:"solid grey", borderRadius:"0.2rem", float:"right", margin:"0.3rem", fontSize: "0.85rem", padding: "0.2rem"}}>
+                                    <Form.Label style={{margin: "0.3rem"}}>Sort By </Form.Label>
+                                    <Form.Check style={{margin: "0.3rem"}} inline label='Rating' name='sort' type='radio' id='rating' />
+                                    <Form.Check style={{margin: "0.3rem"}} inline label='Price' name='sort' type='radio' id='price' />
+                                    <Form.Check style={{margin: "0.3rem"}} inline label='Alphabet' name='sort' type='radio' id='alphabet' />
+                                </Form>
+                            </div>
                         </div>
+                        
                     
-                    <Table size="sm" style={{ minWidth: "1000px", margin: "auto"}}>
+                    <Table size="sm" style={{ minWidth: "1000px", margin: "auto", marginTop: "2rem"}}>
                         <thead>
                             <tr>
                                 <th>Title</th>

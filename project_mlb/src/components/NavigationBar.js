@@ -23,7 +23,7 @@ class MlbNavbar extends Component {
       <div>
         <div style={{background: "#56a2b5", position: "relative"}}>
           <img src= {bookIcon} style={{width: "70px", position: "absolute", marginTop: "1rem", marginLeft: "1rem"}} alt="this is book" />
-          <h1 style={{margin: 0, padding: "25px", textAlign: "center", fontFamily: "fantasy", color: "white", fontWeight: "bold" }}>
+          <h1 style={{margin: 0, padding: "25px", textAlign: "center", fontFamily: "fantasy", color: "white", fontWeight: "bold", fontFamily: 'Kurale' }}>
             My Little Bookstore
           </h1>
         </div>
@@ -31,8 +31,8 @@ class MlbNavbar extends Component {
         <Navbar className="main-navigation__items " style={{background: "#2E7384", display: "flex", alignItems: "center", justifyContent: "space-between"}} >
             <div>
               <NavLink to="/Main"> Home </NavLink>
-              <NavLink to="/Browse"> Browse </NavLink>
-              <NavLink to="/Discussion"> Discussion </NavLink>
+              <NavLink style={{marginLeft: "1rem"}}to="/Browse"> Browse </NavLink>
+              <NavLink style={{marginLeft: "1rem"}}to="/Discussion"> Discussion </NavLink>
               {this.context.isLogin && <NavLink to="/MyBookstore"> My Bookstore </NavLink> }
               {this.context.isLogin && <NavLink to="/Profile"> Profile </NavLink> }
             </div>
