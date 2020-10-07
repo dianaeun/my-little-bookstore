@@ -28,7 +28,7 @@ Several functional interactions are implemented in this project. (Modals, logout
 
 Also, the contents of the navigation bar will differ depending on whether you are logged-in or logged out.  
 Please login to access all functionalities.  
-*My Bookstore & Profile* pages are not visible when logged out.
+*My Bookstore & Profile* pages are not visible when logged out.  
 When not logged in, the main page displays a list of books in all genres and locations, sorted by rating. Only after logging in the page shows books filtered by the user's preferred genres and location. Nevertheless, for the purpose of showing our functional requirements, our current implementation will assume the user is logged in at all times in the Main page.  
 
 ## Instruction for Running Our Application
