@@ -69,7 +69,7 @@ class IndividualBookpage extends Component{
                         <tr><td><b>PUBLISHER:</b> </td><td>{this.props.location.book.publisher}</td></tr>
                         <tr><td><b>ISBN:</b> </td><td>{this.props.location.book.isbn}</td></tr>
                         <tr><td><b>GENRE:</b> </td><td>{this.props.location.book.genre}</td></tr>
-                        <tr><td><b>RATE:</b> </td>{this.createStar(this.props.location.book.rate)}</tr>
+                        <tr><td><b>RATE:</b> </td>{this.createStar(this.props.location.book.rate)}<Button>Rate</Button></tr>
                         <tr><td><b>DESCRITION:</b> </td><td>{this.props.location.book.description}</td></tr>
                       </Table>
                     </Card.Body>
