@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Button, Form, Row, Col, DropdownButton, Dropdown, Jumbotron, Container } from "react-bootstrap";
+import { Card, Button, Form, Row, Col, DropdownButton, Dropdown} from "react-bootstrap";
 import AddDiscussion from "../components/AddDiscussion";
 import MlbNavbar from '../components/NavigationBar.js'
 
@@ -52,10 +52,10 @@ class Discussion extends Component {
           <MlbNavbar/>
           <AddDiscussion show={this.state.addDiscussion} handleClose={this.handleClose}/>
           <div style={{ width: "60%", marginLeft: "20%", marginTop: "2rem" }}>
-            <div style={{display: "flex", alignItems: "center"}}>
+            <div style={{ display: "flex", alignItems: "center"}}>
               <h1>Discussions</h1>
-              <Button variant="info" size="md"
-                style={{ marginLeft: "2rem", marginBottom: 0, height: "2rem"}}
+              <Button variant="info"
+                style={{ marginLeft: "2rem", height: "2rem"}}
                 onClick={this.handleAddDiscussion}
               >Add Discussion</Button>
             
@@ -65,7 +65,7 @@ class Discussion extends Component {
                 <Col sm={5}>
                   <Form.Control type="text" placeholder="Search Term" />
                 </Col>
-                <Button variant="secondary">Search</Button>
+                <Button style={{fontWeight: "bold", background: "#FAC917", color: "black", border: "1px solid #FAC917", opacity: "79%"}}>Search</Button>
                 <DropdownButton variant="outline-secondary" title="All Categories" style={{marginLeft: "1rem"}} >
                   <Dropdown.Item eventKey='All Categories'>All Categories</Dropdown.Item>
                   <Dropdown.Item eventKey="Tag">Tag</Dropdown.Item>
@@ -80,9 +80,9 @@ class Discussion extends Component {
             <Form>
               <div key={`inline-radio`} style={{textAlign: "right"}}>
                   <Form.Label column sm="3" style={{marginRight: "1rem"}}>Sort By</Form.Label>
-                  <Form.Check inline label='Likes' type='radio' id='likes' checked/>
-                  <Form.Check inline label='Comments' type='radio' id='comments' />
-                  <Form.Check inline label='Date' type='radio' id='date' />
+                  <Form.Check inline label='Likes' type='radio' name='category' id='likes' checked/>
+                  <Form.Check inline label='Comments' type='radio' name='category' id='comments' />
+                  <Form.Check inline label='Date' type='radio' name='category' id='date' />
               </div>
             </Form>
           </div>

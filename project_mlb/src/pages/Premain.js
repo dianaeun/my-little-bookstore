@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Col, Jumbotron, Row } from "react-bootstrap";
+import { Button} from "react-bootstrap";
 import {Redirect} from "react-router";
 // import { NavLink } from "react-router-dom";
 const book = require("../icons/book.png");

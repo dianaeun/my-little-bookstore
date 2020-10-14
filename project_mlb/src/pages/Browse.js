@@ -35,7 +35,12 @@ class Browse extends Component{
 
         const items = []
 
-
+        // books.map((book) => {
+        //     items.push(<tr><td><Link href="#">{book[0]}</Link></td>
+        //                    <td><Link href="#">{book[1]}</Link></td>
+        //                    {this.createStar(book[2])}
+        //                    <td>$ {book[3]}</td></tr>)
+        // })
         for (const [_index, value] of books.entries()) {
           items.push(<tr><td><Link href="#">{value[0]}</Link></td>
                     <td><Link href="#">{value[1]}</Link></td>
@@ -54,7 +59,7 @@ class Browse extends Component{
                             <Col sm={5}>
                             <Form.Control type="text" placeholder="Search Term" />
                             </Col>
-                            <Button variant="secondary">Search</Button>
+                            <Button style={{fontWeight: "bold", background: "#FAC917", color: "black", border: "1px solid #FAC917", opacity: "79%"}}>Search</Button>
                             <DropdownButton variant="outline-secondary" title="All Categories" style={{marginLeft: "1rem"}} >
                             <Dropdown.Item eventKey='All Categories'>All Categories</Dropdown.Item>
                             <Dropdown.Item eventKey="Title">Title</Dropdown.Item>
