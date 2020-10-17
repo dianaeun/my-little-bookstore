@@ -133,8 +133,8 @@ class MyBookstore extends Component{
                         <td>{book.title}</td>
                         <td>{book.request[0].sender}</td>
                         <td>
-                          <Button variant="outline-primary" size="sm" style={{marginLeft:"0.2rem", fontWeight: "bold"}} disabled>Accept</Button>
-                          <Button variant="outline-danger" size="sm" style={{marginLeft:"0.2rem", fontWeight: "bold"}} disabled>Decline</Button>
+                          <Button variant="outline-primary" size="sm" style={{marginLeft:"0.2rem", fontWeight: "bold"}}>Accept</Button>
+                          <Button variant="outline-danger" size="sm" style={{marginLeft:"0.2rem", fontWeight: "bold"}}>Decline</Button>
                         </td>
                         <td>
                           Pending
