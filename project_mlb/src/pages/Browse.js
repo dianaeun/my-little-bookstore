@@ -41,8 +41,8 @@ class Browse extends Component{
         //                    {this.createStar(book[2])}
         //                    <td>$ {book[3]}</td></tr>)
         // })
-        for (const [_index, value] of books.entries()) {
-          items.push(<tr><td><Link href="#">{value[0]}</Link></td>
+        for (const [i, value] of books.entries()) {
+          items.push(<tr key={i}><td><Link href="#">{value[0]}</Link></td>
                     <td><Link href="#">{value[1]}</Link></td>
                     {this.createStar(value[2])}
                     <td>$ {value[3]}</td></tr>)
