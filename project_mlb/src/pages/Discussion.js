@@ -107,14 +107,14 @@ class Discussion extends Component {
             <hr
               style={{color: "black", backgroundColor: "black", height: "0.1rem", marginTop: "3rem", marginBottom: 0}}
             />
-            <Form>
-              <div key={`inline-radio`} style={{textAlign: "right"}}>
-                  <Form.Label column sm="3" style={{marginRight: "1rem"}}>Sort By</Form.Label>
-                  <Form.Check inline label='Likes' type='radio' name='category' id='likes' checked/>
-                  <Form.Check inline label='Comments' type='radio' name='category' id='comments' />
-                  <Form.Check inline label='Date' type='radio' name='category' id='date' />
-              </div>
-            </Form>
+            <div key={`inline-radio`} style={{textAlign: "right"}}>
+              <Form>
+                <Form.Label column sm="3" style={{marginRight: "1rem"}}>Sort By</Form.Label>
+                <Form.Check inline label='Likes' type='radio' name='category' id='likes'/>
+                <Form.Check inline label='Comments' type='radio' name='category' id='comments' />
+                <Form.Check inline label='Date' type='radio' name='category' id='date' />
+              </Form>
+            </div>
           </div>
           {this.discussions.map((discussion, i) => (
             <Card
