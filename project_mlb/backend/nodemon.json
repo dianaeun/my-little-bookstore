@@ -1,0 +1,7 @@
+{
+    "env": {
+      "MONGO_USER": "databaseuser",
+      "MONGO_PASSWORD": "databasepassword",
+      "MONGO_DB": "project_mlb"
+    }
+  }
