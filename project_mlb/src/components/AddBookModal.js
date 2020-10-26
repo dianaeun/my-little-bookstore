@@ -1,14 +1,66 @@
 import React, {Component} from 'react';
 import {Modal, Button, ButtonGroup, ToggleButton, Form, Card, Row, Col} from 'react-bootstrap';
+import request from 'superagent';
 
 class AddBookModal extends Component{
     state = {
         radioValue : '1',
+        searchField: '',
+        rawBookInfo: [],
+        bookInfo: []
     };
 
     setRadioValue = (n) => {
         this.setState({radioValue: n})
     };
+
+    setSearchField = (val) => {
+        this.setState({searchField: val})
+    };
+
+    searchISBN = (e) => {
+        e.preventDefault();
+        // for specific isbn search, use https://www.googleapis.com/books/v1/volumes?q=isbn:ISBN number
+        request
+        .get("https://www.googleapis.com/books/v1/volumes?q=isbn:" + this.state.searchField)
+        .then((data) => {
+            const cleanData = this.cleanData(data)
+            this.setState({rawBookInfo: cleanData})
+            //this.setState({ rawBookInfo: [...data.body.items]})
+        })
+        //this.setState({bookInfo: []})
+        this.state.bookInfo.length = 0
+        for (const [i, book] of this.state.rawBookInfo.entries()) {
+            this.state.bookInfo.push(
+                <Card key={i}>
+                    <Card.Img variant="top" src={book.volumeInfo.imageLinks.thumbnail}/>
+                    <Card.Body>
+                        <Card.Title>{book.volumeInfo.title}</Card.Title>
+                        <Card.Subtitle>{book.volumeInfo.authors}</Card.Subtitle>
+                        <Card.Text>
+                        Published Date: {book.volumeInfo.publishedDate}
+                        </Card.Text>
+                    </Card.Body>
+                </Card>
+            )
+        }
+            
+    }
+
+    cleanData = (data) => {
+        const cleanData = data.body.items.map((book) => {
+            if(book.volumeInfo.hasOwnProperty('publishedDate') === false) {
+                book.volumeInfo['publishedDate'] = '0000';
+            }
+            if(book.volumeInfo.hasOwnProperty('imageLinks') === false) {
+                book.volumeInfo['imageLinks'] = {thumbnail: ''};
+            }
+
+            return book;
+        })
+        return cleanData;
+    }
+    
     radios = [
       { name: 'Search By ISBN', value: '1' },
       { name: 'Manual Entry', value: '2' },
@@ -53,16 +105,21 @@ class AddBookModal extends Component{
                             {this.state.radioValue === '1' &&
                                 <Form>
                                     <Form.Group as={Row} controlId="ISBNInput">
-                                        <Form.Label column sm={3}>
+                                        <Form.Label column sm={2}>
                                             ISBN
                                         </Form.Label>
-                                        <Col sm={9}>
-                                            <Form.Control type="text" placeholder="Enter the ISBN Here to Search" />
+                                        <Col sm={7}>
+                                            <Form.Control type="text" placeholder="Enter the ISBN13 to Search" onChange = {(e) => this.setSearchField(e.target.value)}/>
+                                        </Col>
+                                        <Col sm={2}>
+                                            <Button onClick={(e) => this.searchISBN(e)}>Search</Button>
                                         </Col>
                                     </Form.Group>
-                              
                                     <Row>
                                         <Col> Result </Col>
+                                    </Row>
+                                    <Row>
+                                        {this.state.bookInfo}
                                     </Row>
                                 </Form>
                             }

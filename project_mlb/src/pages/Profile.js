@@ -36,8 +36,8 @@ class Profile extends Component{
     render(){
         const prefList = []
 
-        for (const [_index, value] of this.person.preference.entries()) {
-            prefList.push(<Button variant="outline-danger" size="sm" style={{marginLeft:"0.2rem"}} disabled>{value}</Button>)
+        for (const [i, value] of this.person.preference.entries()) {
+            prefList.push(<Button key={i} variant="outline-danger" size="sm" style={{marginLeft:"0.2rem"}} disabled>{value}</Button>)
         }
 
         return (
