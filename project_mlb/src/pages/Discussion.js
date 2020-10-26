@@ -96,11 +96,11 @@ class Discussion extends Component {
                   <Form.Control type="text" placeholder="Search Term" />
                 </Col>
                 <Button style={{fontWeight: "bold", background: "#FAC917", color: "black", border: "1px solid #FAC917", opacity: "79%"}}>Search</Button>
-                <DropdownButton variant="outline-secondary" title="All Categories" style={{marginLeft: "1rem"}} >
-                  <Dropdown.Item eventKey='All Categories'>All Categories</Dropdown.Item>
-                  <Dropdown.Item eventKey="Tag">Tag</Dropdown.Item>
-                  <Dropdown.Item eventKey="Title">Title</Dropdown.Item>
-                  <Dropdown.Item eventKey="Content">Content</Dropdown.Item>
+                <DropdownButton id="dropdown" variant="outline-secondary" title="All Categories" style={{marginLeft: "1rem"}} >
+                  <Dropdown.Item eventKey='All Categories' onClick={(event)=>document.getElementById("dropdown").innerHTML=event.target.innerHTML}>All Categories</Dropdown.Item>
+                  <Dropdown.Item eventKey="Tag" onClick={(event)=>document.getElementById("dropdown").innerHTML=event.target.innerHTML}>Tag</Dropdown.Item>
+                  <Dropdown.Item eventKey="Title" onClick={(event)=>document.getElementById("dropdown").innerHTML=event.target.innerHTML}>Title</Dropdown.Item>
+                  <Dropdown.Item eventKey="Content" onClick={(event)=>document.getElementById("dropdown").innerHTML=event.target.innerHTML}>Content</Dropdown.Item>
                 </DropdownButton>
               </Form.Group>
             </Form>
