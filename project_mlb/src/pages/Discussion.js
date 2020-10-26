@@ -3,24 +3,73 @@ import { Card, Button, Form, Row, Col, DropdownButton, Dropdown} from "react-boo
 import AddDiscussion from "../components/AddDiscussion";
 import MlbNavbar from '../components/NavigationBar.js'
 
-
 const thumbsup = require("../icons/thumbs-up.png");
 const comment = require("../icons/comment.png");
 const tag = require("../icons/tag.png");
 
+class Comment {
+  constructor (author, content) {
+    this.author = author;
+    this.content = content;
+    let date = new Date();
+    this.date = date.getFullYear() + '/' + date.getMonth() + '/' + date.getDate();
+  }
+}
+
 class Discussion extends Component {
   state = {
-    shown: [],
+    shownDiscussions: [],
+    shownComments: [],
+    liked: [],
     addDiscussionModal: false,
     newDiscussion: {},
+    discussions: [
+      {
+        name: "Hyeon Joon Lee",
+        title: "What is your favorite phrase in “12 Rules for Life”?",
+        book: "12 Rules for Life",
+        likes: 23,
+        comments: [new Comment("DongHun Kim", "What is the book about?"), new Comment("Daye Eun", "I'd like to read it one day."), new Comment("JongSun Park", '"When you have something to say, silence is a lie."')],
+        content: "I was just wondering..",
+        date: "2020/09/23",
+      },
+      {
+        name: "DongHun Kim",
+        title: "What is the biggest difference between “The Da vinci Code” the movie and the novel?",
+        book: "The Da Vinci Code",
+        likes: 15,
+        comments: [],
+        content: "I liked the book much more than the movie.",
+        date: "2020/09/05",
+      },
+    ]
   };
-  handleShow = (target) => {
-    let index = this.state.shown.indexOf(target);
+  handleShowDiscussion = (target) => {
+    let index = this.state.shownDiscussions.indexOf(target);
     if (index === -1) {
-      this.state.shown.push(target);
-    } else this.state.shown.splice(index, 1);
-    this.setState({ shown: this.state.shown });
+      this.state.shownDiscussions.push(target);
+    } else this.state.shownDiscussions.splice(index, 1);
+    this.setState({ shownDiscussions: this.state.shownDiscussions });
   };
+  handleShowComments = (target) => {
+    let index = this.state.shownComments.indexOf(target);
+    if (index === -1) {
+      this.state.shownComments.push(target);
+    } else this.state.shownComments.splice(index, 1);
+    this.setState({ shownComments: this.state.shownComments });
+  };
+  handleLike = (target) => {
+    let index = this.state.liked.indexOf(target);
+    let discussions = this.state.discussions;
+    if (index === -1) {
+      discussions[target].likes = discussions[target].likes + 1;
+      this.state.liked.push(target);
+    } else {
+      discussions[target].likes = discussions[target].likes - 1;
+      this.state.liked.splice(index, 1);
+    }
+    this.setState({discussions: discussions});
+  }
   handleClose = () => {
     this.setState({addDiscussionModal: false});
   }
@@ -55,26 +104,6 @@ class Discussion extends Component {
     newDiscussion.book = value;
     this.setState({newDiscussion: newDiscussion});
   }
-  discussions = [
-    {
-      name: "Hyeon Joon Lee",
-      title: "What is your favorite phrase in “12 Rules for Life”?",
-      book: "12 Rules for Life",
-      likes: 23,
-      comments: 10,
-      content: "I was just wondering..",
-      date: "2020/09/23",
-    },
-    {
-      name: "DongHun Kim",
-      title: "What is the biggest difference between “The Da vinci Code” the movie and the novel?",
-      book: "The Da Vinci Code",
-      likes: 15,
-      comments: 5,
-      content: "I liked the book much more than the movie.",
-      date: "2020/09/05",
-    },
-  ];
   render() {
     return (
         <div>
@@ -116,13 +145,13 @@ class Discussion extends Component {
               </Form>
             </div>
           </div>
-          {this.discussions.map((discussion, i) => (
+          {this.state.discussions.map((discussion, i) => (
             <Card
               style={{width: "60%", marginLeft: "20%", marginTop: "1rem", background: "#CEE4E9"}}
             >
               <Card.Body>
                 <Card.Title style={{ display: "flex" }}>
-                  <Row style={{fontSize: "1rem", width: "100%"}}>
+                  <Row style={{fontSize: "1.2rem", width: "100%"}}>
                     <div style={{paddingLeft: "2rem", paddingRight: "2rem"}}>
                       {discussion.name}
                     </div>
@@ -148,30 +177,60 @@ class Discussion extends Component {
                       <Button
                         id={"button" + i}
                         variant="info"
-                        onClick={(event) => this.handleShow(event.target.id.slice(6))}
+                        onClick={() => this.handleShowDiscussion(i+"")}
                         style={{paddingTop: 0, paddingBottom: 0, marginLeft: "0.6rem", marginBottom: "0.2rem"}}
                       >
-                        {this.state.shown.includes(i + "") ? "hide" : "show"}
+                        {this.state.shownDiscussions.includes(i + "") ? "hide" : "show"}
                       </Button>                    
                     </Col>
 
                   </Row>
-                  <p style={this.state.shown.includes(i + "") ? {marginLeft: "1rem", marginTop: "1rem"} : { display: "none"}}>
+                  <p style={this.state.shownDiscussions.includes(i + "") ? {marginLeft: "1rem", marginTop: "1rem"} : { display: "none"}}>
                     {discussion.content}
                   </p>
                 </Card.Text>
-                <img
-                  src={thumbsup}
-                  alt="thumbs up"
-                  style={{ width: "1.5rem", marginRight: "0.2rem", marginLeft: "1rem" }}
-                />
+                <Row>
+                <button onClick={()=> {
+                  this.handleLike(i)
+                  }} style={{backgroundColor: "rgba(52, 52, 52, 0)", border: "0px", marginLeft: "1rem"}}>
+                  <img
+                    src={thumbsup}
+                    alt="thumbs up"
+                    style={{ width: "1.5rem", marginRight: "0.2rem"}}
+                  />
+                </button>
                 {discussion.likes}
-                <img
-                  src={comment}
-                  alt="comment"
-                  style={{width: "1.5rem", marginLeft: "1rem", marginRight: "0.2rem"}}
-                />
-                {discussion.comments}
+                <button onClick={()=> {
+                  this.handleShowComments(i+"")
+                  }} style={{backgroundColor: "rgba(52, 52, 52, 0)", border: "0px", marginLeft: "1rem"}}>
+                  <img
+                    src={comment}
+                    alt="comment"
+                    style={{width: "1.5rem", marginRight: "0.2rem"}}
+                  />
+                </button>
+                {discussion.comments.length}
+                </Row>
+                {discussion.comments.map((comment)=>(
+                  <Card style={this.state.shownComments.includes(i + "") ? {marginLeft: "1rem", marginTop: "1rem", background: "#EEEEEE"} : { display: "none"}}>
+                    <Card.Body>
+                      <Card.Title style={{ display: "flex" }}>
+                        <Row style={{fontSize: "1rem", width: "100%"}}>
+                          <div style={{paddingLeft: "1rem", paddingRight: "2rem", fontWeight: "bold"}}>
+                            {comment.author}
+                          </div>
+                          <div style={{paddingLeft: "2rem", paddingRight: "2rem", fontStyle: "italic"}}>
+                            {comment.date}
+                          </div>
+                        </Row>
+                      </Card.Title>
+                      <Card.Text>
+                        {comment.content}
+                      </Card.Text>
+                    </Card.Body> 
+                  </Card>                
+                ))}
+
               </Card.Body>
             </Card>
           ))}
