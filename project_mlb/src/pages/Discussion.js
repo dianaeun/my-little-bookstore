@@ -123,20 +123,20 @@ class Discussion extends Component {
               <Card.Body>
                 <Card.Title style={{ display: "flex" }}>
                   <Row style={{fontSize: "1rem", width: "100%"}}>
-                    <Col sm={3}>
+                    <div style={{paddingLeft: "2rem", paddingRight: "2rem"}}>
                       {discussion.name}
-                    </Col>
-                    <Col sm={2}>
+                    </div>
+                    <div style={{paddingLeft: "2rem", paddingRight: "2rem"}}>
                       {discussion.date}
-                    </Col>
-                    <Col>
+                    </div>
+                    <div style={{paddingLeft: "2rem"}}>
                       <img
                         src={tag}
                         alt="tag"
-                        style={{width: "1.4rem", height: "1.4rem", marginLeft: "10%"}}
+                        style={{width: "1.4rem", height: "1.4rem"}}
                       />
                       {discussion.book}
-                    </Col>
+                    </div>
                   </Row>
                 </Card.Title>
                 <Card.Text style={{ marginLeft: "3%" }}>
@@ -156,14 +156,14 @@ class Discussion extends Component {
                     </Col>
 
                   </Row>
-                  <p style={this.state.shown.includes(i + "") ? {} : { display: "none" }}>
+                  <p style={this.state.shown.includes(i + "") ? {marginLeft: "1rem", marginTop: "1rem"} : { display: "none"}}>
                     {discussion.content}
                   </p>
                 </Card.Text>
                 <img
                   src={thumbsup}
                   alt="thumbs up"
-                  style={{ width: "1.5rem", marginRight: "0.2rem" }}
+                  style={{ width: "1.5rem", marginRight: "0.2rem", marginLeft: "1rem" }}
                 />
                 {discussion.likes}
                 <img
