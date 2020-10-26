@@ -11,7 +11,8 @@ const tag = require("../icons/tag.png");
 class Discussion extends Component {
   state = {
     shown: [],
-    addDiscussion: false,
+    addDiscussionModal: false,
+    newDiscussion: {},
   };
   handleShow = (target) => {
     let index = this.state.shown.indexOf(target);
@@ -21,10 +22,38 @@ class Discussion extends Component {
     this.setState({ shown: this.state.shown });
   };
   handleClose = () => {
-    this.setState({addDiscussion: false});
+    this.setState({addDiscussionModal: false});
   }
-  handleAddDiscussion = () => {
-    this.setState({addDiscussion: true});
+  handleAddDiscussionModal = () => {
+    this.setState({addDiscussionModal: true});
+    let today = new Date();
+    let year = today.getFullYear();
+    let month = today.getMonth();
+    let date = today.getDate();
+    let fullDate = year + '/' + month + '/' + date;
+    let newDiscussion = {name: "Hyeon Joon Lee", title: "", book: "", likes: 0, comments: 0, content: "", date: fullDate};
+    this.setState({newDiscussion: newDiscussion});
+  }
+  handleAddDiscussion = (event) => {
+    event.preventDefault();
+    alert("You have added a discussion!");
+    this.setState({addDiscussionModal: false});
+    this.discussions.push(this.state.newDiscussion);
+  }
+  handleContentChange = (value) => {
+    let newDiscussion = this.state.newDiscussion;
+    newDiscussion.content = value;
+    this.setState({newDiscussion: newDiscussion});
+  }
+  handleTitleChange = (value) => {
+    let newDiscussion = this.state.newDiscussion;
+    newDiscussion.title = value;
+    this.setState({newDiscussion: newDiscussion});
+  }
+  handleTagChange = (value) => {
+    let newDiscussion = this.state.newDiscussion;
+    newDiscussion.book = value;
+    this.setState({newDiscussion: newDiscussion});
   }
   discussions = [
     {
@@ -50,13 +79,14 @@ class Discussion extends Component {
     return (
         <div>
           <MlbNavbar/>
-          <AddDiscussion show={this.state.addDiscussion} handleClose={this.handleClose}/>
+          <AddDiscussion show={this.state.addDiscussionModal} handleAddDiscussion={(event) => this.handleAddDiscussion(event)} handleClose={this.handleClose}
+          handleContentChange={this.handleContentChange} handleTagChange={this.handleTagChange} handleTitleChange={this.handleTitleChange}/>
           <div style={{ width: "60%", marginLeft: "20%", marginTop: "2rem" }}>
             <div style={{ display: "flex", alignItems: "center"}}>
               <h1>Discussions</h1>
               <Button variant="info"
                 style={{ marginLeft: "2rem", height: "2rem"}}
-                onClick={this.handleAddDiscussion}
+                onClick={this.handleAddDiscussionModal}
               >Add Discussion</Button>
             
             </div>
@@ -110,7 +140,7 @@ class Discussion extends Component {
                   </Row>
                 </Card.Title>
                 <Card.Text style={{ marginLeft: "3%" }}>
-                  <Row style={{ fontStyle: "italic", fontSize: "1.3rem"}}>
+                  <Row style={{ fontStyle: "italic", fontWeight: "bold", fontSize: "1.4rem"}}>
                     <Col sm={10}>
                       {discussion.title}                      
                     </Col>
