@@ -7,11 +7,13 @@ const userLoader = new DataLoader( userIds => {
 })
 module.exports = {
     books: async (args, req) => {
-        if (!req.isAuth) {
-            throw new Error('Unauthenticated!');
-        }
+        // if (!req.isAuth) {
+        //     throw new Error('Unauthenticated!');
+        // }
+        ownerID = req.userId;
+        ownerID = "5f976afd74382937987f902f"; //default id
         try {
-            const books = await Book.find({owner : req.userId});
+            const books = await Book.find({owner : ownerID});
             return books.map(book => {
                 return transformBook(book);
             })
@@ -21,17 +23,21 @@ module.exports = {
         }
     },
     createBook: async(args, req) => {
-        if (!req.isAuth) {
-            throw new Error('Unauthenticated!');
-        }
+        // if (!req.isAuth) {
+        //     throw new Error('Unauthenticated!');
+        // }
+        ownerID = req.userId;
+        ownerID = "5f976afd74382937987f902f";
         const book = new Book({
             title: args.bookInput.title,
             date: new Date(args.bookInput.date),
-            description: args.bookInput.description,
-            sets: args.bookInput.sets,
-            owner: req.userId
+            publisher: args.bookInput.publisher,
+            author: args.bookInput.author,
+            isbn: args.bookInput.isbn,
+            owner: ownerID
         });
-        const owner = await User.findById(req.userId);
+        
+        const owner = await User.findById(ownerID);
         if (!owner) {
             throw new Error('User not found.');
         }
@@ -46,9 +52,9 @@ module.exports = {
 
     },
     deleteBook: async (args, req) => {
-        if (!req.isAuth) {
-            throw new Error('Unauthenticated!');
-        }
+        // if (!req.isAuth) {
+        //     throw new Error('Unauthenticated!');
+        // }
         try {
             const book = await Book.findById(args.bookId).populate('book');
             const deletedBook = transformBook(book);
