@@ -1,5 +1,5 @@
 ## Installation and Execution
-*We assume that you operate the server and database on MacOS or Windows.*
+We assume that you operate the server and database on MacOS or Windows.
 
 To test an interaction between our server and database (MongoDB), you can use GraphiQL, a graphical interactive in-browser GraphQL IDE.
 
@@ -14,6 +14,54 @@ Once you run 'npm start', you can access 'http://localhost:8000/graphql' to test
 Example queries and mutations are list below.  
 
 ## GraphiQl
+
+### mutation
+
+#### createUser
+The createUser mutation will allow us to create users in our application
+After you createUser, you should copy the _id for the later exploration. (we assume your _id is "5f976afd74382937987f902f" in this example)
+```
+mutation{
+  createUser(userInput:{email: "haha@haha.com", password: "haha"}){
+    email
+    password
+    _id
+  }
+}
+```
+
+### createBook
+The createBook allows you to create a Book. When you input 'owner', you should paste your user id that was copied in previous step.
+Again, you need to copy the id of the book to explore deleteBook function.
+```
+mutation{
+  createBook(bookInput: {title: "Abook", date: "2020-10-27T00:41:11.028Z", publisher: "Apublisher", author:"Amy", isbn: "112124242510", owner: "5f976afd74382937987f902f"}){
+    title
+    date
+    publisher
+    author
+    isbn
+    _id
+  }
+}
+```
+
+### deleteBook
+If you want to delete your book, you should put the id of the target book.
+```
+mutation{
+  deleteBook(bookId: "5f976d349944e23e9fafdd33"){
+    _id
+    title
+    author
+  }
+}
+```
+
+You can see all the books that have been created, and users.
+Nevertheless, the server assumes the user id as "5f976afd74382937987f902f" to which books belong.
+Since we have not implemented retrieiving user Id from the frontend, we set the default userId for our conveniency.
+
 
 ### queries
 ```
@@ -30,44 +78,6 @@ query{
   users{
     _id
     email
-  }
-}
-```
-### mutation
-
-#### createUser
-the createUser mutation will allow us to create users in our application
-```
-mutation{
-  createUser(userInput:{email: "haha@haha.com", password: "haha"}){
-    email
-    password
-  }
-}
-```
-
-### createBook
-
-```
-mutation{
-  createBook(bookInput: {title: "Abook", date: "2020-10-27T00:41:11.028Z", publisher: "Apublisher", author:"Amy", isbn: "112124242510", owner: "5f976afd74382937987f902f"}){
-    title
-    date
-    publisher
-    author
-    isbn
-  }
-}
-```
-
-### deleteBook
-
-```
-mutation{
-  deleteBook(bookId: "5f976d349944e23e9fafdd33"){
-    _id
-    title
-    author
   }
 }
 ```
