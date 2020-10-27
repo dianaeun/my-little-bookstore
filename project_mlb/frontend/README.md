@@ -1,6 +1,7 @@
 # Welcome!
+*We assume you operate the front-end on MacOS or Windows.*
 
-To explore our front-end, you should first clone the repository.
+To explore our front-end, you should first clone our repository.
 
 ```bash
 git clone https://github.com/CSE416-Traders/CSE416_Group_Project.git
@@ -9,10 +10,10 @@ git clone https://github.com/CSE416-Traders/CSE416_Group_Project.git
 
 ## Installation
 
-Go to the 'project_mlb' folder and use the npm to install the required libraries.
+Go to the 'project_mlb/frontend' folder and use npm to install the required libraries.
 
 ```bash
-cd project_mlb
+cd project_mlb/frontend
 npm install
 ```
 
