@@ -5,3 +5,5 @@ To see or test our process, refer to the separate sets of instructions, each con
 For tracking ideas, enhancements, tasks, or, most importantly, bugs, we use Github Issues.  
 One can access Github Issues by simply clicking the Issues tab on the top of the repository page.  
 Checking and reporting bugs are supported.
+
+**We assume that you operate the both the front-end and back-end components of our application on MacOS or Windows.**
