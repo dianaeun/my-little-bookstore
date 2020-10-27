@@ -27,6 +27,7 @@ const schema =  buildSchema(`
         publisher: String!
         author: String!
         isbn: String!
+        owner: String!
     }
     input UserInput {
         email: String!
