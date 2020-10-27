@@ -18,12 +18,12 @@ class Comment {
 
 class Discussion extends Component {
   state = {
-    shownDiscussions: [],
-    shownComments: [],
+    searchTerm: "", searchOption: "",
+    shownDiscussions: [], shownComments: [],
     liked: [],
     addDiscussionModal: false,
     newDiscussion: {},
-    discussions: [
+    baseDiscussions: [
       {
         name: "Hyeon Joon Lee",
         title: "What is your favorite phrase in “12 Rules for Life”?",
@@ -42,8 +42,34 @@ class Discussion extends Component {
         content: "I liked the book much more than the movie.",
         date: "2020/09/23",
       },
-    ]
+      {
+        name: "Daye Eun",
+        title: "Which characters in the book do you like best?",
+        book: "Harry Potter and the Deathly Hallows",
+        likes: 10,
+        comments: [new Comment("Hyeon Joon lee", "Harry is the best!"), new Comment("DongHun Kim", "Shut up, Malfoy."), new Comment("JongSun Park", "Severus Snape of course."), new Comment("Daye Eun", "Thanks for the comments.")],
+        content: "I like Hermione.",
+        date: "2020/09/28",
+      },
+    ],
+    discussions: [],
   };
+  handleSearch = (searchOption, searchTerm) => {
+    let discussions = this.state.discussions;
+    if (searchOption === "Tag")
+      discussions = discussions.filter(function(discussion){return discussion.book.includes(searchTerm)});
+    else if (searchOption === "Title")
+      discussions = discussions.filter(function(discussion){return discussion.title.includes(searchTerm)});
+    else if (searchOption === "Content")
+      discussions = discussions.filter(function(discussion){return discussion.content.includes(searchTerm)});
+    this.setState({discussions: discussions});
+  }
+  handleSearchTerm = (value) => {
+    this.setState({searchTerm: value});
+  }
+  handleSearchOption = (value) => {
+    this.setState({searchOption: value});
+  }
   handleDiscussionSort = (sortBy) => {
     let discussions = this.state.discussions;
     if (sortBy === "Likes")
@@ -123,6 +149,7 @@ class Discussion extends Component {
   render() {
     return (
         <div>
+          {this.setState({discussions: this.state.baseDiscussions})}
           <MlbNavbar/>
           <AddDiscussion show={this.state.addDiscussionModal} handleAddDiscussion={(event) => this.handleAddDiscussion(event)} handleClose={this.handleClose}
           handleContentChange={this.handleContentChange} handleTagChange={this.handleTagChange} handleTitleChange={this.handleTitleChange}/>
@@ -133,19 +160,18 @@ class Discussion extends Component {
                 style={{ marginLeft: "2rem", height: "2rem"}}
                 onClick={this.handleAddDiscussionModal}
               >Add Discussion</Button>
-            
             </div>
-            <Form style={{marginTop: "2rem"}}> 
+            <Form style={{marginTop: "2rem"}} onSubmit={()=> this.handleSearch(this.state.searchOption, this.state.searchTerm)}> 
               <Form.Group as={Row}>
                 <Col sm={5}>
-                  <Form.Control type="text" placeholder="Search Term" />
+                  <Form.Control type="text" placeholder="Search Term" onChange={(event)=>this.handleSearchTerm(event.target.value)}/>
                 </Col>
                 <Button style={{fontWeight: "bold", background: "#FAC917", color: "black", border: "1px solid #FAC917", opacity: "79%"}}>Search</Button>
                 <DropdownButton id="dropdown" variant="outline-secondary" title="All Categories" style={{marginLeft: "1rem"}} >
-                  <Dropdown.Item eventKey='All Categories' onClick={(event)=>document.getElementById("dropdown").innerHTML=event.target.innerHTML}>All Categories</Dropdown.Item>
-                  <Dropdown.Item eventKey="Tag" onClick={(event)=>document.getElementById("dropdown").innerHTML=event.target.innerHTML}>Tag</Dropdown.Item>
-                  <Dropdown.Item eventKey="Title" onClick={(event)=>document.getElementById("dropdown").innerHTML=event.target.innerHTML}>Title</Dropdown.Item>
-                  <Dropdown.Item eventKey="Content" onClick={(event)=>document.getElementById("dropdown").innerHTML=event.target.innerHTML}>Content</Dropdown.Item>
+                  <Dropdown.Item eventKey='All Categories' onClick={()=>{document.getElementById("dropdown").innerHTML="All Categories"; this.handleSearchOption("All");}}>All Categories</Dropdown.Item>
+                  <Dropdown.Item eventKey="Tag" onClick={()=>{document.getElementById("dropdown").innerHTML="Tag"; this.handleSearchOption("Tag");}}>Tag</Dropdown.Item>
+                  <Dropdown.Item eventKey="Title" onClick={()=>{document.getElementById("dropdown").innerHTML="Title"; this.handleSearchOption("Title");}}>Title</Dropdown.Item>
+                  <Dropdown.Item eventKey="Content" onClick={()=>{document.getElementById("dropdown").innerHTML="Content"; this.handleSearchOption("Content");}}>Content</Dropdown.Item>
                 </DropdownButton>
               </Form.Group>
             </Form>
