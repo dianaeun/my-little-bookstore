@@ -52,16 +52,49 @@ class Discussion extends Component {
         date: "2020/09/28",
       },
     ],
-    discussions: [],
+    discussions: [
+      {
+        name: "Hyeon Joon Lee",
+        title: "What is your favorite phrase in “12 Rules for Life”?",
+        book: "12 Rules for Life",
+        likes: 23,
+        comments: [new Comment("DongHun Kim", "What is the book about?"), new Comment("Daye Eun", "I'd like to read it one day."), new Comment("JongSun Park", '"When you have something to say, silence is a lie."')],
+        content: "I was just wondering..",
+        date: "2020/09/05",
+      },
+      {
+        name: "DongHun Kim",
+        title: "What is the biggest difference between “The Da vinci Code” the movie and the novel?",
+        book: "The Da Vinci Code",
+        likes: 15,
+        comments: [],
+        content: "I liked the book much more than the movie.",
+        date: "2020/09/23",
+      },
+      {
+        name: "Daye Eun",
+        title: "Which characters in the book do you like best?",
+        book: "Harry Potter and the Deathly Hallows",
+        likes: 10,
+        comments: [new Comment("Hyeon Joon lee", "Harry is the best!"), new Comment("DongHun Kim", "Shut up, Malfoy."), new Comment("JongSun Park", "Severus Snape of course."), new Comment("Daye Eun", "Thanks for the comments.")],
+        content: "I like Hermione.",
+        date: "2020/09/28",
+      },
+    ],
   };
-  handleSearch = (searchOption, searchTerm) => {
+  handleSearch = (event, searchOption, searchTerm) => {
+    event.preventDefault();
     let discussions = this.state.discussions;
     if (searchOption === "Tag")
-      discussions = discussions.filter(function(discussion){return discussion.book.includes(searchTerm)});
+      discussions = this.state.baseDiscussions.filter(function(discussion){return discussion.book.toLowerCase().includes(searchTerm.toLowerCase())});
     else if (searchOption === "Title")
-      discussions = discussions.filter(function(discussion){return discussion.title.includes(searchTerm)});
+      discussions = this.state.baseDiscussions.filter(function(discussion){return discussion.title.toLowerCase().includes(searchTerm.toLowerCase())});
     else if (searchOption === "Content")
-      discussions = discussions.filter(function(discussion){return discussion.content.includes(searchTerm)});
+      discussions = this.state.baseDiscussions.filter(function(discussion){return discussion.content.toLowerCase().includes(searchTerm.toLowerCase())});
+    else 
+      discussions = this.state.baseDiscussions.filter(function(discussion){
+        return discussion.book.toLowerCase().includes(searchTerm.toLowerCase())|discussion.title.toLowerCase().includes(searchTerm.toLowerCase())
+        |discussion.content.toLowerCase().includes(searchTerm.toLowerCase())});
     this.setState({discussions: discussions});
   }
   handleSearchTerm = (value) => {
@@ -121,12 +154,14 @@ class Discussion extends Component {
   handleAddDiscussion = (event) => {
     event.preventDefault();
     let discussions = this.state.discussions;
+    let baseDiscussions =this.state.baseDiscussions;
     if (this.state.newDiscussion.title === "" | this.state.newDiscussion.book === "" | this.state.newDiscussion.content === ""){
       alert("You have incomplete field(s)!");
     }
     else{
       discussions.push(this.state.newDiscussion);
-      this.setState({discussions: discussions});
+      baseDiscussions.push(this.state.newDiscussion);
+      this.setState({discussions: discussions, baseDiscussions: baseDiscussions});
       alert("You have added a discussion!");
       this.setState({addDiscussionModal: false});      
     }
@@ -149,7 +184,6 @@ class Discussion extends Component {
   render() {
     return (
         <div>
-          {this.setState({discussions: this.state.baseDiscussions})}
           <MlbNavbar/>
           <AddDiscussion show={this.state.addDiscussionModal} handleAddDiscussion={(event) => this.handleAddDiscussion(event)} handleClose={this.handleClose}
           handleContentChange={this.handleContentChange} handleTagChange={this.handleTagChange} handleTitleChange={this.handleTitleChange}/>
@@ -161,12 +195,12 @@ class Discussion extends Component {
                 onClick={this.handleAddDiscussionModal}
               >Add Discussion</Button>
             </div>
-            <Form style={{marginTop: "2rem"}} onSubmit={()=> this.handleSearch(this.state.searchOption, this.state.searchTerm)}> 
+            <Form style={{marginTop: "2rem"}} onSubmit={(event) => this.handleSearch(event, this.state.searchOption, this.state.searchTerm)}> 
               <Form.Group as={Row}>
                 <Col sm={5}>
                   <Form.Control type="text" placeholder="Search Term" onChange={(event)=>this.handleSearchTerm(event.target.value)}/>
                 </Col>
-                <Button style={{fontWeight: "bold", background: "#FAC917", color: "black", border: "1px solid #FAC917", opacity: "79%"}}>Search</Button>
+                <Button style={{fontWeight: "bold", background: "#FAC917", color: "black", border: "1px solid #FAC917", opacity: "79%"}} type="submit">Search</Button>
                 <DropdownButton id="dropdown" variant="outline-secondary" title="All Categories" style={{marginLeft: "1rem"}} >
                   <Dropdown.Item eventKey='All Categories' onClick={()=>{document.getElementById("dropdown").innerHTML="All Categories"; this.handleSearchOption("All");}}>All Categories</Dropdown.Item>
                   <Dropdown.Item eventKey="Tag" onClick={()=>{document.getElementById("dropdown").innerHTML="Tag"; this.handleSearchOption("Tag");}}>Tag</Dropdown.Item>
