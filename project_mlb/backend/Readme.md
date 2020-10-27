@@ -1,5 +1,5 @@
 ## Installation and Execution
-We assume that you operate the server and database on MacOS or Windows.
+*We assume that you operate the server and database on MacOS or Windows.*
 
 To test an interaction between our server and database (MongoDB), you can use GraphiQL, a graphical interactive in-browser GraphQL IDE.
 
