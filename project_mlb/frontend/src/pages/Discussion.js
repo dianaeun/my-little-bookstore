@@ -87,7 +87,9 @@ class Discussion extends Component {
     event.preventDefault();
     alert("You have added a discussion!");
     this.setState({addDiscussionModal: false});
-    this.discussions.push(this.state.newDiscussion);
+    let discussions = this.state.discussions;
+    discussions.push(this.state.newDiscussion);
+    this.setState({discussions: discussions});
   }
   handleContentChange = (value) => {
     let newDiscussion = this.state.newDiscussion;
@@ -211,7 +213,7 @@ class Discussion extends Component {
                 </button>
                 {discussion.comments.length}
                 </Row>
-                {discussion.comments.map((comment)=>(
+                {discussion.comments.length > 0 && discussion.comments.map((comment)=>(
                   <Card style={this.state.shownComments.includes(i + "") ? {marginLeft: "1rem", marginTop: "1rem", background: "#EEEEEE"} : { display: "none"}}>
                     <Card.Body>
                       <Card.Title style={{ display: "flex" }}>
