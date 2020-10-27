@@ -31,7 +31,7 @@ class Discussion extends Component {
         likes: 23,
         comments: [new Comment("DongHun Kim", "What is the book about?"), new Comment("Daye Eun", "I'd like to read it one day."), new Comment("JongSun Park", '"When you have something to say, silence is a lie."')],
         content: "I was just wondering..",
-        date: "2020/09/23",
+        date: "2020/09/05",
       },
       {
         name: "DongHun Kim",
@@ -40,10 +40,19 @@ class Discussion extends Component {
         likes: 15,
         comments: [],
         content: "I liked the book much more than the movie.",
-        date: "2020/09/05",
+        date: "2020/09/23",
       },
     ]
   };
+  handleDiscussionSort = (sortBy) => {
+    let discussions = this.state.discussions;
+    if (sortBy === "Likes")
+      discussions.sort(function(a, b){return b.likes - a.likes});
+    else if (sortBy === "Comments")
+      discussions.sort(function(a, b){return b.comments.length - a.comments.length});
+    else discussions.sort(function(a, b){return Date.parse(b.date) - Date.parse(a.date)});
+    this.setState({discussions: discussions});
+  }
   handleShowDiscussion = (target) => {
     let index = this.state.shownDiscussions.indexOf(target);
     if (index === -1) {
@@ -86,7 +95,7 @@ class Discussion extends Component {
   handleAddDiscussion = (event) => {
     event.preventDefault();
     let discussions = this.state.discussions;
-    if (this.state.newDiscussion.title=="" | this.state.newDiscussion.book=="" | this.state.newDiscussion.content==""){
+    if (this.state.newDiscussion.title === "" | this.state.newDiscussion.book === "" | this.state.newDiscussion.content === ""){
       alert("You have incomplete field(s)!");
     }
     else{
@@ -146,9 +155,9 @@ class Discussion extends Component {
             <div key={`inline-radio`} style={{textAlign: "right"}}>
               <Form>
                 <Form.Label column sm="3" style={{marginRight: "1rem"}}>Sort By</Form.Label>
-                <Form.Check inline label='Likes' type='radio' name='category' id='likes'/>
-                <Form.Check inline label='Comments' type='radio' name='category' id='comments' />
-                <Form.Check inline label='Date' type='radio' name='category' id='date' />
+                <Form.Check inline label='Likes' type='radio' name='category' id='likes' onClick={()=>this.handleDiscussionSort("Likes")}/>
+                <Form.Check inline label='Comments' type='radio' name='category' id='comments' onClick={()=>this.handleDiscussionSort("Comments")}/>
+                <Form.Check inline label='Date' type='radio' name='category' id='date' onClick={()=>this.handleDiscussionSort("Date")}/>
               </Form>
             </div>
           </div>
