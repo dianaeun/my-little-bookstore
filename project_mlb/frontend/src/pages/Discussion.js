@@ -77,7 +77,7 @@ class Discussion extends Component {
     this.setState({addDiscussionModal: true});
     let today = new Date();
     let year = today.getFullYear();
-    let month = today.getMonth();
+    let month = today.getMonth() + 1;
     let date = today.getDate();
     let fullDate = year + '/' + month + '/' + date;
     let newDiscussion = {name: "Hyeon Joon Lee", title: "", book: "", likes: 0, comments: [], content: "", date: fullDate};
@@ -85,11 +85,16 @@ class Discussion extends Component {
   }
   handleAddDiscussion = (event) => {
     event.preventDefault();
-    alert("You have added a discussion!");
-    this.setState({addDiscussionModal: false});
     let discussions = this.state.discussions;
-    discussions.push(this.state.newDiscussion);
-    this.setState({discussions: discussions});
+    if (this.state.newDiscussion.title=="" | this.state.newDiscussion.book=="" | this.state.newDiscussion.content==""){
+      alert("You have incomplete field(s)!");
+    }
+    else{
+      discussions.push(this.state.newDiscussion);
+      this.setState({discussions: discussions});
+      alert("You have added a discussion!");
+      this.setState({addDiscussionModal: false});      
+    }
   }
   handleContentChange = (value) => {
     let newDiscussion = this.state.newDiscussion;
@@ -164,7 +169,7 @@ class Discussion extends Component {
                       <img
                         src={tag}
                         alt="tag"
-                        style={{width: "1.4rem", height: "1.4rem"}}
+                        style={{width: "1.4rem", height: "1.4rem", marginRight: "0.7rem"}}
                       />
                       {discussion.book}
                     </div>
