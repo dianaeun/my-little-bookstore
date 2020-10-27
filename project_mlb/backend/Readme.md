@@ -1,8 +1,5 @@
 ## Installation and Execution
 
-We assume that you operate the server and database on MacOS or Window.
-
-
 To test an interaction between our server and database (MongoDB), you are allowed to use a graphiQl
 
 ```bash
