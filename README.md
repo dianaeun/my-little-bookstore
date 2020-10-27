@@ -10,10 +10,10 @@ As a solution, our team suggests “My Little Bookstore,” a web application th
 
 Team Traders
 
-Teammates: Jongsun Park, Daye Eun, DongHun Kim, Hyeon Joon Lee
-Project Manager: Jongsun Park
-Lead Programmer: Daye Eun
-Product Owner: DongHun Kim
-Designer: Hyeon Joon Lee
+Teammates: Jongsun Park, Daye Eun, DongHun Kim, Hyeon Joon Lee  
+Project Manager: Jongsun Park  
+Lead Programmer: Daye Eun  
+Product Owner: DongHun Kim  
+Designer: Hyeon Joon Lee  
 
 **For instructions regarding testing our application, refer to the README files inside the /project_mlb folder.**
