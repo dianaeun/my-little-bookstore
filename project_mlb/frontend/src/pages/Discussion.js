@@ -80,7 +80,7 @@ class Discussion extends Component {
     let month = today.getMonth();
     let date = today.getDate();
     let fullDate = year + '/' + month + '/' + date;
-    let newDiscussion = {name: "Hyeon Joon Lee", title: "", book: "", likes: 0, comments: 0, content: "", date: fullDate};
+    let newDiscussion = {name: "Hyeon Joon Lee", title: "", book: "", likes: 0, comments: [], content: "", date: fullDate};
     this.setState({newDiscussion: newDiscussion});
   }
   handleAddDiscussion = (event) => {
