@@ -1,15 +1,17 @@
 ## Installation and Execution
+We assume that you operate the server and database on MacOS or Windows.
 
-To test an interaction between our server and database (MongoDB), you are allowed to use a graphiQl
+To test an interaction between our server and database (MongoDB), you can use GraphiQL, a graphical interactive in-browser GraphQL IDE.
 
 ```bash
 cd project_mlb/backend
 npm install
 npm start
 ```
-If you execute npm start, it will automatically runs nodemon which automatically compiles and rerun the server if it sees any changes.
+If you execute npm start, it will automatically run nodemon which automatically compiles and reruns the server on any changes.
 
-Once you run 'npm start', you can access 'http://localhost:8000/graphql'.
+Once you run 'npm start', you can access 'http://localhost:8000/graphql' to test interactions using GraphiQL.  
+Example queries and mutations are list below.  
 
 ## GraphiQl
 
