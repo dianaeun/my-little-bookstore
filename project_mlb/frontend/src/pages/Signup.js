@@ -99,20 +99,20 @@ class Signup extends Component {
             : 
               <div style={{ paddingLeft: "10%", paddingTop: "5%" }}>
                 <h3 style={{ marginBottom: "30px", fontWeight: "bold", fontStyle: "italic" }}>CREATE ACCOUNT</h3> 
-                <Form onSubmit={this.handleSubmit} style={{ width: "100%" }}>
+                <Form onSubmit={this.handleSubmit} style={{ width: "fit-content" }}>
                     <Form.Group controlId="formBasicName" as={Row}>
-                      <Form.Label column sm={1} style={{fontWeight: "bold"}}> First Name </Form.Label>
-                      <Col sm={2}>
+                      <Form.Label column sm={2} style={{fontWeight: "bold"}}> First Name </Form.Label>
+                      <Col sm={3}>
                         <Form.Control type="firstName" />
                       </Col>
-                      <Form.Label column sm={1} style={{fontWeight: "bold"}}> Last Name </Form.Label>
-                      <Col sm={2}>
+                      <Form.Label column sm={2} style={{fontWeight: "bold"}}> Last Name </Form.Label>
+                      <Col sm={3}>
                         <Form.Control type="lastName" />
                       </Col>
                     </Form.Group>
                     <Form.Group controlId="formBasicuserID" as={Row}>
-                      <Form.Label column sm={1} style={{fontWeight: "bold"}}> userID </Form.Label>
-                      <Col sm={3}>
+                      <Form.Label column sm={2} style={{fontWeight: "bold"}}> userID </Form.Label>
+                      <Col sm={4}>
                         <Form.Control type="userID" ref={this.userIDRef}/>
                       </Col>
                       <Button 
@@ -123,29 +123,29 @@ class Signup extends Component {
                       </Button>
                     </Form.Group>
                     <Form.Group controlId="formBasicPassword" as={Row}>
-                      <Form.Label column sm={1} style={{fontWeight: "bold"}} > Password </Form.Label>
-                      <Col sm={3}>
+                      <Form.Label column sm={2} style={{fontWeight: "bold"}} > Password </Form.Label>
+                      <Col sm={4}>
                         <Form.Control type="password" ref={this.passwordRef}/>
                       </Col>
                     </Form.Group>
                     <Form.Group controlId="formBasicEmail" as={Row}>
-                      <Form.Label column sm={1} style={{fontWeight: "bold"}} > Email </Form.Label>
-                      <Col sm={2}>
+                      <Form.Label column sm={2} style={{fontWeight: "bold"}} > Email </Form.Label>
+                      <Col sm={3}>
                         <Form.Control type="email1" ref={this.emailPreRef} />
                       </Col>
                       @
-                      <Col sm={2}>
+                      <Col sm={3}>
                         <Form.Control type="email2" ref={this.emailPostRef} />
                       </Col>
                     </Form.Group>
                     <Form.Group controlId="formBasicLocation" as={Row}>
-                      <Form.Label column sm={1} style={{fontWeight: "bold"}}> Location </Form.Label>
-                      <Col sm={2}>
+                      <Form.Label column sm={2} style={{fontWeight: "bold"}}> Location </Form.Label>
+                      <Col sm={3}>
                         <Form.Control type="location" ref={this.locationRef}/>
                       </Col>
                     </Form.Group>
                     <Form.Group controlId="formBasicGenre" as={Row}>
-                      <Form.Label column sm={1} style={{fontWeight: "bold"}}> Preferred Genre </Form.Label>
+                      <Form.Label column sm={2} style={{fontWeight: "bold"}}> Preferred Genre </Form.Label>
                     <Col key={`inline-checkbox`} className="mb-3" style={{paddingTop: "1rem"}}>
                       <Form.Check
                         inline
