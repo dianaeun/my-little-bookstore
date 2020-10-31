@@ -7,7 +7,7 @@ module.exports = {
         try {
             const users = await User.find();
             return users.map(user => {
-                console.log("user:", user);
+                console.log("Resolving query of 'user'.................\n :", user);
                 return {...user._doc}
             });
         }
@@ -18,9 +18,8 @@ module.exports = {
     createUser: async args => {
         try {
             const existingUser = await User.findOne({ email: args.userInput.email });
-            if (existingUser) {
+            if (existingUser) 
                 throw new Error('User exists already.');
-            }
             const hashedPassword = await bcrypt.hash(args.userInput.password, 12);
 
             const user = new User({
@@ -37,8 +36,10 @@ module.exports = {
     login: async ({ email, password }) => {
         const user = await User.findOne({ email: email });
         if (!user) {
+            console.log("could not found user");
             throw new Error('User does not exist!');
         }
+        console.log("found user: ", user);
         const isEqual = await bcrypt.compare(password, user.password);
         if (!isEqual) {
             throw new Error('Password is incorrect!');
