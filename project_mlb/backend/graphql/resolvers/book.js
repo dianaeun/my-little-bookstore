@@ -6,10 +6,21 @@ const userLoader = new DataLoader( userIds => {
     return User.find( { _id: {$in: userIds}});
 })
 module.exports = {
-    books: async (args, req) => {
-        // if (!req.isAuth) {
-        //     throw new Error('Unauthenticated!');
-        // }
+    books: async () => {
+        try {
+            const books = await Book.find();
+            return books.map(book => {
+                return transformBook(book);
+            })
+        }
+        catch(err){
+            throw err;
+        }
+    },
+    userBooks: async (args, req) => {
+        if (!req.isAuth) {
+            throw new Error('Unauthenticated!');
+        }
         ownerID = req.userId;
         ownerID = "5f976afd74382937987f902f"; //default id
         try {
@@ -34,6 +45,10 @@ module.exports = {
             publisher: args.bookInput.publisher,
             author: args.bookInput.author,
             isbn: args.bookInput.isbn,
+            rating: args.bookInput.rating,
+            price: args.bookInput.price,
+            genre: args.bookInput.genre,
+            description: args.bookInput.description,
             owner: ownerID
         });
         
@@ -41,7 +56,6 @@ module.exports = {
         if (!owner) {
             throw new Error('User not found.');
         }
-
         try{
             const result = await book.save();
             return transformBook(result);

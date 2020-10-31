@@ -52,7 +52,6 @@ class IndividualBookpage extends Component{
           <React.Fragment>
             <MlbNavbar/>
             <div>
-              
               <Addreview show={this.state.addreview} handleClose={this.handleClose}/>
                 <RequestModal show={this.state.request} handleClose={this.handleClose}/>
                 <div style={{marginLeft: "2%", marginTop: "2rem", background: "#eeeeee", width: "30%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>

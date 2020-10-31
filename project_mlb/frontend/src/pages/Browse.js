@@ -22,6 +22,7 @@ class Browse extends Component{
         }
         return <td>{stars}</td>
     }
+    
 
     render(){
         var genres = ['Romance', 'Horror', 'Fantasy', 'Adventure', 'Science']

@@ -6,14 +6,57 @@ import { Link } from 'react-router-dom';
 const star = require("../icons/star.png");
 const blankStar = require("../icons/blank_star.png");
 class Main extends Component {
-  books = [
-    {title: "Dune", author: "Frank Herbert", genre: ["SF", "Fantasy"], rating: 5}, 
-    {title: "A Witch in Time", author: "Constance Sayers", genre: ["SF", "Fantasy"], rating: 5},
-    {title: "The Sandman", author: "Neil Gaiman", genre: ["SF", "Fantasy"], rating: 5},
-    {title: "Harry Potter and the Goblet of Fire", author: "J.K. Rowling", genre: ["SF", "Fantasy"], rating: 5},
-    {title: "59 Memory Lane", author: "Celia Anderson", genre: ["Romance"], rating: 4},
-    {title: "Playing With Fire", author: "L.J. Shen", genre: ["Romance"], rating: 3},
-  ];
+  // books = [
+  //   {title: "Dune", author: "Frank Herbert", genre: ["SF", "Fantasy"], rating: 5}, 
+  //   {title: "A Witch in Time", author: "Constance Sayers", genre: ["SF", "Fantasy"], rating: 5},
+  //   {title: "The Sandman", author: "Neil Gaiman", genre: ["SF", "Fantasy"], rating: 5},
+  //   {title: "Harry Potter and the Goblet of Fire", author: "J.K. Rowling", genre: ["SF", "Fantasy"], rating: 5},
+  //   {title: "59 Memory Lane", author: "Celia Anderson", genre: ["Romance"], rating: 4},
+  //   {title: "Playing With Fire", author: "L.J. Shen", genre: ["Romance"], rating: 3},
+  // ];
+  state={books:[]}
+  componentDidMount() {
+      this.fetchBooks();
+  }
+  fetchBooks() {
+      const requestBody = {
+          query: `
+              query{
+                  books{
+                      title
+                      author
+                      publisher
+                      isbn
+                      date
+                      rating
+                      price
+                      genre
+                      description
+                      _id
+                      owner{
+                          email
+                          _id
+                      }
+                  }
+              }
+          `
+      }
+      fetch('http://localhost:8000/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+      .then(res => {
+          if (res.status !== 200 && res.status !== 201) {
+              throw new Error("Failed to fetch books!")
+          }
+          return res.json()
+      })
+      .then(resData => {
+          console.log("Books are successfully fetched! ", resData);
+          const books = resData.data.books;
+          console.log(books);
+          this.setState({books: books});
+      })
+      .catch(err => { console.log(err);});
+  };
+    
   createStar = (n) => {
     let stars = [];
     for (let i = 0; i < n; i++){
@@ -61,12 +104,12 @@ class Main extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.books.map((book, i) => (
+                {this.state.books.map((book, i) => (
                   <tr>
                     <td>{i+1}</td>
                     <td><Link href="#">{book.title}</Link></td>
                     <td><Link href="#">{book.author}</Link></td>
-                    <td>{book.genre.map((genre) => (
+                    <td>{book.genre.split(",").map((genre) => (
                       <Button variant="outline-danger" size="sm" style={{marginLeft:"0.2rem"}} disabled>{genre}</Button>
                     ))}</td>
                     <td>

@@ -21,6 +21,22 @@ const bookSchema = new Schema({
         type: String,
         required: true
     },
+    rating:{
+        type: Number,
+        required: true
+    },
+    price:{
+        type: Number,
+        required: true
+    },
+    genre:{
+        type: String,
+        reqruied: true
+    },
+    description:{
+        type: String,
+        required: false
+    },
     owner: {
         type: Schema.Types.ObjectId,
         ref: 'User'
