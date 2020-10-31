@@ -4,10 +4,57 @@ import AuthContext from '../context/AuthContext';
 import MlbNavbar from '../components/NavigationBar.js';
 
 class Login extends Component {
-  state = {
-    isLogin: true,
-  };
   static contextType = AuthContext;
+  constructor(props){
+    super(props);
+    this.emailRef = React.createRef();
+    this.passwordRef = React.createRef();
+  }
+  handleSubmit = event => {
+    event.preventDefault();
+    const email = this.emailRef.current.value;
+    const password = this.passwordRef.current.value;
+    if (email.trim().length === 0 || password.trim().length === 0){
+      console.log("warning modal (null type input)");
+      return;
+    }
+    const requestBody = {
+      query: `
+            query Login($email: String!, $password: String!) {
+                login(email: $email, password: $password){
+                    email
+                    userId
+                    token
+                    tokenExpiration
+                }
+            }
+        `,
+        variables: {
+            email: email,
+            password: password
+        }
+    };
+    fetch("http://localhost:8000/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+    .then(res => {
+      console.log(res.status);
+      if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed to fetch during Login!!!!');
+      }
+      return res.json();
+    })
+    .then(resData => {
+      console.log("successful login!", resData);
+      if (resData.data.login.token) {
+          this.context.login(resData.data.login.token, resData.data.login.email, resData.data.login.userId, resData.data.login.tokenExpiration)
+      }})
+    .catch(err =>{
+      console.log('Modal, (Please check your ID or password)', err);
+      //throw err;    => user 가 존재하지 않을때 그냥 error 을 throw 시켜버릴때 먹통이된다! 
+    });
+  }
+
+
+
   render() {
     return (
         <div class="outer-container">
@@ -18,16 +65,16 @@ class Login extends Component {
                 <Form onSubmit={this.handleSubmit}>
                   <Form.Group controlId="formBasicUserID">
                     <Form.Label style={{fontWeight: "bold"}}>UserID / Email</Form.Label>
-                    <Form.Control type="userID" style={{background: "#EFEFEF"}}/>
+                    <Form.Control type="userID" style={{background: "#EFEFEF"}} ref={this.emailRef}/>
                     <Form.Text className="text-muted"></Form.Text>
                   </Form.Group>
                   <Form.Group controlId="formBasicPassword">
                     <Form.Label style={{fontWeight: "bold"}}>Password</Form.Label>
-                    <Form.Control type="password" style={{background: "#EFEFEF"}}/>
+                    <Form.Control type="password" style={{background: "#EFEFEF"}} ref={this.passwordRef}/>
                   </Form.Group>
                   <Button
                     style={{width: "100%", background: "#22525F", border: 0, fontWeight: "bold", marginTop: "1.5rem", padding: "0.6rem", float: "left"}}
-                    onClick={this.context.login}
+                    type='submit'
                   >
                     LOGIN
                   </Button>

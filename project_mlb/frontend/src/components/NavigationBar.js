@@ -27,20 +27,19 @@ class MlbNavbar extends Component {
             My Little Bookstore
           </h1>
         </div>
-        {this.context.isLogin && <LogoutModal show={this.state.show} handleClose={this.handleClose} logout={this.context.logout}/>}
+        {this.context.token && <LogoutModal show={this.state.show} handleClose={this.handleClose} logout={this.context.logout}/>}
         <Navbar className="main-navigation__items " style={{background: "#2E7384", display: "flex", alignItems: "center", justifyContent: "space-between"}} >
             <div>
               <NavLink to="/Main"> Home </NavLink>
               <NavLink style={{marginLeft: "1rem"}}to="/Browse"> Browse </NavLink>
               <NavLink style={{marginLeft: "1rem"}}to="/Discussion"> Discussion </NavLink>
-              {this.context.isLogin && <NavLink to="/MyBookstore"> My Bookstore </NavLink> }
-              {this.context.isLogin && <NavLink to="/Profile"> Profile </NavLink> }
+              {this.context.token && <NavLink to="/MyBookstore"> My Bookstore </NavLink> }
+              {this.context.token && <NavLink to="/Profile"> Profile </NavLink> }
             </div>
             <div>
-              {!this.context.isLogin && <NavLink className="nav-link" to="/Login" style={{fontSize: "1rem", background: "#22525F", border: "4px solid #ffffff", borderRadius: "1rem", color: "#FAC917", paddingTop: "0.37rem", paddingBottom: "0.37rem"}}>Login</NavLink>}
-              {this.context.isLogin && <Button onClick={this.handleOpen} style={{fontSize: "1rem", fontWeight: "bold", background: "#22525F", border: "4px solid #ffffff", borderRadius: "1rem",  color: "#FAC917"}}>Logout</Button>}
+              {!this.context.token && <NavLink className="nav-link" to="/Login" style={{fontSize: "1rem", background: "#22525F", border: "4px solid #ffffff", borderRadius: "1rem", color: "#FAC917", paddingTop: "0.37rem", paddingBottom: "0.37rem"}}>Login</NavLink>}
+              {this.context.token && <Button onClick={this.handleOpen} style={{fontSize: "1rem", fontWeight: "bold", background: "#22525F", border: "4px solid #ffffff", borderRadius: "1rem",  color: "#FAC917"}}>Logout</Button>}
             </div>
-
         </Navbar>
         
       </div>

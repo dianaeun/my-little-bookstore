@@ -15,13 +15,15 @@ import Signup from './pages/Signup';
 
 class App extends Component {
   state = {
-    isLogin: false
+    token: null,
+    userEmail: null,
+    userId: null,
   }
-  login = () => {
-    this.setState({isLogin: true});
+  login = (token, userEmail, userId, tokenExpiration) => {
+    this.setState({token: token, userEmail: userEmail, userId: userId});
   }
   logout = () => {
-    this.setState({isLogin: false});
+    this.setState({token: null, userEmail: null, userId: null});
   }
   render() {
     return (
@@ -29,20 +31,20 @@ class App extends Component {
         <BrowserRouter>
           <AuthContext.Provider
               value ={{
-                isLogin: this.state.isLogin,
+                token: this.state.token,
                 login: this.login,
                 logout: this.logout
               }}>
                 <main className="vh-100" style={{fontFamily: "Kurale"}}>
                   <Switch>
                     <Route exact path="/" component={Premain} /> 
-                    {!this.state.isLogin && <Route exact path='/Login' component={Login}/>}
-                    {!this.state.isLogin && <Route exact path='/Signup' component={Signup}/>}
+                    {!this.state.token && <Route exact path='/Login' component={Login}/>}
+                    {!this.state.token && <Route exact path='/Signup' component={Signup}/>}
                     <Route exact path='/Main' component={Main} />
                     <Route exact path='/Browse' component={Browse} />
-                    {this.state.isLogin && <Route exact path='/MyBookstore' component={MyBookstore} />}
+                    {this.state.token && <Route exact path='/MyBookstore' component={MyBookstore} />}
                     <Route exact path='/Discussion' component={Discussion} />
-                    {this.state.isLogin &&  <Route exact path='/Profile' component={Profile} />}
+                    {this.state.token &&  <Route exact path='/Profile' component={Profile} />}
                     <Route path='/IndividualBookpage' component={IndividualBookpage} />
                     <Redirect to="/Main" />
                   </Switch>

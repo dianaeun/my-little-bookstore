@@ -30,6 +30,7 @@ class AddBookModal extends Component{
         })
         //this.setState({bookInfo: []})
         this.state.bookInfo.length = 0
+        
         for (const [i, book] of this.state.rawBookInfo.entries()) {
             this.state.bookInfo.push(
                 <Card key={i}>
