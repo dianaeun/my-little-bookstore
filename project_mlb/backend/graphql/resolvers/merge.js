@@ -27,4 +27,22 @@ const transformBook = book => {
         owner: findUser.bind(this, book.owner)
     }
 };
+const transformDiscussion = discussion => {
+    return {
+        ...discussion._doc,
+        _id: discussion.id,
+        date: dateToString(discussion._doc.date),
+        owner: findUser.bind(this, discussion.owner)
+    }
+};
+const transformComment = comment => {
+    return {
+        ...comment._doc,
+        _id: comment.id,
+        date: dateToString(comment._doc.date),
+        owner: findUser.bind(this, comment.owner)
+    }
+};
 exports.transformBook = transformBook;
+exports.transformDiscussion = transformDiscussion;
+exports.transformComment = transformComment;

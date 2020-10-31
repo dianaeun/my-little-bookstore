@@ -126,7 +126,7 @@ class Main extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.genres.length>0 ? this.state.books.filter(book => book.genre.split(',').filter(genre => this.state.genres.includes(genre)).length > 0).map((book, i) => (
+                {this.context.token ? this.state.books.filter(book => book.genre.split(',').filter(genre => this.state.genres.includes(genre)).length > 0).map((book, i) => (
                   <tr>
                     <td>{i+1}</td>
                     <td><Link href="#">{book.title}</Link></td>

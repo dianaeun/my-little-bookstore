@@ -22,6 +22,23 @@ const schema =  buildSchema(`
         location: String
         preferredGenres: [String]!
     }
+    type Discussion{
+        _id: ID!
+        owner: User!
+        date: String!
+        tag: Book!
+        title: String!
+        content: String!
+        likes: Int!
+        comments: [Comment]!
+    }
+    type Comment{
+        _id: ID!
+        owner: User!
+        discussion: Discussion!
+        date: String!
+        content: String!
+    }
     type AuthData{
         email: String!
         userId: ID!
@@ -47,12 +64,28 @@ const schema =  buildSchema(`
         location: String
         preferredGenres: [String]!
     }
+    input DiscussionInput {
+        owner: String!
+        date: String!
+        tag: String!
+        title: String!
+        content: String!
+        likes: Int!
+    }
+    input CommentInput {
+        owner: String!
+        discussion: ID!
+        date: String!
+        content: String!
+    }
     type RootQuery {
         books: [Book]!
         userBooks: [Book]!
         login(email: String!, password: String!): AuthData!
         users: [User]!
         findByUserID(userID: String!): User
+        discussions: [Discussion]!
+        comments: [Comment]!
     }
     type RootMutation {
         createBook(bookInput: BookInput): Book
