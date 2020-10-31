@@ -19,7 +19,7 @@ module.exports = {
         try {
             const existingUser = await User.findOne({ email: args.userInput.email });
             if (existingUser) 
-                throw new Error('User exists already.');
+                throw new Error('DuplicatedUser');
             const hashedPassword = await bcrypt.hash(args.userInput.password, 12);
 
             const user = new User({
@@ -37,12 +37,12 @@ module.exports = {
         const user = await User.findOne({ email: email });
         if (!user) {
             console.log("could not found user");
-            throw new Error('User does not exist!');
+            throw new Error('NoUser');
         }
         console.log("found user: ", user);
         const isEqual = await bcrypt.compare(password, user.password);
         if (!isEqual) {
-            throw new Error('Password is incorrect!');
+            throw new Error('NoPassword');
         }
         const token = jwt.sign(
             { userId: user.id, email: user.email },
