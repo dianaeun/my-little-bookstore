@@ -15,6 +15,14 @@ module.exports = {
             throw err;
         }
     },
+    findByUserID: async ({userID}) => {
+        try {
+            const existingUser = await User.findOne({ userID: userID });
+            return existingUser;
+        } catch (err) {
+            throw err;
+        }
+    },
     createUser: async args => {
         try {
             const existingUser = await User.findOne({ email: args.userInput.email });
@@ -48,12 +56,12 @@ module.exports = {
             throw new Error('NoPassword');
         }
         const token = jwt.sign(
-            { userId: user.id, email: user.email },
+            { userId: user.userID, email: user.email },
             'donghunjongsundayehyeonjoon',
             {
                 expiresIn: '1h'
             }
         ); 
-        return { email: email, userId: user.id, token: token, tokenExpiration: 1};
+        return { email: email, userId: user.userID, token: token, tokenExpiration: 1};
     }
 };

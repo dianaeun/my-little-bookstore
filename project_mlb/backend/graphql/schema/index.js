@@ -51,7 +51,8 @@ const schema =  buildSchema(`
         books: [Book]!
         userBooks: [Book]!
         login(email: String!, password: String!): AuthData!
-        users: [User]
+        users: [User]!
+        findByUserID(userID: String!): User
     }
     type RootMutation {
         createBook(bookInput: BookInput): Book

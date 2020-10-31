@@ -1,22 +1,45 @@
 import React, { Component } from "react";
-import { Badge, Table, Button } from "react-bootstrap";
+import { Badge, Table, Button, Row } from "react-bootstrap";
 import MlbNavbar from '../components/NavigationBar.js'
 import { Link } from 'react-router-dom';
+import AuthContext from '../context/AuthContext';
 
 const star = require("../icons/star.png");
 const blankStar = require("../icons/blank_star.png");
 class Main extends Component {
-  // books = [
-  //   {title: "Dune", author: "Frank Herbert", genre: ["SF", "Fantasy"], rating: 5}, 
-  //   {title: "A Witch in Time", author: "Constance Sayers", genre: ["SF", "Fantasy"], rating: 5},
-  //   {title: "The Sandman", author: "Neil Gaiman", genre: ["SF", "Fantasy"], rating: 5},
-  //   {title: "Harry Potter and the Goblet of Fire", author: "J.K. Rowling", genre: ["SF", "Fantasy"], rating: 5},
-  //   {title: "59 Memory Lane", author: "Celia Anderson", genre: ["Romance"], rating: 4},
-  //   {title: "Playing With Fire", author: "L.J. Shen", genre: ["Romance"], rating: 3},
-  // ];
-  state={books:[]}
+  state={books:[], genres: []}
+  static contextType = AuthContext;
   componentDidMount() {
-      this.fetchBooks();
+    this.fetchGenres();
+    this.fetchBooks();
+  }
+  fetchGenres() {
+    if (this.context.userId === null)
+      return;
+    const requestBody = {
+      query: `
+          query{
+              findByUserID(userID: "${this.context.userId}"){
+                  userID
+                  preferredGenres
+                  location
+              }
+          }
+      `
+    }
+    fetch('http://localhost:8000/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+    .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed to fetch User")
+        }
+        return res.json()
+    })
+    .then(resData => {
+      console.log("User successfully fetched! ", resData);
+      const user = resData.data.findByUserID;
+      console.log(user);
+      this.setState({genres: user.preferredGenres});
+  })
   }
   fetchBooks() {
       const requestBody = {
@@ -26,17 +49,8 @@ class Main extends Component {
                       title
                       author
                       publisher
-                      isbn
-                      date
                       rating
-                      price
                       genre
-                      description
-                      _id
-                      owner{
-                          email
-                          _id
-                      }
                   }
               }
           `
@@ -88,35 +102,63 @@ class Main extends Component {
           </Badge>
         </h1>
           <div style={{ width: "800px", marginLeft: "auto", marginRight: "auto"}}>
-            <h3 style={{ fontFamily: "Kurale", textAlign: "center", marginTop: "2rem", marginBottom: "1rem"}}>
-              <Button variant="outline-danger" size="sm" style={{marginLeft:"0.2rem"}} disabled>SF</Button> , 
-              <Button variant="outline-danger" size="sm" style={{marginLeft:"0.2rem"}} disabled>Fantasy</Button> , 
-              <Button variant="outline-danger" size="sm" style={{marginLeft:"0.2rem"}} disabled>Romance</Button> books in Songdo
-            </h3>
+            {this.context.userId !== null ? 
+              <h3 style={{ fontFamily: "Kurale", textAlign: "center", marginTop: "2rem", marginBottom: "1rem"}}>
+                {this.state.genres.map((genre) => (
+                  <Button variant="outline-danger" size="sm" style={{marginRight:"0.7rem"}} disabled>{genre}</Button>
+                ))}
+                books in Songo
+              </h3>
+              :
+              <h3 style={{ fontFamily: "Kurale", textAlign: "center", marginTop: "2rem", marginBottom: "1rem"}}>
+                Books in Songo with Highest Ratings
+              </h3>
+            }
             <Table size="sm">
               <thead>
                 <tr style={{fontFamily: "serif"}}>
                   <th></th>
                   <th>Title</th>
                   <th>Author</th>
+                  <th>Publisher</th>
                   <th>Genre</th>
                   <th>Rating</th>
                 </tr>
               </thead>
               <tbody>
-                {this.state.books.map((book, i) => (
+                {this.state.genres.length>0 ? this.state.books.filter(book => book.genre.split(',').filter(genre => this.state.genres.includes(genre)).length > 0).map((book, i) => (
                   <tr>
                     <td>{i+1}</td>
                     <td><Link href="#">{book.title}</Link></td>
                     <td><Link href="#">{book.author}</Link></td>
+                    <td>
+                      {book.publisher}
+                    </td>
                     <td>{book.genre.split(",").map((genre) => (
-                      <Button variant="outline-danger" size="sm" style={{marginLeft:"0.2rem"}} disabled>{genre}</Button>
+                      <Button variant="outline-danger" size="sm" style={{marginRight:"0.5rem"}} disabled>{genre}</Button>
                     ))}</td>
                     <td>
                       {this.createStar(book.rating)}
                     </td>
-                  </tr>                  
-                ))}
+                  </tr>  
+                ))
+                :
+                this.state.books.map((book, i) => (
+                  <tr>
+                    <td>{i+1}</td>
+                    <td><Link href="#">{book.title}</Link></td>
+                    <td><Link href="#">{book.author}</Link></td>
+                    <td>
+                      {book.publisher}
+                    </td>                    
+                    <td>{book.genre.split(",").map((genre) => (
+                      <Button variant="outline-danger" size="sm" style={{marginRight:"0.5rem"}} disabled>{genre}</Button>
+                    ))}</td>
+                    <td>
+                      {this.createStar(book.rating)}
+                    </td>
+                  </tr>))   
+                }
               </tbody>
             </Table>
           </div>
