@@ -151,7 +151,7 @@ class Main extends Component {
                     <td>
                       {book.publisher}
                     </td>                    
-                    <td>{book.genre.split(",").map((genre) => (
+                    <td>{book.genre!=="" && book.genre.split(",").map((genre) => (
                       <Button variant="outline-danger" size="sm" style={{marginRight:"0.5rem"}} disabled>{genre}</Button>
                     ))}</td>
                     <td>

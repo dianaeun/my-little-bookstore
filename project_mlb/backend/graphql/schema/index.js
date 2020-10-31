@@ -7,12 +7,13 @@ const schema =  buildSchema(`
         date: String!
         publisher: String!
         author: String!
-        isbn: String!
+        isbn: String
         rating: Int!
         price: Float!
         genre: String!
         description: String
-        owner: User!
+        owner: String!
+        requests: [String]!
     }
     type User{
         _id: ID!
@@ -38,6 +39,12 @@ const schema =  buildSchema(`
         discussion: Discussion!
         date: String!
         content: String!
+    }
+    type Request{
+        _id: ID!
+        book: Book!
+        sender: String!
+        date: String!
     }
     type AuthData{
         email: String!
@@ -80,7 +87,7 @@ const schema =  buildSchema(`
     }
     type RootQuery {
         books: [Book]!
-        userBooks: [Book]!
+        userBooks(ownerID: String!): [Book]!
         login(email: String!, password: String!): AuthData!
         users: [User]!
         findByUserID(userID: String!): User

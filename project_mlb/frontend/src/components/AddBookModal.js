@@ -9,7 +9,13 @@ class AddBookModal extends Component{
         rawBookInfo: [],
         bookInfo: []
     };
-
+    constructor(props){
+        super(props);
+        this.titleRef = React.createRef();
+        this.authorRef = React.createRef();
+        this.publisherRef = React.createRef();
+        this.priceRef = React.createRef();
+      }
     setRadioValue = (n) => {
         this.setState({radioValue: n})
     };
@@ -67,7 +73,57 @@ class AddBookModal extends Component{
       { name: 'Manual Entry', value: '2' },
       { name: 'Upload E-Book', value: '3' },
     ];
-    
+    handleSubmit = event => {
+        event.preventDefault();
+        console.log(this.props);
+        const title = this.titleRef.current.value;
+        const author = this.authorRef.current.value;
+        const publisher = this.publisherRef.current.value;
+        const price = this.priceRef.current.value;
+        const date = new Date();
+        if (title.trim().length === 0 || author.trim().length === 0 || publisher.trim().length === 0 || price.trim().length === 0){
+          console.log("warning modal (null type input)");
+          return;
+        }
+        const requestBody = {
+          query: `
+                mutation CreateBook($title: String!, $author: String!, $publisher: String!, $price: Float!, $date: String!, $owner: String!, $rating: Int!, $genre: String!, $isbn: String!){
+                    createBook(bookInput: {title: $title, author: $author, publisher: $publisher, price: $price, date: $date, owner: $owner, rating: $rating, genre: $genre, isbn: $isbn}) {
+                        _id
+                    }
+                }
+            `,
+            variables: {
+                title: title,
+                author: author,
+                publisher: publisher,
+                price: parseFloat(price),
+                date: date,
+                owner: this.props.owner,
+                rating: 0,
+                genre: "",
+                isbn: ""
+            }
+        };
+        fetch("http://localhost:8000/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+        .then(res => {
+          console.log(res.status);
+          if (res.status !== 200 && res.status !== 201) {
+              throw new Error('Failed to fetch during add book!!!!');
+          }
+          return res.json();
+        })
+        .then(resData => {
+          console.log("successful added your book!", resData);
+          this.setState({createdAccount: true});
+        })
+        .catch(err =>{
+          console.log(err);
+          //throw err;    => user 가 이미 존재할때 그냥 error 을 throw 시켜버릴때 먹통이된다! 
+        });
+        alert("you have successfully added a book!");
+        this.props.handleClose();
+    }
     render(){
         return(
             <Modal
@@ -131,7 +187,7 @@ class AddBookModal extends Component{
                                             Title
                                         </Form.Label>
                                         <Col sm={9}>
-                                            <Form.Control type="text" placeholder="Title" />
+                                            <Form.Control type="text" placeholder="Title" ref={this.titleRef}/>
                                         </Col>
                                     </Form.Group>
                               
@@ -140,7 +196,7 @@ class AddBookModal extends Component{
                                             Author
                                         </Form.Label>
                                         <Col sm={9}>
-                                            <Form.Control type="text" placeholder="Author" />
+                                            <Form.Control type="text" placeholder="Author" ref={this.authorRef}/>
                                         </Col>
                                     </Form.Group>
                                     
@@ -149,7 +205,7 @@ class AddBookModal extends Component{
                                             Publisher
                                         </Form.Label>
                                         <Col sm={9}>
-                                            <Form.Control type="text" placeholder="Publisher" />
+                                            <Form.Control type="text" placeholder="Publisher" ref={this.publisherRef}/>
                                         </Col>
                                     </Form.Group>
 
@@ -158,11 +214,9 @@ class AddBookModal extends Component{
                                             Price ($)
                                         </Form.Label>
                                         <Col sm={9}>
-                                            <Form.Control type="number" placeholder="0.00" />
+                                            <Form.Control type="number" placeholder="0.00" ref={this.priceRef}/>
                                         </Col>
                                     </Form.Group>
-                                   
-                              
                               </Form>
                             }
                             {this.state.radioValue === '3' && 
@@ -178,7 +232,7 @@ class AddBookModal extends Component{
                 
                 <Modal.Footer>
                     <Button variant="secondary" onClick={this.props.handleClose}> Close </Button>
-                    <Button variant="success" onClick={this.props.handleClose}> Save </Button>
+                    <Button variant="success" onClick={(event) => this.handleSubmit(event)}> Save </Button>
                 </Modal.Footer>
             </Modal>
         )

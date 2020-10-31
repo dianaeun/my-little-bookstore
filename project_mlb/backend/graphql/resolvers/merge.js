@@ -1,5 +1,9 @@
 const User = require('../../models/user');
-const dateToString = date => new Date(date).toISOString();
+const dateToString = date => {
+    const newDate = new Date(date);
+    const month = newDate.getMonth()+1;
+    return newDate.getFullYear()+'/'+month+'/'+newDate.getDate();
+}
 
 const DataLoader = require('dataloader');
 const userLoader = new DataLoader( userIds => {
