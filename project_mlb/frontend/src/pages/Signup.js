@@ -8,6 +8,7 @@ const thumbs = require("../icons/thumbs.png");
 class Signup extends Component {
   state = {
     createdAccount: false,
+    genres: []
   };
   
   static contextType = AuthContext;
@@ -16,29 +17,49 @@ class Signup extends Component {
     this.emailPreRef = React.createRef();
     this.emailPostRef = React.createRef();
     this.passwordRef = React.createRef();
+    this.userIDRef = React.createRef();
+    this.locationRef = React.createRef();
+    // this.preferredGenresRef = React.createRef();
+  }
+  handleCheckBoxes = target => {
+    const genres = this.state.genres;
+    if (genres.indexOf(target) === -1)
+      genres.push(target);
+    else
+      genres.splice(genres.indexOf(target), 1);
+    this.setState({genres: genres});
   }
   handleSubmit = event => {
     event.preventDefault();
     const emailPre = this.emailPreRef.current.value;
     const emailPost = this.emailPostRef.current.value;
     const password = this.passwordRef.current.value;
-    if (emailPre.trim().length === 0 || password.trim().length === 0 || emailPost.trim().length === 0){
+    const userID = this.userIDRef.current.value;
+    const location = this.locationRef.current.value;
+    const preferredGenres = this.state.genres
+    if (emailPre.trim().length === 0 || password.trim().length === 0 || emailPost.trim().length === 0 || userID.trim().length === 0){
       console.log("warning modal (null type input)");
       return;
     }
     const email = emailPre + "@" + emailPost
     const requestBody = {
       query: `
-            mutation CreateUser($email: String!, $password: String!){
-              createUser(userInput: {email: $email, password: $password}) {
+            mutation CreateUser($email: String!, $password: String!, $userID: String!, $location: String, $preferredGenres: [String]!){
+              createUser(userInput: {email: $email, password: $password, userID: $userID, location: $location, preferredGenres: $preferredGenres}) {
                   _id
                   email
+                  userID
+                  location
+                  preferredGenres
               }
             }
         `,
         variables: {
             email: email,
-            password: password
+            password: password,
+            userID: userID,
+            location: location,
+            preferredGenres: preferredGenres
         }
     };
     fetch("http://localhost:8000/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
@@ -92,7 +113,7 @@ class Signup extends Component {
                     <Form.Group controlId="formBasicuserID" as={Row}>
                       <Form.Label column sm={1} style={{fontWeight: "bold"}}> userID </Form.Label>
                       <Col sm={3}>
-                        <Form.Control type="userID"/>
+                        <Form.Control type="userID" ref={this.userIDRef}/>
                       </Col>
                       <Button 
                         size="sm"
@@ -120,7 +141,7 @@ class Signup extends Component {
                     <Form.Group controlId="formBasicLocation" as={Row}>
                       <Form.Label column sm={1} style={{fontWeight: "bold"}}> Location </Form.Label>
                       <Col sm={2}>
-                        <Form.Control type="location" />
+                        <Form.Control type="location" ref={this.locationRef}/>
                       </Col>
                     </Form.Group>
                     <Form.Group controlId="formBasicGenre" as={Row}>
@@ -130,26 +151,31 @@ class Signup extends Component {
                         inline
                         label="Romance"
                         id={`inline-checkbox-1`}
+                        onClick={() => this.handleCheckBoxes("Romance")}
                       />
                       <Form.Check
                         inline
                         label="Horror"
                         id={`inline-checkbox-2`}
+                        onClick={() => this.handleCheckBoxes("Horror")}
                       />
                       <Form.Check
                         inline
                         label="Fantasy"
                         id={`inline-checkbox-3`}
+                        onClick={() => this.handleCheckBoxes("Fantasy")}
                       />
                       <Form.Check
                         inline
                         label="Adventure"
                         id={`inline-checkbox-4`}
+                        onClick={() => this.handleCheckBoxes("Adventure")}
                       />
                       <Form.Check
                         inline
                         label="Science"
                         id={`inline-checkbox-5`}
+                        onClick={() => this.handleCheckBoxes("Science")}
                       />
                     </Col>
                     </Form.Group>

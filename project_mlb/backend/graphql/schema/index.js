@@ -17,7 +17,10 @@ const schema =  buildSchema(`
     type User{
         _id: ID!
         email: String!
-        password: String
+        password: String!
+        userID: String!
+        location: String
+        preferredGenres: [String]!
     }
     type AuthData{
         email: String!
@@ -40,6 +43,9 @@ const schema =  buildSchema(`
     input UserInput {
         email: String!
         password: String!
+        userID: String!
+        location: String
+        preferredGenres: [String]!
     }
     type RootQuery {
         books: [Book]!
