@@ -34,11 +34,18 @@ module.exports = {
         }
     },
     login: async ({ email, password }) => {
-        const user = await User.findOne({ email: email });
+        const user = null;
+        if (email.contains('@')){
+            user = await User.findOne({ email: email });
+        }
+        else{
+            user = await User.findOne({userId: email});
+        }
         if (!user) {
             console.log("could not found user");
             throw new Error('NoUser');
         }
+
         console.log("found user: ", user);
         const isEqual = await bcrypt.compare(password, user.password);
         if (!isEqual) {
