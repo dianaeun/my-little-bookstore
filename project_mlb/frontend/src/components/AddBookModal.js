@@ -27,14 +27,19 @@ class AddBookModal extends Component{
     searchISBN = (e) => {
         e.preventDefault();
         // for specific isbn search, use https://www.googleapis.com/books/v1/volumes?q=isbn:ISBN number
+        const term = this.state.searchField;
+        if (term.trim().length !== 13 || isNaN(term)){
+            alert("please provide ISBN13");
+            return;
+        }
+
         request
         .get("https://www.googleapis.com/books/v1/volumes?q=isbn:" + this.state.searchField)
         .then((data) => {
             const cleanData = this.cleanData(data)
             this.setState({rawBookInfo: cleanData})
-            //this.setState({ rawBookInfo: [...data.body.items]})
         })
-        //this.setState({bookInfo: []})
+
         this.state.bookInfo.length = 0
         
         for (const [i, book] of this.state.rawBookInfo.entries()) {
@@ -50,6 +55,9 @@ class AddBookModal extends Component{
                     </Card.Body>
                 </Card>
             )
+            this.titleRef.current.value = book.volumeInfo.title;
+            this.authorRef.current.value = book.volumeInfo.authors;
+            this.publisherRef.current.value = book.volumeInfo.publisher;
         }
             
     }
@@ -121,6 +129,7 @@ class AddBookModal extends Component{
           console.log(err);
           //throw err;    => user 가 이미 존재할때 그냥 error 을 throw 시켜버릴때 먹통이된다! 
         });
+        this.setState({rawBookInfo: [], bookInfo: []});
         alert("you have successfully added a book!");
         this.props.handleClose();
     }
@@ -169,15 +178,52 @@ class AddBookModal extends Component{
                                             <Form.Control type="text" placeholder="Enter the ISBN13 to Search" onChange = {(e) => this.setSearchField(e.target.value)}/>
                                         </Col>
                                         <Col sm={2}>
-                                            <Button onClick={(e) => this.searchISBN(e)}>Search</Button>
+                                            <Button type="submit" onClick={(e) => this.searchISBN(e)}>Search</Button>
                                         </Col>
                                     </Form.Group>
+
                                     <Row>
                                         <Col> Result </Col>
                                     </Row>
                                     <Row>
                                         {this.state.bookInfo}
                                     </Row>
+
+                                    <Form.Group as={Row} controlId="TitleInput">
+                                        <Form.Label column sm={3}>
+                                            Title
+                                        </Form.Label>
+                                        <Col sm={9}>
+                                            <Form.Control type="text" placeholder="Title" ref={this.titleRef}/>
+                                        </Col>
+                                    </Form.Group>
+                              
+                                    <Form.Group as={Row} controlId="AuthorInput">
+                                        <Form.Label column sm={3}>
+                                            Author
+                                        </Form.Label>
+                                        <Col sm={9}>
+                                            <Form.Control type="text" placeholder="Author" ref={this.authorRef}/>
+                                        </Col>
+                                    </Form.Group>
+                                    
+                                    <Form.Group as={Row} controlId="PublisherInput">
+                                        <Form.Label column sm={3}>
+                                            Publisher
+                                        </Form.Label>
+                                        <Col sm={9}>
+                                            <Form.Control type="text" placeholder="Publisher" ref={this.publisherRef}/>
+                                        </Col>
+                                    </Form.Group>
+
+                                    <Form.Group as={Row} controlId="PriceInput">
+                                        <Form.Label column sm={3}>
+                                            Price ($)
+                                        </Form.Label>
+                                        <Col sm={9}>
+                                            <Form.Control type="number" placeholder="0.00" ref={this.priceRef}/>
+                                        </Col>
+                                    </Form.Group>
                                 </Form>
                             }
                             {this.state.radioValue === '2' &&
