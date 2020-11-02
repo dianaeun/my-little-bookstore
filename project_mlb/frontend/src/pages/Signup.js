@@ -144,6 +144,7 @@ class Signup extends Component {
                       <Button 
                         size="sm"
                         style={{background: "#22525F", border: "0px", paddingLeft: "20px", paddingRight: "20px"}}
+                        onClick={this.handleVerify}
                       >
                         VERIFY
                       </Button>
