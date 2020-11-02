@@ -36,7 +36,11 @@ class Signup extends Component {
     const password = this.passwordRef.current.value;
     const userID = this.userIDRef.current.value;
     const location = this.locationRef.current.value;
-    const preferredGenres = this.state.genres
+    const preferredGenres = this.state.genres;
+    if (preferredGenres.length === 0){
+      alert("Please choose at least 1 genre!");
+      return;
+    }
     if (emailPre.trim().length === 0 || password.trim().length === 0 || emailPost.trim().length === 0 || userID.trim().length === 0){
       console.log("warning modal (null type input)");
       return;
@@ -71,8 +75,13 @@ class Signup extends Component {
       return res.json();
     })
     .then(resData => {
-      console.log("successful create your account!", resData);
-      this.setState({createdAccount: true});
+      if (resData.errors){
+        alert("Duplicated User!");
+      }
+      else{
+        console.log("successful create your account!", resData);
+        this.setState({createdAccount: true});        
+      }
     })
     .catch(err =>{
       console.log('Modal, (Please check your ID or password)', err);
@@ -100,16 +109,6 @@ class Signup extends Component {
               <div style={{ paddingLeft: "10%", paddingTop: "5%" }}>
                 <h3 style={{ marginBottom: "30px", fontWeight: "bold", fontStyle: "italic" }}>CREATE ACCOUNT</h3> 
                 <Form onSubmit={this.handleSubmit} style={{ width: "fit-content" }}>
-                    <Form.Group controlId="formBasicName" as={Row}>
-                      <Form.Label column sm={2} style={{fontWeight: "bold"}}> First Name </Form.Label>
-                      <Col sm={3}>
-                        <Form.Control type="firstName" />
-                      </Col>
-                      <Form.Label column sm={2} style={{fontWeight: "bold"}}> Last Name </Form.Label>
-                      <Col sm={3}>
-                        <Form.Control type="lastName" />
-                      </Col>
-                    </Form.Group>
                     <Form.Group controlId="formBasicuserID" as={Row}>
                       <Form.Label column sm={2} style={{fontWeight: "bold"}}> userID </Form.Label>
                       <Col sm={4}>
