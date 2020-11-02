@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Card, Button, Form, Row, Col, DropdownButton, Dropdown} from "react-bootstrap";
 import AddDiscussion from "../components/AddDiscussion";
 import MlbNavbar from '../components/NavigationBar.js'
+import AuthContext from '../context/AuthContext';
 
 const thumbsup = require("../icons/thumbs-up.png");
 const comment = require("../icons/comment.png");
@@ -82,6 +83,7 @@ class Discussion extends Component {
       },
     ],
   };
+  static contextType = AuthContext;
   handleSearch = (event, searchOption, searchTerm) => {
     event.preventDefault();
     let discussions = this.state.discussions;
@@ -142,13 +144,17 @@ class Discussion extends Component {
     this.setState({addDiscussionModal: false});
   }
   handleAddDiscussionModal = () => {
+    if (this.context.userId === null){
+      alert("You must login first!");
+      return;
+    }  
     this.setState({addDiscussionModal: true});
     let today = new Date();
     let year = today.getFullYear();
     let month = today.getMonth() + 1;
     let date = today.getDate();
     let fullDate = year + '/' + month + '/' + date;
-    let newDiscussion = {name: "Hyeon Joon Lee", title: "", book: "", likes: 0, comments: [], content: "", date: fullDate};
+    let newDiscussion = {name: this.context.userId, title: "", book: "", likes: 0, comments: [], content: "", date: fullDate};
     this.setState({newDiscussion: newDiscussion});
   }
   handleAddDiscussion = (event) => {

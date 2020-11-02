@@ -17,12 +17,12 @@ module.exports = {
             throw err;
         }
     },
-    userBooks: async (args, req) => {
-        if (!req.isAuth) {
-            throw new Error('Unauthenticated!');
-        }
-        ownerID = req.userId;
-        ownerID = "5f976afd74382937987f902f"; //default id
+    userBooks: async ({ownerID}) => {
+        // if (!req.isAuth) {
+        //     throw new Error('Unauthenticated!');
+        // }
+        // ownerID = req.userId;
+        // ownerID = "5f976afd74382937987f902f"; //default id
         try {
             const books = await Book.find({owner : ownerID});
             return books.map(book => {
@@ -33,12 +33,12 @@ module.exports = {
             throw err;
         }
     },
-    createBook: async(args, req) => {
+    createBook: async(args) => {
         // if (!req.isAuth) {
         //     throw new Error('Unauthenticated!');
         // }
-        ownerID = req.userId;
-        ownerID = "5f976afd74382937987f902f";
+        // ownerID = req.userId;
+        // ownerID = "5f976afd74382937987f902f";
         const book = new Book({
             title: args.bookInput.title,
             date: new Date(args.bookInput.date),
@@ -49,13 +49,13 @@ module.exports = {
             price: args.bookInput.price,
             genre: args.bookInput.genre,
             description: args.bookInput.description,
-            owner: ownerID
+            owner: args.bookInput.owner,
+            requests: [],
         });
-        
-        const owner = await User.findById(ownerID);
-        if (!owner) {
-            throw new Error('User not found.');
-        }
+        // const owner = await User.find({ownerID: args.bookInput.owner});
+        // if (!owner) {
+        //     throw new Error('User not found.');
+        // }
         try{
             const result = await book.save();
             return transformBook(result);

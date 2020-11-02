@@ -1,5 +1,9 @@
 const User = require('../../models/user');
-const dateToString = date => new Date(date).toISOString();
+const dateToString = date => {
+    const newDate = new Date(date);
+    const month = newDate.getMonth()+1;
+    return newDate.getFullYear()+'/'+month+'/'+newDate.getDate();
+}
 
 const DataLoader = require('dataloader');
 const userLoader = new DataLoader( userIds => {
@@ -27,4 +31,22 @@ const transformBook = book => {
         owner: findUser.bind(this, book.owner)
     }
 };
+const transformDiscussion = discussion => {
+    return {
+        ...discussion._doc,
+        _id: discussion.id,
+        date: dateToString(discussion._doc.date),
+        owner: findUser.bind(this, discussion.owner)
+    }
+};
+const transformComment = comment => {
+    return {
+        ...comment._doc,
+        _id: comment.id,
+        date: dateToString(comment._doc.date),
+        owner: findUser.bind(this, comment.owner)
+    }
+};
 exports.transformBook = transformBook;
+exports.transformDiscussion = transformDiscussion;
+exports.transformComment = transformComment;

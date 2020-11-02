@@ -15,16 +15,30 @@ module.exports = {
             throw err;
         }
     },
+    findByUserID: async ({userID}) => {
+        try {
+            const existingUser = await User.findOne({ userID: userID });
+            return existingUser;
+        } catch (err) {
+            throw err;
+        }
+    },
     createUser: async args => {
         try {
-            const existingUser = await User.findOne({ email: args.userInput.email });
+            let existingUser = await User.findOne({ email: args.userInput.email });
+            if (existingUser) 
+                throw new Error('DuplicatedUser');
+            existingUser = await User.findOne({ email: args.userInput.email });
             if (existingUser) 
                 throw new Error('DuplicatedUser');
             const hashedPassword = await bcrypt.hash(args.userInput.password, 12);
 
             const user = new User({
                 email: args.userInput.email,
-                password: hashedPassword
+                password: hashedPassword,
+                userID: args.userInput.userID,
+                location: args.userInput.location,
+                preferredGenres: args.userInput.preferredGenres
             });
 
             const result = await user.save();
@@ -52,12 +66,12 @@ module.exports = {
             throw new Error('NoPassword');
         }
         const token = jwt.sign(
-            { userId: user.id, email: user.email },
+            { userId: user.userID, email: user.email },
             'donghunjongsundayehyeonjoon',
             {
                 expiresIn: '1h'
             }
         ); 
-        return { email: email, userId: user.id, token: token, tokenExpiration: 1};
+        return { email: email, userId: user.userID, token: token, tokenExpiration: 1};
     }
 };

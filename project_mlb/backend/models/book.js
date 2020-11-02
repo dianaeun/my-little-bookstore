@@ -19,7 +19,7 @@ const bookSchema = new Schema({
     },
     isbn: {
         type: String,
-        required: true
+        required: false
     },
     rating:{
         type: Number,
@@ -31,15 +31,19 @@ const bookSchema = new Schema({
     },
     genre:{
         type: String,
-        reqruied: true
+        required: false
     },
     description:{
         type: String,
         required: false
     },
     owner: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
+        type: String,
+        required: true
+    },
+    requests: {
+        type: [Schema.Types.ObjectId],
+        ref: 'Request'
     }
 });
 module.exports = mongoose.model('Book', bookSchema);

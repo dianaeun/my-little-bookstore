@@ -33,7 +33,9 @@ class App extends Component {
               value ={{
                 token: this.state.token,
                 login: this.login,
-                logout: this.logout
+                logout: this.logout,
+                userId: this.state.userId,
+                userEmail: this.state.userEmail
               }}>
                 <main className="vh-100" style={{fontFamily: "Kurale"}}>
                   <Switch>

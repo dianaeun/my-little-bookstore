@@ -8,6 +8,7 @@ const thumbs = require("../icons/thumbs.png");
 class Signup extends Component {
   state = {
     createdAccount: false,
+    genres: []
   };
   
   static contextType = AuthContext;
@@ -16,29 +17,80 @@ class Signup extends Component {
     this.emailPreRef = React.createRef();
     this.emailPostRef = React.createRef();
     this.passwordRef = React.createRef();
+    this.userIDRef = React.createRef();
+    this.locationRef = React.createRef();
+    // this.preferredGenresRef = React.createRef();
+  }
+  handleCheckBoxes = target => {
+    const genres = this.state.genres;
+    if (genres.indexOf(target) === -1)
+      genres.push(target);
+    else
+      genres.splice(genres.indexOf(target), 1);
+    this.setState({genres: genres});
+  }
+  handleVerify = () => {
+    const requestBody = {
+      query: `
+          query{
+              findByUserID(userID: "${this.userIDRef.current.value}"){
+                  userID
+              }
+          }
+      `
+    }
+    fetch('http://localhost:8000/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+    .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed to fetch User")
+        }
+        return res.json()
+    })
+    .then(resData => {
+      console.log("User successfully fetched! ", resData);
+      const user = resData.data.findByUserID;
+      if(user){
+        alert("Sorry, userID already in use");
+      }
+      else{
+        alert("Great! Unique userID");
+      }});
   }
   handleSubmit = event => {
     event.preventDefault();
     const emailPre = this.emailPreRef.current.value;
     const emailPost = this.emailPostRef.current.value;
     const password = this.passwordRef.current.value;
-    if (emailPre.trim().length === 0 || password.trim().length === 0 || emailPost.trim().length === 0){
+    const userID = this.userIDRef.current.value;
+    const location = this.locationRef.current.value;
+    const preferredGenres = this.state.genres;
+    if (preferredGenres.length === 0){
+      alert("Please choose at least 1 genre!");
+      return;
+    }
+    if (emailPre.trim().length === 0 || password.trim().length === 0 || emailPost.trim().length === 0 || userID.trim().length === 0){
       console.log("warning modal (null type input)");
       return;
     }
     const email = emailPre + "@" + emailPost
     const requestBody = {
       query: `
-            mutation CreateUser($email: String!, $password: String!){
-              createUser(userInput: {email: $email, password: $password}) {
+            mutation CreateUser($email: String!, $password: String!, $userID: String!, $location: String, $preferredGenres: [String]!){
+              createUser(userInput: {email: $email, password: $password, userID: $userID, location: $location, preferredGenres: $preferredGenres}) {
                   _id
                   email
+                  userID
+                  location
+                  preferredGenres
               }
             }
         `,
         variables: {
             email: email,
-            password: password
+            password: password,
+            userID: userID,
+            location: location,
+            preferredGenres: preferredGenres
         }
     };
     fetch("http://localhost:8000/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
@@ -50,8 +102,13 @@ class Signup extends Component {
       return res.json();
     })
     .then(resData => {
-      console.log("successful create your account!", resData);
-      this.setState({createdAccount: true});
+      if (resData.errors){
+        alert("Duplicated User!");
+      }
+      else{
+        console.log("successful create your account!", resData);
+        this.setState({createdAccount: true});        
+      }
     })
     .catch(err =>{
       console.log('Modal, (Please check your ID or password)', err);
@@ -78,21 +135,11 @@ class Signup extends Component {
             : 
               <div style={{ paddingLeft: "10%", paddingTop: "5%" }}>
                 <h3 style={{ marginBottom: "30px", fontWeight: "bold", fontStyle: "italic" }}>CREATE ACCOUNT</h3> 
-                <Form onSubmit={this.handleSubmit} style={{ width: "100%" }}>
-                    <Form.Group controlId="formBasicName" as={Row}>
-                      <Form.Label column sm={1} style={{fontWeight: "bold"}}> First Name </Form.Label>
-                      <Col sm={2}>
-                        <Form.Control type="firstName" />
-                      </Col>
-                      <Form.Label column sm={1} style={{fontWeight: "bold"}}> Last Name </Form.Label>
-                      <Col sm={2}>
-                        <Form.Control type="lastName" />
-                      </Col>
-                    </Form.Group>
+                <Form onSubmit={this.handleSubmit} style={{ width: "fit-content" }}>
                     <Form.Group controlId="formBasicuserID" as={Row}>
-                      <Form.Label column sm={1} style={{fontWeight: "bold"}}> userID </Form.Label>
-                      <Col sm={3}>
-                        <Form.Control type="userID"/>
+                      <Form.Label column sm={2} style={{fontWeight: "bold"}}> userID </Form.Label>
+                      <Col sm={4}>
+                        <Form.Control type="userID" ref={this.userIDRef}/>
                       </Col>
                       <Button 
                         size="sm"
@@ -102,54 +149,59 @@ class Signup extends Component {
                       </Button>
                     </Form.Group>
                     <Form.Group controlId="formBasicPassword" as={Row}>
-                      <Form.Label column sm={1} style={{fontWeight: "bold"}} > Password </Form.Label>
-                      <Col sm={3}>
+                      <Form.Label column sm={2} style={{fontWeight: "bold"}} > Password </Form.Label>
+                      <Col sm={4}>
                         <Form.Control type="password" ref={this.passwordRef}/>
                       </Col>
                     </Form.Group>
                     <Form.Group controlId="formBasicEmail" as={Row}>
-                      <Form.Label column sm={1} style={{fontWeight: "bold"}} > Email </Form.Label>
-                      <Col sm={2}>
+                      <Form.Label column sm={2} style={{fontWeight: "bold"}} > Email </Form.Label>
+                      <Col sm={3}>
                         <Form.Control type="email1" ref={this.emailPreRef} />
                       </Col>
                       @
-                      <Col sm={2}>
+                      <Col sm={3}>
                         <Form.Control type="email2" ref={this.emailPostRef} />
                       </Col>
                     </Form.Group>
                     <Form.Group controlId="formBasicLocation" as={Row}>
-                      <Form.Label column sm={1} style={{fontWeight: "bold"}}> Location </Form.Label>
-                      <Col sm={2}>
-                        <Form.Control type="location" />
+                      <Form.Label column sm={2} style={{fontWeight: "bold"}}> Location </Form.Label>
+                      <Col sm={3}>
+                        <Form.Control type="location" ref={this.locationRef}/>
                       </Col>
                     </Form.Group>
                     <Form.Group controlId="formBasicGenre" as={Row}>
-                      <Form.Label column sm={1} style={{fontWeight: "bold"}}> Preferred Genre </Form.Label>
+                      <Form.Label column sm={2} style={{fontWeight: "bold"}}> Preferred Genre </Form.Label>
                     <Col key={`inline-checkbox`} className="mb-3" style={{paddingTop: "1rem"}}>
                       <Form.Check
                         inline
                         label="Romance"
                         id={`inline-checkbox-1`}
+                        onClick={() => this.handleCheckBoxes("Romance")}
                       />
                       <Form.Check
                         inline
                         label="Horror"
                         id={`inline-checkbox-2`}
+                        onClick={() => this.handleCheckBoxes("Horror")}
                       />
                       <Form.Check
                         inline
                         label="Fantasy"
                         id={`inline-checkbox-3`}
+                        onClick={() => this.handleCheckBoxes("Fantasy")}
                       />
                       <Form.Check
                         inline
                         label="Adventure"
                         id={`inline-checkbox-4`}
+                        onClick={() => this.handleCheckBoxes("Adventure")}
                       />
                       <Form.Check
                         inline
                         label="Science"
                         id={`inline-checkbox-5`}
+                        onClick={() => this.handleCheckBoxes("Science")}
                       />
                     </Col>
                     </Form.Group>
