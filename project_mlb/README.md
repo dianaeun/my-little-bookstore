@@ -6,8 +6,9 @@ Previously in Milestone1, our frontend and backend server was not connected.
 
 Now, the frontend is connected to our backend server; 'Fetch books', 'Add book', 'Delete book', 'Login', and 'Singup' functonalities can actually fetch or add data by accessing our MongoDB.
 
-To explore our application, you should enter both frontend and backend folders and command 'npm start' separately.
-
+To explore our application, you should enter both frontend and backend folders and command 'npm start' separat
+ely.
+The more detailed instructions are provided in subfolders' READMEs.
 
 ### In a terminal
 ```
