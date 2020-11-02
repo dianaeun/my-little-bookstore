@@ -1,4 +1,4 @@
-### Overview
+## Overview
 
 The source codes for the project are classified into two categories: front-end and back-end.  
 
@@ -6,23 +6,25 @@ Previously in Milestone1, our frontend and backend server was not connected.
 
 Now, the frontend is connected to our backend server; 'Fetch books', 'Add book', 'Delete book', 'Login', and 'Singup' functonalities can actually fetch or add data by accessing our MongoDB.
 
-To explore our application, you should enter both frontend and backend folders and command 'npm start' separat
-ely.
+To explore our application, you should enter both frontend and backend folders and command 'npm start' separately.
 The more detailed instructions are provided in subfolders' READMEs.
 
+## Installation
+Although, there are detailed instructions on subfolders, here are abstract but fundamental instructions to explore our application for your conviniency.
+
 ### In a terminal
-```
+```bash
 cd frontend
+npm install
 npm start
 ```
 
 ### In another terminal
-```
+```bash
 cd backend
+npm install
 npm start
 ```
-
-
 
 
 For tracking ideas, enhancements, tasks, or, most importantly, bugs, we use Github Issues.  
