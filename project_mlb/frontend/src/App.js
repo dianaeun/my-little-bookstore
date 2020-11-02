@@ -17,13 +17,13 @@ class App extends Component {
   state = {
     token: null,
     userEmail: null,
-    userId: null,
+    userID: null,
   }
-  login = (token, userEmail, userId, tokenExpiration) => {
-    this.setState({token: token, userEmail: userEmail, userId: userId});
+  login = (token, userEmail, userID, tokenExpiration) => {
+    this.setState({token: token, userEmail: userEmail, userID: userID});
   }
   logout = () => {
-    this.setState({token: null, userEmail: null, userId: null});
+    this.setState({token: null, userEmail: null, userID: null});
   }
   render() {
     return (
@@ -34,7 +34,7 @@ class App extends Component {
                 token: this.state.token,
                 login: this.login,
                 logout: this.logout,
-                userId: this.state.userId,
+                userID: this.state.userID,
                 userEmail: this.state.userEmail
               }}>
                 <main className="vh-100" style={{fontFamily: "Kurale"}}>

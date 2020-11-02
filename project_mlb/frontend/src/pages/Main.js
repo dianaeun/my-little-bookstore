@@ -14,13 +14,13 @@ class Main extends Component {
     this.fetchBooks();
   }
   fetchGenres() {
-    if (this.context.userId === null)
+    if (this.context.userID === null)
       return;
-    console.log(this.context.userId);
+    console.log(this.context.userID);
     const requestBody = {
       query: `
           query{
-              findByUserID(userID: "${this.context.userId}"){
+              findByUserID(userID: "${this.context.userID}"){
                   userID
                   preferredGenres
                   location
@@ -103,7 +103,7 @@ class Main extends Component {
           </Badge>
         </h1>
           <div style={{ width: "800px", marginLeft: "auto", marginRight: "auto"}}>
-            {this.context.userId !== null ? 
+            {this.context.userID !== null ? 
               <h3 style={{ fontFamily: "Kurale", textAlign: "center", marginTop: "2rem", marginBottom: "1rem"}}>
                 {this.state.genres.map((genre) => (
                   <Button variant="outline-danger" size="sm" style={{marginRight:"0.7rem"}} disabled>{genre}</Button>

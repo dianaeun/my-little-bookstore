@@ -2,8 +2,8 @@ const Book = require('../../models/book');
 const User = require('../../models/user');
 const {transformBook} = require('./merge');
 const DataLoader = require('dataloader')
-const userLoader = new DataLoader( userIds => {
-    return User.find( { _id: {$in: userIds}});
+const userLoader = new DataLoader( userIDs => {
+    return User.find( { _id: {$in: userIDs}});
 })
 module.exports = {
     books: async () => {

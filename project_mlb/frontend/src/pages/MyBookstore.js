@@ -33,7 +33,7 @@ class MyBookstore extends Component{
       const requestBody = {
           query: `
               query{
-                  userBooks(ownerID: "${this.context.userId}"){
+                  userBooks(ownerID: "${this.context.userID}"){
                     _id
                     date
                     title
@@ -93,12 +93,12 @@ class MyBookstore extends Component{
         return (
             <div>
                 <MlbNavbar/>
-                <AddBookModal show={this.state.addBook} handleClose={this.handleClose} owner={this.context.userId}/>
+                <AddBookModal show={this.state.addBook} handleClose={this.handleClose} owner={this.context.userID}/>
                 <DeleteBookModal show={this.state.deleteBook} handleClose={this.handleClose} book={this.state.bookForDelete}/>
                 {this.state.bookSelected && <EditBookModal show={this.state.editBook} handleClose={this.handleClose} book={this.state.bookSelected}/>}
 
                 <div style={{marginLeft: "10%", marginTop: "2rem", background: "#eeeeee", width: "25%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>
-                  <h1 style={{fontSize: "2rem"}}>{this.context.userId}'s Bookstore</h1>
+                  <h1 style={{fontSize: "2rem"}}>{this.context.userID}'s Bookstore</h1>
                 </div>
                 <Table className="myTable" size="sm" style={{ width: "80%", marginTop: "1.5rem", marginLeft: "auto", marginRight: "auto", paddingTop: "1rem"}}>
                   <thead>

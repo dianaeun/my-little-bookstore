@@ -6,12 +6,12 @@ const dateToString = date => {
 }
 
 const DataLoader = require('dataloader');
-const userLoader = new DataLoader( userIds => {
-    return User.find({ _id: { $in: userIds }});
+const userLoader = new DataLoader( userIDs => {
+    return User.find({ _id: { $in: userIDs }});
 });
-const findUser = async userId => {
+const findUser = async userID => {
     try{
-        const user = await userLoader.load(userId.toString());
+        const user = await userLoader.load(userID.toString());
         console.log("Find user while fetching book:", user._doc);
         return {
             ...user._doc,

@@ -144,7 +144,7 @@ class Discussion extends Component {
     this.setState({addDiscussionModal: false});
   }
   handleAddDiscussionModal = () => {
-    if (this.context.userId === null){
+    if (this.context.userID === null){
       alert("You must login first!");
       return;
     }  
@@ -154,7 +154,7 @@ class Discussion extends Component {
     let month = today.getMonth() + 1;
     let date = today.getDate();
     let fullDate = year + '/' + month + '/' + date;
-    let newDiscussion = {name: this.context.userId, title: "", book: "", likes: 0, comments: [], content: "", date: fullDate};
+    let newDiscussion = {name: this.context.userID, title: "", book: "", likes: 0, comments: [], content: "", date: fullDate};
     this.setState({newDiscussion: newDiscussion});
   }
   handleAddDiscussion = (event) => {
