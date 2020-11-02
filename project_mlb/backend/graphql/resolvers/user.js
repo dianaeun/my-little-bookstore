@@ -28,7 +28,7 @@ module.exports = {
             let existingUser = await User.findOne({ email: args.userInput.email });
             if (existingUser) 
                 throw new Error('DuplicatedUser');
-            existingUser = await User.findOne({ email: args.userInput.email });
+            existingUser = await User.findOne({ userID: args.userInput.userID });
             if (existingUser) 
                 throw new Error('DuplicatedUser');
             const hashedPassword = await bcrypt.hash(args.userInput.password, 12);
@@ -48,30 +48,30 @@ module.exports = {
         }
     },
     login: async ({ email, password }) => {
-        const user = null;
-        if (email.contains('@')){
+        let user = null;
+        if (email.includes('@')){
             user = await User.findOne({ email: email });
         }
         else{
-            user = await User.findOne({userId: email});
+            user = await User.findOne({userID: email});
         }
         if (!user) {
-            console.log("could not found user");
+            console.log("could not find user");
             throw new Error('NoUser');
         }
 
         console.log("found user: ", user);
-        const isEqual = await bcrypt.compare(password, user.password);
+        let isEqual = await bcrypt.compare(password, user.password);
         if (!isEqual) {
             throw new Error('NoPassword');
         }
-        const token = jwt.sign(
-            { userId: user.userID, email: user.email },
+        let token = jwt.sign(
+            { userID: user.userID, email: user.email },
             'donghunjongsundayehyeonjoon',
             {
                 expiresIn: '1h'
             }
         ); 
-        return { email: email, userId: user.userID, token: token, tokenExpiration: 1};
+        return { email: email, userID: user.userID, token: token, tokenExpiration: 1};
     }
 };

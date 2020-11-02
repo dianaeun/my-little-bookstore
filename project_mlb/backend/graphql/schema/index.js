@@ -48,7 +48,7 @@ const schema =  buildSchema(`
     }
     type AuthData{
         email: String!
-        userId: ID!
+        userID: ID!
         token: String!
         tokenExpiration: Int!
     }

@@ -16,6 +16,7 @@ class Main extends Component {
   fetchGenres() {
     if (this.context.userId === null)
       return;
+    console.log(this.context.userId);
     const requestBody = {
       query: `
           query{
