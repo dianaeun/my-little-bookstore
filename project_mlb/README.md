@@ -10,7 +10,7 @@ To explore our application, you should enter both frontend and backend folders a
 The more detailed instructions are provided in subfolders' READMEs.
 
 ## Installation
-Although, there are detailed instructions on subfolders, here are abstract but fundamental instructions to explore our application for your conviniency.
+Although there are detailed instructions on the subfolders, we provide abstract but fundamental instructions to explore our application for your convinience below.
 
 ### In a terminal
 ```bash
