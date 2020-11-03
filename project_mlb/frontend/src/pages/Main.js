@@ -38,7 +38,7 @@ class Main extends Component {
     .then(resData => {
       console.log("User successfully fetched! ", resData);
       const user = resData.data.findByUserID;
-      console.log(user);
+      console.log(user.preferredGenres);
       this.setState({genres: user.preferredGenres});
   })
   }
@@ -66,10 +66,10 @@ class Main extends Component {
       .then(resData => {
           console.log("Books are successfully fetched! ", resData);
           const books = resData.data.books;
-          console.log(books);
           books.sort((a, b) => b.rating - a.rating);
-          let selectedBooks = books.slice(0,10);
-          this.setState({books: selectedBooks});
+          // let selectedBooks = books.slice(0,10);
+          // console.log(selectedBooks);
+          this.setState({books: books});
       })
       .catch(err => { console.log(err);});
   };
@@ -129,7 +129,7 @@ class Main extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.context.token ? this.state.books.filter(book => book.genre.split(',').filter(genre => this.state.genres.includes(genre)).length > 0).map((book, i) => (
+                {this.context.token ? this.state.books.filter(book => book.genre.split(',').filter(genre => this.state.genres.includes(genre)).length > 0).slice(0,10).map((book, i) => (
                   <tr>
                     <td>{i+1}</td>
                     <td><Link href="#">{book.title}</Link></td>
@@ -146,7 +146,7 @@ class Main extends Component {
                   </tr>  
                 ))
                 :
-                this.state.books.map((book, i) => (
+                this.state.books.slice(0,10).map((book, i) => (
                   <tr>
                     <td>{i+1}</td>
                     <td><Link href="#">{book.title}</Link></td>
