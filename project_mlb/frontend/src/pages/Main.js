@@ -140,7 +140,7 @@ class Main extends Component {
                     <td>{book.genre.split(",").map((genre) => (
                       <Button variant="outline-danger" size="sm" style={{marginRight:"0.5rem"}} disabled>{genre}</Button>
                     ))}</td>
-                    <td>
+                    <td style={{width:"8rem"}}>
                       {this.createStar(book.rating)}
                     </td>
                   </tr>  
@@ -157,7 +157,7 @@ class Main extends Component {
                     <td>{book.genre!=="" && book.genre.split(",").map((genre) => (
                       <Button variant="outline-danger" size="sm" style={{marginRight:"0.5rem"}} disabled>{genre}</Button>
                     ))}</td>
-                    <td>
+                    <td style={{width:"8rem"}}>
                       {this.createStar(book.rating)}
                     </td>
                   </tr>))   
