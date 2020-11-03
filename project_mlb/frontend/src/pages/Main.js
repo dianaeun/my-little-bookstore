@@ -67,7 +67,9 @@ class Main extends Component {
           console.log("Books are successfully fetched! ", resData);
           const books = resData.data.books;
           console.log(books);
-          this.setState({books: books});
+          books.sort((a, b) => b.rating - a.rating);
+          let selectedBooks = books.slice(0,10);
+          this.setState({books: selectedBooks});
       })
       .catch(err => { console.log(err);});
   };
