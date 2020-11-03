@@ -76,7 +76,7 @@ class Login extends Component {
                   <Form onSubmit={this.handleSubmit}>
                     <Form.Group controlId="formBasicUserID">
                       <Form.Label style={{fontWeight: "bold"}}>UserID / Email</Form.Label>
-                      <Form.Control type="email" style={{background: "#EFEFEF"}} ref={this.emailRef}/>
+                      <Form.Control type="text" style={{background: "#EFEFEF"}} ref={this.emailRef}/>
                       <Form.Text className="text-muted"></Form.Text>
                     </Form.Group>
                     <Form.Group controlId="formBasicPassword">
