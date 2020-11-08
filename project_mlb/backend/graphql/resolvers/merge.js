@@ -55,7 +55,7 @@ const transformDiscussion = discussion => {
         ...discussion._doc,
         _id: discussion.id,
         date: dateToString(discussion._doc.date),
-        owner: findUser.bind(this, discussion.owner)
+        // owner: findUser.bind(this, discussion.owner)
     }
 };
 const transformComment = comment => {

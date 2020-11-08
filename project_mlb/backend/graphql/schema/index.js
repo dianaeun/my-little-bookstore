@@ -25,9 +25,9 @@ const schema =  buildSchema(`
     }
     type Discussion{
         _id: ID!
-        owner: User!
+        owner: String!
         date: String!
-        tag: Book!
+        tag: String!
         title: String!
         content: String!
         likes: Int!
@@ -35,7 +35,7 @@ const schema =  buildSchema(`
     }
     type Comment{
         _id: ID!
-        owner: User!
+        owner: String!
         discussion: Discussion!
         date: String!
         content: String!
@@ -75,14 +75,6 @@ const schema =  buildSchema(`
         location: String
         preferredGenres: [String]!
     }
-    input DiscussionInput {
-        owner: String!
-        date: String!
-        tag: String!
-        title: String!
-        content: String!
-        likes: Int!
-    }
     input CommentInput {
         owner: String!
         discussion: ID!
@@ -96,6 +88,14 @@ const schema =  buildSchema(`
         receiver: ID!
         status: String!
         date: String!   
+    }
+    input DiscussionInput {
+        owner: String!
+        date: String!
+        tag: String!
+        title: String!
+        content: String!
+        comments: [String]!
     }
     type RootQuery {
         books: [Book]!
@@ -117,6 +117,7 @@ const schema =  buildSchema(`
         cancelRequest(requestID: ID!): Request
         acceptRequest(requestID: ID!): Request
         declineRequest(requestID: ID!): Request
+        createDiscussion(discussionInput: DiscussionInput): Discussion
     }
     schema{
         query: RootQuery

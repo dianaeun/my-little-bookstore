@@ -16,12 +16,13 @@ module.exports = {
     createDiscussion: async args => {
         try {
             const discussion = new Discussion({
-                owner: args.discussionInput.userID,
-                date: args.discussionInput.date,
+                owner: args.discussionInput.owner,
+                date: new Date(args.discussionInput.date),
                 tag: args.discussionInput.tag,
                 title: args.discussionInput.title,
                 content: args.discussionInput.content,
-                comments: args.discussionInput.comments
+                comments: args.discussionInput.comments,
+                likes: 0
             });
 
             const result = await discussion.save();

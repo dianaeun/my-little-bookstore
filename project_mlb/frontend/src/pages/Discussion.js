@@ -8,15 +8,6 @@ const thumbsup = require("../icons/thumbs-up.png");
 const comment = require("../icons/comment.png");
 const tag = require("../icons/tag.png");
 
-class Comment {
-  constructor (author, content) {
-    this.author = author;
-    this.content = content;
-    let date = new Date();
-    this.date = date.getFullYear() + '/' + date.getMonth() + '/' + date.getDate();
-  }
-}
-
 class Discussion extends Component {
   state = {
     searchTerm: "", searchOption: "",
@@ -24,65 +15,48 @@ class Discussion extends Component {
     liked: [],
     addDiscussionModal: false,
     newDiscussion: {},
-    baseDiscussions: [
-      {
-        name: "Hyeon Joon Lee",
-        title: "What is your favorite phrase in “12 Rules for Life”?",
-        book: "12 Rules for Life",
-        likes: 23,
-        comments: [new Comment("DongHun Kim", "What is the book about?"), new Comment("Daye Eun", "I'd like to read it one day."), new Comment("JongSun Park", '"When you have something to say, silence is a lie."')],
-        content: "I was just wondering..",
-        date: "2020/09/05",
-      },
-      {
-        name: "DongHun Kim",
-        title: "What is the biggest difference between “The Da vinci Code” the movie and the novel?",
-        book: "The Da Vinci Code",
-        likes: 15,
-        comments: [],
-        content: "I liked the book much more than the movie.",
-        date: "2020/09/23",
-      },
-      {
-        name: "Daye Eun",
-        title: "Which characters in the book do you like best?",
-        book: "Harry Potter and the Deathly Hallows",
-        likes: 10,
-        comments: [new Comment("Hyeon Joon lee", "Harry is the best!"), new Comment("DongHun Kim", "Shut up, Malfoy."), new Comment("JongSun Park", "Severus Snape of course."), new Comment("Daye Eun", "Thanks for the comments.")],
-        content: "I like Hermione.",
-        date: "2020/09/28",
-      },
-    ],
-    discussions: [
-      {
-        name: "Hyeon Joon Lee",
-        title: "What is your favorite phrase in “12 Rules for Life”?",
-        book: "12 Rules for Life",
-        likes: 23,
-        comments: [new Comment("DongHun Kim", "What is the book about?"), new Comment("Daye Eun", "I'd like to read it one day."), new Comment("JongSun Park", '"When you have something to say, silence is a lie."')],
-        content: "I was just wondering..",
-        date: "2020/09/05",
-      },
-      {
-        name: "DongHun Kim",
-        title: "What is the biggest difference between “The Da vinci Code” the movie and the novel?",
-        book: "The Da Vinci Code",
-        likes: 15,
-        comments: [],
-        content: "I liked the book much more than the movie.",
-        date: "2020/09/23",
-      },
-      {
-        name: "Daye Eun",
-        title: "Which characters in the book do you like best?",
-        book: "Harry Potter and the Deathly Hallows",
-        likes: 10,
-        comments: [new Comment("Hyeon Joon lee", "Harry is the best!"), new Comment("DongHun Kim", "Shut up, Malfoy."), new Comment("JongSun Park", "Severus Snape of course."), new Comment("Daye Eun", "Thanks for the comments.")],
-        content: "I like Hermione.",
-        date: "2020/09/28",
-      },
-    ],
+    discussions: []
   };
+  componentDidMount() {
+    this.fetchDiscussions();
+  }
+  fetchDiscussions() {
+    const requestBody = {
+      query: `
+          query{
+              discussions{
+                _id
+                owner
+                date
+                tag
+                title
+                content
+                likes
+                comments {
+                  _id
+                  owner
+                  date
+                  content
+                }
+              }
+          }
+      `
+    }
+    fetch('http://localhost:8000/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+    .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+            throw new Error("Failed to fetch discussions!")
+        }
+        return res.json()
+    })
+    .then(resData => {
+        console.log("Discussions are successfully fetched! ", resData);
+        const discussions = resData.data.discussions;
+        console.log(discussions);
+        this.setState({discussions: discussions});
+    })
+    .catch(err => { console.log(err);});
+  }
   static contextType = AuthContext;
   handleSearch = (event, searchOption, searchTerm) => {
     event.preventDefault();
@@ -142,6 +116,7 @@ class Discussion extends Component {
   }
   handleClose = () => {
     this.setState({addDiscussionModal: false});
+    this.fetchDiscussions();
   }
   handleAddDiscussionModal = () => {
     if (this.context.userID === null){
@@ -149,50 +124,12 @@ class Discussion extends Component {
       return;
     }  
     this.setState({addDiscussionModal: true});
-    let today = new Date();
-    let year = today.getFullYear();
-    let month = today.getMonth() + 1;
-    let date = today.getDate();
-    let fullDate = year + '/' + month + '/' + date;
-    let newDiscussion = {name: this.context.userID, title: "", book: "", likes: 0, comments: [], content: "", date: fullDate};
-    this.setState({newDiscussion: newDiscussion});
-  }
-  handleAddDiscussion = (event) => {
-    event.preventDefault();
-    let discussions = this.state.discussions;
-    let baseDiscussions =this.state.baseDiscussions;
-    if (this.state.newDiscussion.title === "" | this.state.newDiscussion.book === "" | this.state.newDiscussion.content === ""){
-      alert("You have incomplete field(s)!");
-    }
-    else{
-      discussions.push(this.state.newDiscussion);
-      baseDiscussions.push(this.state.newDiscussion);
-      this.setState({discussions: discussions, baseDiscussions: baseDiscussions});
-      alert("You have added a discussion!");
-      this.setState({addDiscussionModal: false});      
-    }
-  }
-  handleContentChange = (value) => {
-    let newDiscussion = this.state.newDiscussion;
-    newDiscussion.content = value;
-    this.setState({newDiscussion: newDiscussion});
-  }
-  handleTitleChange = (value) => {
-    let newDiscussion = this.state.newDiscussion;
-    newDiscussion.title = value;
-    this.setState({newDiscussion: newDiscussion});
-  }
-  handleTagChange = (value) => {
-    let newDiscussion = this.state.newDiscussion;
-    newDiscussion.book = value;
-    this.setState({newDiscussion: newDiscussion});
   }
   render() {
     return (
         <div>
           <MlbNavbar/>
-          <AddDiscussion show={this.state.addDiscussionModal} handleAddDiscussion={(event) => this.handleAddDiscussion(event)} handleClose={this.handleClose}
-          handleContentChange={this.handleContentChange} handleTagChange={this.handleTagChange} handleTitleChange={this.handleTitleChange}/>
+          <AddDiscussion show={this.state.addDiscussionModal} handleClose={this.handleClose} owner={this.context.userID}/>
           <div style={{ width: "60%", marginLeft: "20%", marginTop: "2rem" }}>
             <div style={{ display: "flex", alignItems: "center"}}>
               <h1>Discussions</h1>
@@ -235,7 +172,7 @@ class Discussion extends Component {
                 <Card.Title style={{ display: "flex" }}>
                   <Row style={{fontSize: "1.2rem", width: "100%"}}>
                     <div style={{paddingLeft: "2rem", paddingRight: "2rem"}}>
-                      {discussion.name}
+                      {discussion.owner}
                     </div>
                     <div style={{paddingLeft: "2rem", paddingRight: "2rem"}}>
                       {discussion.date}
@@ -246,7 +183,7 @@ class Discussion extends Component {
                         alt="tag"
                         style={{width: "1.4rem", height: "1.4rem", marginRight: "0.7rem"}}
                       />
-                      {discussion.book}
+                      {discussion.tag}
                     </div>
                   </Row>
                 </Card.Title>
@@ -299,7 +236,7 @@ class Discussion extends Component {
                       <Card.Title style={{ display: "flex" }}>
                         <Row style={{fontSize: "1rem", width: "100%"}}>
                           <div style={{paddingLeft: "1rem", paddingRight: "2rem", fontWeight: "bold"}}>
-                            {comment.author}
+                            {comment.owner}
                           </div>
                           <div style={{paddingLeft: "2rem", paddingRight: "2rem", fontStyle: "italic"}}>
                             {comment.date}
