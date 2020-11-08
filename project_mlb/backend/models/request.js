@@ -11,6 +11,14 @@ const requestSchema = new Schema({
         type: String,
         required: true
     },
+    receiver: {
+        type: String,
+        required: true
+    },
+    status: {
+        type: String,
+        required: true
+    },
     date: {
         type: Date,
         required: true

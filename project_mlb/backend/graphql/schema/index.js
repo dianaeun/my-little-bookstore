@@ -44,6 +44,8 @@ const schema =  buildSchema(`
         _id: ID!
         book: Book!
         sender: String!
+        receiver: String!
+        status: String!
         date: String!
     }
     type AuthData{
@@ -85,6 +87,13 @@ const schema =  buildSchema(`
         date: String!
         content: String!
     }
+    input RequestInput {
+        sender: ID!
+        receiver: ID!
+        book: ID!
+        status: String!
+        date: String!
+    }
     type RootQuery {
         books: [Book]!
         userBooks(ownerID: String!): [Book]!
@@ -93,11 +102,13 @@ const schema =  buildSchema(`
         findByUserID(userID: String!): User
         discussions: [Discussion]!
         comments: [Comment]!
+        requests(receiverID: String!): [Request]!
     }
     type RootMutation {
         createBook(bookInput: BookInput): Book
         createUser(userInput: UserInput): User
         deleteBook(bookId: ID!): Book!
+        createRequest(requestInput: RequestInput): Request
     }
     schema{
         query: RootQuery

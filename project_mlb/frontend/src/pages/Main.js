@@ -14,9 +14,10 @@ class Main extends Component {
     this.fetchBooks();
   }
   fetchGenres() {
-    if (this.context.userID === null)
+    if (!this.context.userID){
+      console.log("userID is: ", this.context.userID, "Canceling fetchGenres()");
       return;
-    console.log(this.context.userID);
+    }
     const requestBody = {
       query: `
           query{
@@ -38,7 +39,7 @@ class Main extends Component {
     .then(resData => {
       console.log("User successfully fetched! ", resData);
       const user = resData.data.findByUserID;
-      console.log(user.preferredGenres);
+      console.log(user);
       this.setState({genres: user.preferredGenres});
   })
   }

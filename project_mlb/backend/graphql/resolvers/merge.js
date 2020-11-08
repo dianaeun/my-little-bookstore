@@ -47,6 +47,16 @@ const transformComment = comment => {
         owner: findUser.bind(this, comment.owner)
     }
 };
+const transformRequest = request => {
+    return {
+        ...request._doc,
+        _id: request.id,
+        date: dateToString(request._doc.request),
+        sender: findUser.bind(this, request.sender),
+        receiver: findUser.bind(this, request.receiver),
+    }
+}
 exports.transformBook = transformBook;
 exports.transformDiscussion = transformDiscussion;
 exports.transformComment = transformComment;
+exports.transformRequest = transformRequest;
