@@ -33,6 +33,7 @@ class Login extends Component {
                     userID
                     token
                     tokenExpiration
+                    user_id
                 }
             }
         `,
@@ -53,7 +54,7 @@ class Login extends Component {
     .then(resData => {
       console.log("successful login!", resData);
       if (resData.data.login.token) {
-          this.context.login(resData.data.login.token, resData.data.login.email, resData.data.login.userID, resData.data.login.tokenExpiration)
+          this.context.login(resData.data.login.token, resData.data.login.email, resData.data.login.userID, resData.data.login.user_id, resData.data.login.tokenExpiration)
       }})
     .catch(err =>{
       this.setState({authWarning: true})

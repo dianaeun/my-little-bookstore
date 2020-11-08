@@ -1,11 +1,14 @@
 const mongoose = require('mongoose');
-
 const Schema = mongoose.Schema;
 
 const requestSchema = new Schema({
+    bookTitle: {
+        type: String,
+        required: true
+    },
     book: {
-        type: Schema.Types.ObjectId,
-        ref: 'Book'
+        type: String,
+        required: true
     },
     sender: {
         type: String,

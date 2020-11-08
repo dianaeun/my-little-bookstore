@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Table} from 'react-bootstrap';
+import {Button, Table, Spinner} from 'react-bootstrap';
 import { Link} from "react-router-dom";
 import MlbNavbar from '../components/NavigationBar.js'
 
@@ -23,10 +23,13 @@ class MyBookstore extends Component{
         editBook : false,
         bookSelected: null,
         books: [],
-        bookForDelete: null
+        bookForDelete: null,
+        receivedRequests: [],
+        isLoading: false
     }
     static contextType = AuthContext;
     componentDidMount() {
+      this.fetchRequests();
       this.fetchBooks();
     }
     fetchBooks() {
@@ -61,7 +64,95 @@ class MyBookstore extends Component{
           this.setState({books: books});
       })
       .catch(err => { console.log(err);});
-  };
+    };
+    fetchRequests() {
+      console.log(this.context.user_id);
+      const requestBody = {
+        query: `
+            query{
+              receivedRequests(receiverID: "${this.context.user_id}"){
+                bookTitle
+                sender{
+                  _id
+                  userID
+                  email
+                }
+                receiver{
+                  _id
+                  userID
+                  email
+                }
+                status
+                date
+                _id
+              }
+            }
+        `
+      }
+      fetch('http://localhost:8000/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+            throw new Error("Failed to fetch requests!")
+        }
+        return res.json()
+      })
+      .then(resData => {
+          console.log("Received Requests are successfully fetched", resData);
+          const receivedRequests = resData.data.receivedRequests;
+          console.log(receivedRequests);
+          this.setState({receivedRequests: receivedRequests});
+      })
+    }
+    handleRequest = (request, type) => {  
+      this.setState({isLoading: true});
+      const requestBody = {
+          query: `
+              mutation{
+                ${type}(requestID: "${request._id}"){
+                  bookTitle
+                  sender{
+                    _id
+                    userID
+                    email
+                  }
+                  receiver{
+                    _id
+                    userID
+                    email
+                  }
+                  status
+                  date
+                  _id
+                }
+              }
+          `}
+      fetch('http://localhost:8000/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+            throw new Error("Failed to mutate (handle) request!")
+        }
+        return res.json()
+      })
+      .then(resData => {
+          console.log(type, " are successfully proceeded", resData);
+          let handledRequest = type === "acceptRequest" ? resData.data.acceptRequest : resData.data.declineRequest;
+          console.log("handledRequest:", handledRequest);
+
+
+          this.setState(prevState => {
+            let updatedRequests = [...prevState.receivedRequests];
+            updatedRequests.map(request => {
+              if(request._id === handledRequest._id){
+                request = handledRequest;
+              }
+            })
+            return {prevState: updatedRequests, isLoading: false}
+          })
+      })
+        
+      
+    };
+  
     handleClose = () => {
       this.setState({deleteBook: false, addBook: false, editBook: false, bookForDelete: null});
       this.fetchBooks();
@@ -97,80 +188,88 @@ class MyBookstore extends Component{
                 <DeleteBookModal show={this.state.deleteBook} handleClose={this.handleClose} book={this.state.bookForDelete}/>
                 {this.state.bookSelected && <EditBookModal show={this.state.editBook} handleClose={this.handleClose} book={this.state.bookSelected}/>}
 
-                <div style={{marginLeft: "10%", marginTop: "2rem", background: "#eeeeee", width: "25%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>
-                  <h1 style={{fontSize: "2rem"}}>{this.context.userID}'s Bookstore</h1>
-                </div>
-                <Table className="myTable" size="sm" style={{ width: "80%", marginTop: "1.5rem", marginLeft: "auto", marginRight: "auto", paddingTop: "1rem"}}>
-                  <thead>
-                    <tr>
-                      <th>Date Added</th>
-                      <th>Title</th>
-                      <th>Author</th>
-                      <th style={{paddingLeft: "2rem"}}>Price</th>
-                      <th style={{paddingLeft: "2rem"}}>Rating</th>
-                      <th style={{paddingLeft: "1rem"}}>edit</th>
-                      <th style={{paddingLeft: "1rem"}}>del</th>
-                      <th style={{paddingLeft: "2rem"}}>Requests</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.books.map((book) => (    
-                      <tr>
-                        <td style={{paddingTop: "0.5rem"}}>{book.date}</td>
-                        <td style={{paddingTop: "0rem"}}>
-                            <Link className="nav-link" to={{pathname: "/IndividualBookpage" , book:book}} >{book.title}</Link>
-                        </td>
-                        <td style={{paddingTop: "0.5rem"}}><Link href="#">{book.author}</Link></td>
-                        <td style={{paddingLeft: "2rem", paddingTop: "0.5rem"}}>${book.price}</td>
-                        {this.createStar(book.rating)}                  
-                        {book.requests.length ? <td style={{paddingLeft: "1.1rem", paddingTop: "0.5rem"}}><img src={edit_no} alt="Edit Disabled" style={{ width: "1.5rem", padding: "0rem"}} /></td>
-                          : <td><Button variant="light" onClick={()=>{this.handleEditBook(book)}}>
-                            <img src={edit} alt="Edit Book" style={{ width: "1.5rem", padding: "0rem" }} />
-                            </Button></td>}                       
-                        <td>
-                            <Button variant="light" onClick={() => {this.handleDeleteBook(book)}}>
-                              <img src={delIcon} alt="Delete Book" style={{ width: "1.5rem", padding: "0rem" }} />
-                            </Button>
-                        </td>
-                        <td style={{paddingTop: "0.5rem", paddingLeft: "4rem"}}>{this.createRequestsCol(book.requests.length)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                  <Button variant="info" onClick={this.handleAddBook}>Add Books</Button>
-                </Table>
-                {/* <Advertisement/>      */}
-                <div style={{marginLeft: "10%", marginTop: "2rem", background: "#eeeeee", width: "25%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>
-                  <h1 style={{fontSize: "2rem"}}>Received Requests</h1>
-                </div>
-                <Table className="myTable" size="sm" style={{ width: "80%", marginTop: "1.5rem", marginLeft: "auto", marginRight: "auto", paddingTop: "1rem"}}>
-                <thead>
-                    <tr>
-                      <th>Date Received</th>
-                      <th>Title</th>
-                      <th>Sender</th>
-                      <th>Action</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.books.filter(function (book){return book.requests.length > 0}).map((book) => (
-                      <tr>
-                        <td>{book.requests[0].date}</td>
-                        <td>{book.title}</td>
-                        <td>{book.requests[0].sender}</td>
-                        <td>
-                          <Button variant="outline-primary" size="sm" style={{marginLeft:"0.2rem", fontWeight: "bold"}}>Accept</Button>
-                          <Button variant="outline-danger" size="sm" style={{marginLeft:"0.2rem", fontWeight: "bold"}}>Decline</Button>
-                        </td>
-                        <td>
-                          Pending
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-            </div>
-        )
+                {this.state.isLoading ? 
+                  <div className="d-flex justify-content-center align-items-center" style={{marginTop: "13rem"}}>
+                    <Spinner animation="border" variant="primary"/>
+                  </div>
+                                      :
+                  <React.Fragment>
+                    <div style={{marginLeft: "10%", marginTop: "2rem", background: "#eeeeee", width: "25%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>
+                      <h1 style={{fontSize: "2rem"}}>{this.context.userID}'s Bookstore</h1>
+                    </div>
+                    <Table className="myTable" size="sm" style={{ width: "80%", marginTop: "1.5rem", marginLeft: "auto", marginRight: "auto", paddingTop: "1rem"}}>
+                      <thead>
+                        <tr>
+                          <th>Date Added</th>
+                          <th>Title</th>
+                          <th>Author</th>
+                          <th style={{paddingLeft: "2rem"}}>Price</th>
+                          <th style={{paddingLeft: "2rem"}}>Rating</th>
+                          <th style={{paddingLeft: "1rem"}}>edit</th>
+                          <th style={{paddingLeft: "1rem"}}>del</th>
+                          <th style={{paddingLeft: "2rem"}}>Requests</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {this.state.books.map((book) => (    
+                          <tr>
+                            <td style={{paddingTop: "0.5rem"}}>{book.date}</td>
+                            <td style={{paddingTop: "0rem"}}>
+                                <Link className="nav-link" to={{pathname: "/IndividualBookpage" , book:book}} >{book.title}</Link>
+                            </td>
+                            <td style={{paddingTop: "0.5rem"}}><Link href="#">{book.author}</Link></td>
+                            <td style={{paddingLeft: "2rem", paddingTop: "0.5rem"}}>${book.price}</td>
+                            {this.createStar(book.rating)}                  
+                            {book.requests.length ? <td style={{paddingLeft: "1.1rem", paddingTop: "0.5rem"}}><img src={edit_no} alt="Edit Disabled" style={{ width: "1.5rem", padding: "0rem"}} /></td>
+                              : <td><Button variant="light" onClick={()=>{this.handleEditBook(book)}}>
+                                <img src={edit} alt="Edit Book" style={{ width: "1.5rem", padding: "0rem" }} />
+                                </Button></td>}                       
+                            <td>
+                                <Button variant="light" onClick={() => {this.handleDeleteBook(book)}}>
+                                  <img src={delIcon} alt="Delete Book" style={{ width: "1.5rem", padding: "0rem" }} />
+                                </Button>
+                            </td>
+                            <td style={{paddingTop: "0.5rem", paddingLeft: "4rem"}}>{this.createRequestsCol(book.requests.length)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                      <Button variant="info" onClick={this.handleAddBook}>Add Books</Button>
+                    </Table>
+                    {/* <Advertisement/>      */}
+                    <div style={{marginLeft: "10%", marginTop: "2rem", background: "#eeeeee", width: "25%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>
+                      <h1 style={{fontSize: "2rem"}}>Received Requests</h1>
+                    </div>
+                    <Table className="myTable" size="sm" style={{ width: "80%", marginTop: "1.5rem", marginLeft: "auto", marginRight: "auto", paddingTop: "1rem"}}>
+                      <thead>
+                          <tr>
+                            <th>Date Received</th>
+                            <th>Title</th>
+                            <th>Sender</th>
+                            <th>Action</th>
+                            <th>Status</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        {this.state.receivedRequests.map((request) => (
+                          <tr>
+                            <td>{request.date}</td>
+                            <td>{request.bookTitle}</td>
+                            <td>{request.sender.userID}</td>
+                            <td>
+                              <Button onClick={() => {this.handleRequest(request, 'acceptRequest')}} variant="outline-primary" size="sm" style={{marginLeft:"0.2rem", fontWeight: "bold"}}>Accept</Button>
+                              <Button onClick={() => {this.handleRequest(request, 'declineRequest')}} variant="outline-danger" size="sm" style={{marginLeft:"0.2rem", fontWeight: "bold"}}>Decline</Button>
+                            </td>
+                            <td>
+                              {request.status}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  </React.Fragment>
+                }
+            </div> 
+          )
     }
 }
 

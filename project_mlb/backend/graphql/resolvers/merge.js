@@ -1,4 +1,5 @@
 const User = require('../../models/user');
+const Book = require('../../models/book');
 const dateToString = date => {
     const newDate = new Date(date);
     const month = newDate.getMonth()+1;
@@ -9,6 +10,10 @@ const DataLoader = require('dataloader');
 const userLoader = new DataLoader( userIDs => {
     return User.find({ _id: { $in: userIDs }});
 });
+const bookLoader = new DataLoader( bookIDs => {
+    return Book.find({ _id: { $in: bookIDs }});
+});
+
 const findUser = async userID => {
     try{
         const user = await userLoader.load(userID.toString());
@@ -23,6 +28,20 @@ const findUser = async userID => {
         throw err;
     }
 };
+
+const findBook = async bookID => {
+    try{
+        const book = await bookLoader.load(bookID.toString());
+        console.log("Find Book while fetching book:", book._doc);
+        return {
+            ...book._doc,
+            _id: book.id
+        }
+    }
+    catch (err){
+        throw err;
+    }
+}
 const transformBook = book => {
     return {
         ...book._doc,
@@ -54,6 +73,7 @@ const transformRequest = request => {
         date: dateToString(request._doc.request),
         sender: findUser.bind(this, request.sender),
         receiver: findUser.bind(this, request.receiver),
+        book: findBook.bind(this, request.book)
     }
 }
 exports.transformBook = transformBook;

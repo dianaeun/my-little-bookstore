@@ -72,6 +72,6 @@ module.exports = {
                 expiresIn: '1h'
             }
         ); 
-        return { email: email, userID: user.userID, token: token, tokenExpiration: 1};
+        return { email: email, userID: user.userID, token: token, tokenExpiration: 1, user_id: user.id};
     }
 };

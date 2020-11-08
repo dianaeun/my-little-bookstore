@@ -42,17 +42,19 @@ const schema =  buildSchema(`
     }
     type Request{
         _id: ID!
+        bookTitle: String!
         book: Book!
-        sender: String!
-        receiver: String!
+        sender: User!
+        receiver: User!
         status: String!
         date: String!
     }
     type AuthData{
         email: String!
-        userID: ID!
+        userID: String!
         token: String!
         tokenExpiration: Int!
+        user_id: ID!
     }
     input BookInput {
         title: String!
@@ -88,11 +90,12 @@ const schema =  buildSchema(`
         content: String!
     }
     input RequestInput {
+        bookTitle: String!
+        book: ID!
         sender: ID!
         receiver: ID!
-        book: ID!
         status: String!
-        date: String!
+        date: String!   
     }
     type RootQuery {
         books: [Book]!
@@ -102,13 +105,18 @@ const schema =  buildSchema(`
         findByUserID(userID: String!): User
         discussions: [Discussion]!
         comments: [Comment]!
-        requests(receiverID: String!): [Request]!
+        receivedRequests(receiverID: String!): [Request]!
+        sentRequests(senderID: String!): [Request]!
+        
     }
     type RootMutation {
         createBook(bookInput: BookInput): Book
         createUser(userInput: UserInput): User
         deleteBook(bookId: ID!): Book!
         createRequest(requestInput: RequestInput): Request
+        cancelRequest(requestID: ID!): Request
+        acceptRequest(requestID: ID!): Request
+        declineRequest(requestID: ID!): Request
     }
     schema{
         query: RootQuery

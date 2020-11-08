@@ -18,9 +18,10 @@ class App extends Component {
     token: null,
     userEmail: null,
     userID: null,
+    user_id: null
   }
-  login = (token, userEmail, userID, tokenExpiration) => {
-    this.setState({token: token, userEmail: userEmail, userID: userID});
+  login = (token, userEmail, userID, user_id, tokenExpiration) => {
+    this.setState({token: token, userEmail: userEmail, userID: userID, user_id: user_id});
   }
   logout = () => {
     this.setState({token: null, userEmail: null, userID: null});
@@ -35,6 +36,7 @@ class App extends Component {
                 login: this.login,
                 logout: this.logout,
                 userID: this.state.userID,
+                user_id: this.state.user_id,
                 userEmail: this.state.userEmail
               }}>
                 <main className="vh-100" style={{fontFamily: "Kurale"}}>
