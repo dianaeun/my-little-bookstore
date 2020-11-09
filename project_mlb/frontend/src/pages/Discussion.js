@@ -17,7 +17,8 @@ class Discussion extends Component {
     liked: [],
     addDiscussionModal: false,
     newDiscussion: {},
-    discussions: []
+    discussions: [],
+    baseDiscussions: [],
   };
   constructor(props){
     super(props);
@@ -59,6 +60,7 @@ class Discussion extends Component {
         console.log("Discussions are successfully fetched! ", resData);
         const discussions = resData.data.discussions;
         this.setState({discussions: discussions});
+        this.setState({baseDiscussions: discussions});
         for (var i=0; i < this.state.discussions.length; i++)
           this.commentRef.push(React.createRef());
     })
@@ -69,14 +71,16 @@ class Discussion extends Component {
     event.preventDefault();
     let discussions = this.state.discussions;
     if (searchOption === "Tag")
-      discussions = this.state.baseDiscussions.filter(function(discussion){return discussion.book.toLowerCase().includes(searchTerm.toLowerCase())});
+      discussions = this.state.baseDiscussions.filter(function(discussion){return discussion.tag.toLowerCase().includes(searchTerm.toLowerCase())});
     else if (searchOption === "Title")
       discussions = this.state.baseDiscussions.filter(function(discussion){return discussion.title.toLowerCase().includes(searchTerm.toLowerCase())});
     else if (searchOption === "Content")
       discussions = this.state.baseDiscussions.filter(function(discussion){return discussion.content.toLowerCase().includes(searchTerm.toLowerCase())});
+    else if (searchOption === "Author")
+      discussions = this.state.baseDiscussions.filter(function(discussion){return discussion.owner.toLowerCase().includes(searchTerm.toLowerCase())});
     else 
       discussions = this.state.baseDiscussions.filter(function(discussion){
-        return discussion.book.toLowerCase().includes(searchTerm.toLowerCase())|discussion.title.toLowerCase().includes(searchTerm.toLowerCase())
+        return discussion.tag.toLowerCase().includes(searchTerm.toLowerCase())|discussion.title.toLowerCase().includes(searchTerm.toLowerCase())
         |discussion.content.toLowerCase().includes(searchTerm.toLowerCase())});
     this.setState({discussions: discussions});
   }
@@ -202,6 +206,7 @@ class Discussion extends Component {
                   <Dropdown.Item eventKey="Tag" onClick={()=>{document.getElementById("dropdown").innerHTML="Tag"; this.handleSearchOption("Tag");}}>Tag</Dropdown.Item>
                   <Dropdown.Item eventKey="Title" onClick={()=>{document.getElementById("dropdown").innerHTML="Title"; this.handleSearchOption("Title");}}>Title</Dropdown.Item>
                   <Dropdown.Item eventKey="Content" onClick={()=>{document.getElementById("dropdown").innerHTML="Content"; this.handleSearchOption("Content");}}>Content</Dropdown.Item>
+                  <Dropdown.Item eventKey="Author" onClick={()=>{document.getElementById("dropdown").innerHTML="Author"; this.handleSearchOption("Author");}}>Author</Dropdown.Item>
                 </DropdownButton>
               </Form.Group>
             </Form>
@@ -219,7 +224,7 @@ class Discussion extends Component {
           </div>
           {this.state.discussions.map((discussion, i) => (
             <Card
-              style={{width: "60%", marginLeft: "20%", marginTop: "1rem", background: "#CEE4E9"}}
+              style={{width: "60%", marginLeft: "20%", marginBottom: "1rem", background: "#CEE4E9"}}
             >
               <Card.Body>
                 <Card.Title style={{ display: "flex" }}>
