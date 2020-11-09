@@ -1,5 +1,5 @@
 const Discussion = require('../../models/discussion');
-const { transformDiscussion } = require('./merge');
+const { transformDiscussion, transformComment } = require('./merge');
 
 module.exports = {
     discussions: async () => {
@@ -21,7 +21,7 @@ module.exports = {
                 tag: args.discussionInput.tag,
                 title: args.discussionInput.title,
                 content: args.discussionInput.content,
-                comments: args.discussionInput.comments,
+                comments: [],
                 likes: 0
             });
 
@@ -31,4 +31,14 @@ module.exports = {
             throw err;
         }
     },
+    updateLikes: async args => {
+        try{
+            const discussion = await Discussion.findById(args._id);
+            await Discussion.update({_id: args._id}, {likes: discussion.likes + args.likes});
+            return transformComment(discussion);
+        }
+        catch (err){
+            throw err;
+        }
+    }
 };

@@ -95,7 +95,6 @@ const schema =  buildSchema(`
         tag: String!
         title: String!
         content: String!
-        comments: [String]!
     }
     type RootQuery {
         books: [Book]!
@@ -119,6 +118,7 @@ const schema =  buildSchema(`
         declineRequest(requestID: ID!): Request
         createDiscussion(discussionInput: DiscussionInput): Discussion
         createComment(commentInput: CommentInput): Comment
+        updateLikes(_id: ID!, likes: Int!): Discussion
     }
     schema{
         query: RootQuery

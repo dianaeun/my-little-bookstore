@@ -10,7 +10,6 @@ class AddDiscussion extends Component{
     }
     handleSubmit = event => {
         event.preventDefault();
-        console.log(this.props);
         const tag = this.tagRef.current.value;
         const title = this.titleRef.current.value;
         const content = this.contentRef.current.value;
@@ -22,8 +21,8 @@ class AddDiscussion extends Component{
         }
         const requestBody = {
             query: `
-                mutation CreateDiscussion($owner: String!, $date: String!, $tag: String!, $title: String!, $content:String!, $comments: [String]!){
-                    createDiscussion(discussionInput: {owner: $owner, date: $date, tag: $tag, title: $title, content: $content, comments: $comments}){
+                mutation CreateDiscussion($owner: String!, $date: String!, $tag: String!, $title: String!, $content:String!){
+                    createDiscussion(discussionInput: {owner: $owner, date: $date, tag: $tag, title: $title, content: $content}){
                         _id
                     }
                 }
@@ -34,7 +33,6 @@ class AddDiscussion extends Component{
                 tag: tag,
                 title: title,
                 content: content,
-                comments: [],
             }
         };
         fetch("http://localhost:8000/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
@@ -46,14 +44,17 @@ class AddDiscussion extends Component{
             return res.json();
         })
         .then(resData => {
-            console.log("successful added your discussion!", resData);
+            console.log(resData);
+            if (resData.data.createDiscussion !== null){
+                console.log("successfully added your discussion!", resData);
+                alert("You have successfully added a discussion!");
+            }
         })
         .catch(err =>{
             console.log(err);
-            //throw err;    => user 가 이미 존재할때 그냥 error 을 throw 시켜버릴때 먹통이된다! 
         });
-        alert("You have successfully added a discussion!");
         this.props.handleClose();
+        this.props.fetchDiscussions();
     }
     render(){
         return(

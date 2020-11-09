@@ -40,8 +40,9 @@ const discussionSchema = new Schema({
     //     ref: 'Comment'
     // }
     comments: {
-        type: [Comment],
-        required: true
+        type: Array,
+        required: true,
+        default: []
     }
 });
 module.exports = mongoose.model('Discussion', discussionSchema);

@@ -7,23 +7,19 @@ import AuthContext from '../context/AuthContext';
 const thumbsup = require("../icons/thumbs-up.png");
 const comment = require("../icons/comment.png");
 const tag = require("../icons/tag.png");
-let date = new Date();
-date = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
 
 class Discussion extends Component {
   state = {
-    searchTerm: "", searchOption: "",
-    shownDiscussions: [], shownComments: [],
-    liked: [],
+    sortBy: "Date", searchTerm: "", searchOption: "",
+    shownDiscussions: [], shownComments: [], liked: [],
     addDiscussionModal: false,
-    newDiscussion: {},
-    discussions: [],
-    baseDiscussions: [],
+    discussions: [], baseDiscussions: [],
   };
   constructor(props){
     super(props);
     this.commentRef = [];
   }
+  static contextType = AuthContext;
   componentDidMount() {
     this.fetchDiscussions();
   }
@@ -51,22 +47,25 @@ class Discussion extends Component {
     }
     fetch('http://localhost:8000/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
     .then(res => {
-        if (res.status !== 200 && res.status !== 201) {
-            throw new Error("Failed to fetch discussions!")
-        }
-        return res.json()
+      if (res.status !== 200 && res.status !== 201) {
+        throw new Error("Failed to fetch discussions!")
+      }
+      return res.json()
     })
     .then(resData => {
-        console.log("Discussions are successfully fetched! ", resData);
-        const discussions = resData.data.discussions;
-        this.setState({discussions: discussions});
-        this.setState({baseDiscussions: discussions});
-        for (var i=0; i < this.state.discussions.length; i++)
-          this.commentRef.push(React.createRef());
+      console.log("Discussions are successfully fetched! ", resData);
+      const discussions = resData.data.discussions;
+      if (this.state.sortBy === "Likes")
+        discussions.sort(function(a, b){return b.likes - a.likes});
+      else if (this.state.sortBy === "Comments")
+        discussions.sort(function(a, b){return b.comments.length - a.comments.length});
+      else;
+      this.setState({discussions: discussions, baseDiscussions: discussions});
+      for (var i=0; i < this.state.discussions.length; i++)
+        this.commentRef.push(React.createRef());
     })
     .catch(err => { console.log(err);});
   }
-  static contextType = AuthContext;
   handleSearch = (event, searchOption, searchTerm) => {
     event.preventDefault();
     let discussions = this.state.discussions;
@@ -80,50 +79,67 @@ class Discussion extends Component {
       discussions = this.state.baseDiscussions.filter(function(discussion){return discussion.owner.toLowerCase().includes(searchTerm.toLowerCase())});
     else 
       discussions = this.state.baseDiscussions.filter(function(discussion){
-        return discussion.tag.toLowerCase().includes(searchTerm.toLowerCase())|discussion.title.toLowerCase().includes(searchTerm.toLowerCase())
-        |discussion.content.toLowerCase().includes(searchTerm.toLowerCase())});
-    this.setState({discussions: discussions});
-  }
-  handleSearchTerm = (value) => {
-    this.setState({searchTerm: value});
-  }
-  handleSearchOption = (value) => {
-    this.setState({searchOption: value});
-  }
-  handleDiscussionSort = (sortBy) => {
-    let discussions = this.state.discussions;
-    if (sortBy === "Likes")
-      discussions.sort(function(a, b){return b.likes - a.likes});
-    else if (sortBy === "Comments")
-      discussions.sort(function(a, b){return b.comments.length - a.comments.length});
-    else discussions.sort(function(a, b){return Date.parse(b.date) - Date.parse(a.date)});
-    this.setState({discussions: discussions});
+        return discussion.tag.toLowerCase().includes(searchTerm.toLowerCase()) || discussion.title.toLowerCase().includes(searchTerm.toLowerCase())
+        || discussion.content.toLowerCase().includes(searchTerm.toLowerCase()) || discussion.owner.toLowerCase().includes(searchTerm.toLowerCase())});
+    this.setState({discussions: discussions, shownComments: []});
   }
   handleShowDiscussion = (target) => {
-    let index = this.state.shownDiscussions.indexOf(target);
+    let shown = this.state.shownDiscussions;
+    let index = shown.indexOf(target);
     if (index === -1) {
-      this.state.shownDiscussions.push(target);
-    } else this.state.shownDiscussions.splice(index, 1);
-    this.setState({ shownDiscussions: this.state.shownDiscussions });
+      shown.push(target);
+    } else shown.splice(index, 1);
+    this.setState({ shownDiscussions: shown });
   };
   handleShowComments = (target) => {
-    let index = this.state.shownComments.indexOf(target);
+    let shown = this.state.shownComments;
+    let index = shown.indexOf(target);
     if (index === -1) {
-      this.state.shownComments.push(target);
-    } else this.state.shownComments.splice(index, 1);
-    this.setState({ shownComments: this.state.shownComments });
+      shown.push(target);
+    } else shown.splice(index, 1);
+    this.setState({ shownComments: shown });
   };
   handleLike = (target) => {
-    let index = this.state.liked.indexOf(target);
-    let discussions = this.state.discussions;
-    if (index === -1) {
-      discussions[target].likes = discussions[target].likes + 1;
-      this.state.liked.push(target);
-    } else {
-      discussions[target].likes = discussions[target].likes - 1;
-      this.state.liked.splice(index, 1);
+    let liked = this.state.liked;
+    let like = (liked.indexOf(target) === -1) ? 1 : -1;
+    if (this.context.userID === null){
+      alert("Login to like a discussion!!");
+      return;
     }
-    this.setState({discussions: discussions});
+    if (liked.indexOf(target) === -1) 
+      liked.push(target);
+    else 
+      liked.splice(liked.indexOf(target), 1);
+    const requestBody = {
+      query: `
+        mutation UpdateLikes($_id: ID!, $likes:Int!) {
+          updateLikes(_id: $_id, likes: $likes) {
+            _id
+            likes
+          }
+        }
+      `,
+      variables: {
+        _id: this.state.discussions[target]._id,
+        likes: like
+      }
+    };
+    fetch("http://localhost:8000/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+    .then(res => {
+        console.log(res.status);
+        if (res.status !== 200 && res.status !== 201) {
+            throw new Error('Failed to fetch during update likes!!!!');
+        }
+        this.fetchDiscussions();
+        return res.json();
+    })
+    .then(resData => {
+        console.log("successful liked/unliked a discussion!", resData);
+    })
+    .catch(err =>{
+        console.log(err);
+    });
+    this.setState({liked: liked});
   }
   handleClose = () => {
     this.setState({addDiscussionModal: false});
@@ -186,7 +202,7 @@ class Discussion extends Component {
     return (
         <div>
           <MlbNavbar/>
-          <AddDiscussion show={this.state.addDiscussionModal} handleClose={this.handleClose} owner={this.context.userID}/>
+          <AddDiscussion show={this.state.addDiscussionModal} fetchDiscussions={this.fetchDiscussions} handleClose={this.handleClose} owner={this.context.userID}/>
           <div style={{ width: "60%", marginLeft: "20%", marginTop: "2rem" }}>
             <div style={{ display: "flex", alignItems: "center"}}>
               <h1>Discussions</h1>
@@ -198,15 +214,15 @@ class Discussion extends Component {
             <Form style={{marginTop: "2rem"}} onSubmit={(event) => this.handleSearch(event, this.state.searchOption, this.state.searchTerm)}> 
               <Form.Group as={Row}>
                 <Col sm={5}>
-                  <Form.Control type="text" placeholder="Search Term" onChange={(event)=>this.handleSearchTerm(event.target.value)}/>
+                  <Form.Control type="text" placeholder="Search Term" onChange={(event) => this.setState({searchTerm: event.target.value})}/>
                 </Col>
                 <Button style={{fontWeight: "bold", background: "#FAC917", color: "black", border: "1px solid #FAC917", opacity: "79%"}} type="submit">Search</Button>
                 <DropdownButton id="dropdown" variant="outline-secondary" title="All Categories" style={{marginLeft: "1rem"}} >
-                  <Dropdown.Item eventKey='All Categories' onClick={()=>{document.getElementById("dropdown").innerHTML="All Categories"; this.handleSearchOption("All");}}>All Categories</Dropdown.Item>
-                  <Dropdown.Item eventKey="Tag" onClick={()=>{document.getElementById("dropdown").innerHTML="Tag"; this.handleSearchOption("Tag");}}>Tag</Dropdown.Item>
-                  <Dropdown.Item eventKey="Title" onClick={()=>{document.getElementById("dropdown").innerHTML="Title"; this.handleSearchOption("Title");}}>Title</Dropdown.Item>
-                  <Dropdown.Item eventKey="Content" onClick={()=>{document.getElementById("dropdown").innerHTML="Content"; this.handleSearchOption("Content");}}>Content</Dropdown.Item>
-                  <Dropdown.Item eventKey="Author" onClick={()=>{document.getElementById("dropdown").innerHTML="Author"; this.handleSearchOption("Author");}}>Author</Dropdown.Item>
+                  <Dropdown.Item eventKey='All Categories' onClick={()=>{document.getElementById("dropdown").innerHTML="All Categories"; this.setState({searchOption: "All"});}}>All Categories</Dropdown.Item>
+                  <Dropdown.Item eventKey="Tag" onClick={()=>{document.getElementById("dropdown").innerHTML="Tag"; this.setState({searchOption: "Tag"});}}>Tag</Dropdown.Item>
+                  <Dropdown.Item eventKey="Title" onClick={()=>{document.getElementById("dropdown").innerHTML="Title"; this.setState({searchOption: "Title"});}}>Title</Dropdown.Item>
+                  <Dropdown.Item eventKey="Content" onClick={()=>{document.getElementById("dropdown").innerHTML="Content"; this.setState({searchOption: "Content"});}}>Content</Dropdown.Item>
+                  <Dropdown.Item eventKey="Author" onClick={()=>{document.getElementById("dropdown").innerHTML="Author"; this.setState({searchOption: "Author"});}}>Author</Dropdown.Item>
                 </DropdownButton>
               </Form.Group>
             </Form>
@@ -216,9 +232,9 @@ class Discussion extends Component {
             <div key={`inline-radio`} style={{textAlign: "right"}}>
               <Form>
                 <Form.Label column sm="3" style={{marginRight: "1rem"}}>Sort By</Form.Label>
-                <Form.Check inline label='Likes' type='radio' name='category' id='likes' onClick={()=>this.handleDiscussionSort("Likes")}/>
-                <Form.Check inline label='Comments' type='radio' name='category' id='comments' onClick={()=>this.handleDiscussionSort("Comments")}/>
-                <Form.Check inline label='Date' type='radio' name='category' id='date' onClick={()=>this.handleDiscussionSort("Date")}/>
+                <Form.Check inline label='Likes' type='radio' name='category' id='likes' onClick={() => {this.setState({sortBy: "Likes", shownComments: []}); this.fetchDiscussions();}}/>
+                <Form.Check inline label='Comments' type='radio' name='category' id='comments' onClick={() => {this.setState({sortBy: "Comments", shownComments: []}); this.fetchDiscussions();}}/>
+                <Form.Check inline label='Date' type='radio' name='category' id='date' onClick={() => {this.setState({sortBy: "Date", shownComments: []}); this.fetchDiscussions();}}/>
               </Form>
             </div>
           </div>
