@@ -63,7 +63,7 @@ const transformComment = comment => {
         ...comment._doc,
         _id: comment.id,
         date: dateToString(comment._doc.date),
-        owner: findUser.bind(this, comment.owner)
+        // owner: findUser.bind(this, comment.owner)
     }
 };
 const transformRequest = request => {

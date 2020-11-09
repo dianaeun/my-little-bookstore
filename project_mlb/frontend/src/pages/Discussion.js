@@ -7,6 +7,8 @@ import AuthContext from '../context/AuthContext';
 const thumbsup = require("../icons/thumbs-up.png");
 const comment = require("../icons/comment.png");
 const tag = require("../icons/tag.png");
+let date = new Date();
+date = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
 
 class Discussion extends Component {
   state = {
@@ -17,6 +19,10 @@ class Discussion extends Component {
     newDiscussion: {},
     discussions: []
   };
+  constructor(props){
+    super(props);
+    this.commentRef = [];
+  }
   componentDidMount() {
     this.fetchDiscussions();
   }
@@ -52,8 +58,9 @@ class Discussion extends Component {
     .then(resData => {
         console.log("Discussions are successfully fetched! ", resData);
         const discussions = resData.data.discussions;
-        console.log(discussions);
         this.setState({discussions: discussions});
+        for (var i=0; i < this.state.discussions.length; i++)
+          this.commentRef.push(React.createRef());
     })
     .catch(err => { console.log(err);});
   }
@@ -124,6 +131,52 @@ class Discussion extends Component {
       return;
     }  
     this.setState({addDiscussionModal: true});
+  }
+  handleAddComment = (event, i) => {
+    event.preventDefault();
+    const comment = this.commentRef[i].current.value;
+    if (this.context.userID === null) {
+      alert("Please login to add a comment!");
+      return;
+    }
+    if (comment.trim().length === 0){
+      console.log("warning form control (null type input)");
+      alert("Please fill in the field!");
+      return;
+    }
+    const requestBody = {
+        query: `
+              mutation CreateComment($owner: String!, $discussion: ID!, $content: String!, $date: String!){
+                createComment(commentInput: {owner: $owner, discussion: $discussion, content: $content, date: $date}){
+                  _id
+                }
+              }
+        `,
+        variables: {
+            owner: this.context.userID,
+            date: new Date(),
+            discussion: this.state.discussions[i]._id,
+            content: comment
+        }
+    };
+    fetch("http://localhost:8000/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+    .then(res => {
+        console.log(res.status);
+        if (res.status !== 200 && res.status !== 201) {
+            throw new Error('Failed to fetch during add comment!!!!');
+        }
+        return res.json();
+    })
+    .then(resData => {
+        console.log("successful added your comment!", resData);
+    })
+    .catch(err =>{
+        console.log(err);
+        //throw err;    => user 가 이미 존재할때 그냥 error 을 throw 시켜버릴때 먹통이된다! 
+    });
+    alert("You have successfully added a comment!");
+    this.fetchDiscussions();
+    this.commentRef[i].current.value = "";
   }
   render() {
     return (
@@ -249,6 +302,16 @@ class Discussion extends Component {
                     </Card.Body> 
                   </Card>                
                 ))}
+                <Card style={this.state.shownComments.includes(i + "") ? {marginLeft: "1rem", marginTop: "1rem", background: "#EEEEEE"} : { display: "none"}}>
+                  <Card.Body>
+                    <Card.Text>
+                      <Form onSubmit={(event) => this.handleAddComment(event, i)}>
+                        <Form.Control id="comment" as="textarea" rows="3" ref={this.commentRef[i]}/>
+                        <Button style={{marginTop: "0.5rem"}} type="submit">Add Comment</Button>
+                      </Form>
+                    </Card.Text>
+                  </Card.Body> 
+                </Card>      
 
               </Card.Body>
             </Card>

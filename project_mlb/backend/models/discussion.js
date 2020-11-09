@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const Comment = require('./comment').Schema;
 const Schema = mongoose.Schema;
 
 const discussionSchema = new Schema({
@@ -35,9 +35,13 @@ const discussionSchema = new Schema({
         type: Number,
         required: true
     },
+    // comments: {
+    //     type: [Schema.Types.ObjectId],
+    //     ref: 'Comment'
+    // }
     comments: {
-        type: [Schema.Types.ObjectId],
-        ref: 'Comment'
+        type: [Comment],
+        required: true
     }
 });
 module.exports = mongoose.model('Discussion', discussionSchema);

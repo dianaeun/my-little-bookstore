@@ -118,6 +118,7 @@ const schema =  buildSchema(`
         acceptRequest(requestID: ID!): Request
         declineRequest(requestID: ID!): Request
         createDiscussion(discussionInput: DiscussionInput): Discussion
+        createComment(commentInput: CommentInput): Comment
     }
     schema{
         query: RootQuery
