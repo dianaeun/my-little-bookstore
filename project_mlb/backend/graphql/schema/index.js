@@ -16,6 +16,8 @@ const schema =  buildSchema(`
     }
     type User{
         _id: ID!
+        firstName: String!
+        lastName: String!
         email: String!
         password: String!
         userID: String!
@@ -49,6 +51,8 @@ const schema =  buildSchema(`
         date: String!
     }
     type AuthData{
+        firstName: String!
+        preferredGenres: [String]!
         email: String!
         userID: String!
         token: String!
@@ -68,6 +72,8 @@ const schema =  buildSchema(`
         owner: ID!
     }
     input UserInput {
+        firstName: String!
+        lastName: String!
         email: String!
         password: String!
         userID: String!

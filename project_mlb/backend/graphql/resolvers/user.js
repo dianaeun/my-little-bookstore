@@ -34,6 +34,8 @@ module.exports = {
             const hashedPassword = await bcrypt.hash(args.userInput.password, 12);
 
             const user = new User({
+                firstName: args.userInput.firstName,
+                lastName: args.userInput.lastName,
                 email: args.userInput.email,
                 password: hashedPassword,
                 userID: args.userInput.userID,
@@ -59,7 +61,6 @@ module.exports = {
             console.log("could not find user");
             throw new Error('NoUser');
         }
-
         console.log("found user: ", user);
         let isEqual = await bcrypt.compare(password, user.password);
         if (!isEqual) {
@@ -72,6 +73,7 @@ module.exports = {
                 expiresIn: '1h'
             }
         ); 
-        return { email: email, userID: user.userID, token: token, tokenExpiration: 1, user_id: user.id};
+        
+        return { firstName: user.firstName, email: email, preferredGenres: user.preferredGenres, userID: user.userID, token: token, tokenExpiration: 1, user_id: user.id};
     }
 };
