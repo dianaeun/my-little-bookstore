@@ -130,6 +130,9 @@ class MyBookstore extends Component{
                   status
                   date
                   _id
+                  book{
+                    _id
+                  }
                 }
               }
           `}
@@ -143,13 +146,13 @@ class MyBookstore extends Component{
       .then(resData => {
           console.log(type, " are successfully proceeded", resData);
           let handledRequest = type === "acceptRequest" ? resData.data.acceptRequest : resData.data.declineRequest;
-          console.log("handledRequest:", handledRequest);
+          // console.log("handledRequest:", handledRequest);
           this.setState(prevState => {
             let updatedRequests = [...prevState.receivedRequests];
-            console.log("before requests: ", updatedRequests)
+            // console.log("before requests: ", updatedRequests)
             const index = updatedRequests.findIndex((el) => el._id === handledRequest._id);
             updatedRequests[index] = handledRequest;
-            console.log("change to..", handledRequest);
+            // console.log("change to..", handledRequest);
             console.log("after requests: ", updatedRequests)
 
             return {receivedRequests: updatedRequests, isLoadingRequest: false}
@@ -185,6 +188,7 @@ class MyBookstore extends Component{
     }
     isRequested = (bookID) => {
       let count = 0;
+      console.log("isRequested......receivedRequests", this.state.receivedRequests);
       this.state.receivedRequests.map(request => {
         if (request.book._id === bookID)
           count++;
@@ -201,9 +205,6 @@ class MyBookstore extends Component{
                 <AddBookModal show={this.state.addBook} handleClose={this.handleClose} owner={this.context.user_id}/>
                 <DeleteBookModal show={this.state.deleteBook} handleClose={this.handleClose} book={this.state.bookForDelete}/>
                 {this.state.bookSelected && <EditBookModal show={this.state.editBook} handleClose={this.handleClose} book={this.state.bookSelected}/>}
-
-                
-                                      :
                   <React.Fragment>
                     <div style={{marginLeft: "10%", marginTop: "2rem", background: "#eeeeee", width: "25%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>
                       <h1 style={{fontSize: "2rem"}}>{this.context.firstName}'s Bookstore</h1>
