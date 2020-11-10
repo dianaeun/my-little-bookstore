@@ -33,6 +33,7 @@ class MyBookstore extends Component{
       this.fetchBooks();
     }
     fetchBooks() {
+      this.setState({isLoading: true});
       const requestBody = {
           query: `
               query{
@@ -61,12 +62,13 @@ class MyBookstore extends Component{
           console.log("Books are successfully fetched! ", resData);
           const books = resData.data.userBooks;
           console.log(books);
-          this.setState({books: books});
+          this.setState({books: books, isLoading: false});
       })
       .catch(err => { console.log(err);});
     };
     fetchRequests() {
       console.log(this.context.user_id);
+      this.setState({isLoading: true});
       const requestBody = {
         query: `
             query{
@@ -100,7 +102,7 @@ class MyBookstore extends Component{
           console.log("Received Requests are successfully fetched", resData);
           const receivedRequests = resData.data.receivedRequests;
           console.log(receivedRequests);
-          this.setState({receivedRequests: receivedRequests});
+          this.setState({receivedRequests: receivedRequests, isLoading: false});
       })
     }
     handleRequest = (request, type) => {  
@@ -137,16 +139,15 @@ class MyBookstore extends Component{
           console.log(type, " are successfully proceeded", resData);
           let handledRequest = type === "acceptRequest" ? resData.data.acceptRequest : resData.data.declineRequest;
           console.log("handledRequest:", handledRequest);
-
-
           this.setState(prevState => {
             let updatedRequests = [...prevState.receivedRequests];
-            updatedRequests.map(request => {
-              if(request._id === handledRequest._id){
-                request = handledRequest;
-              }
-            })
-            return {prevState: updatedRequests, isLoading: false}
+            console.log("before requests: ", updatedRequests)
+            const index = updatedRequests.findIndex((el) => el._id == handledRequest._id);
+            updatedRequests[index] = handledRequest;
+            console.log("change to..", handledRequest);
+            console.log("after requests: ", updatedRequests)
+
+            return {receivedRequests: updatedRequests, isLoading: false}
           })
       })
         
