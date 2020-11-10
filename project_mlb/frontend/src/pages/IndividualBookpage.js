@@ -15,8 +15,7 @@ class IndividualBookpage extends Component{
     }
 
     constructor(){
-      super();
-      
+        super();
         this.state = { showText: false };
         this.state = { showText1: false};
 
@@ -25,7 +24,6 @@ class IndividualBookpage extends Component{
     toggle = () => {
       this.setState({ isOpen: !this.state.isOpen });
     }
-    
     createStar = (n) => {
       let stars = [];
       for (let i = 0; i < n; i++){
@@ -47,7 +45,6 @@ class IndividualBookpage extends Component{
     }
 
     render(){
-
         return (
           <React.Fragment>
             <MlbNavbar/>

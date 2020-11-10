@@ -3,12 +3,57 @@ import { Button, Table, Container } from 'react-bootstrap';
 import EditProfileModal from '../components/EditProfileModal';
 import ViewRequestInfoModal from '../components/ViewRequestInfoModal';
 import MlbNavbar from '../components/NavigationBar.js'
+import AuthContext from '../context/AuthContext';
 
 class Profile extends Component{
     state = {
       editProfile: false,
       viewrequestInfo : false,
-      requestSelected: null
+      requestSelected: null,
+      sentRequests: [],
+      isLoading: false
+    }
+    static contextType = AuthContext;
+    componentDidMount() {
+      this.fetchRequests();
+    }
+    fetchRequests() {
+      this.setState({isLoading: true});
+      const requestBody = {
+        query: `
+            query{
+              sentRequests(senderID: "${this.context.user_id}"){
+                bookTitle
+                sender{
+                  _id
+                  userID
+                  email
+                }
+                receiver{
+                  _id
+                  userID
+                  email
+                }
+                status
+                date
+                _id
+              }
+            }
+        `
+      }
+      fetch('http://localhost:8000/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+            throw new Error("Failed to fetch requests!")
+        }
+        return res.json()
+      })
+      .then(resData => {
+          console.log("Sent Requests are successfully fetched", resData);
+          const sentRequests = resData.data.sentRequests;
+          console.log(sentRequests);
+          this.setState({sentRequests: sentRequests, isLoading: false});
+      })
     }
     handleViewMoreInfo = (request) => {
       // shows more information
@@ -41,11 +86,10 @@ class Profile extends Component{
         }
 
         return (
-            <div>
+            <React.Fragment>
                 <MlbNavbar/>
                 <EditProfileModal  show={this.state.editProfile} handleClose={this.handleClose} person={this.person}/>
                 {this.state.requestSelected && <ViewRequestInfoModal show={this.state.viewrequestInfo} handleClose={this.handleClose} request={this.state.requestSelected}/>}
-                <div>
                 <div style={{marginLeft: "10%", marginTop: "2rem", background: "#eeeeee", width: "15%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>
                   <h1 style={{fontSize: "2rem"}}>Profile</h1>
                 </div>
@@ -72,23 +116,22 @@ class Profile extends Component{
                       <th>Request Status</th>
                       <th>Book Title</th>
                       <th>Owner</th>
-                      <th></th>
+                      {/* <th></th> */}
                     </tr>
                   </thead>
                   <tbody>
-                    {this.requests.map((request) => (    
+                    {this.state.sentRequests.map((request) => (    
                       <tr>
                         <td>{request.date}</td>
                         <td>{request.status}</td>
-                        <td>{request.title}</td>
-                        <td>{request.owner}</td>                     
-                        <td style={{textAlign:"right"}}><Button variant="info" size="sm" onClick={()=>{this.handleViewMoreInfo(request)}}>View More Information</Button></td>
+                        <td>{request.bookTitle}</td>
+                        <td>{request.receiver.userID}</td>                     
+                        {/* <td style={{textAlign:"right"}}><Button variant="info" size="sm" onClick={()=>{this.handleViewMoreInfo(request)}}>View More Information</Button></td> */}
                       </tr>
                     ))}
                   </tbody>
                 </Table>
-                </div>
-            </div>
+            </React.Fragment>
         )
     }
 }
