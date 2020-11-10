@@ -160,7 +160,7 @@ class IndividualBookpage extends Component{
                               <td>{book.owner.userID}'s BOOKSTORE</td>
                               <td>{book.date}</td>
                               <td>{book.price}</td>
-                              <td><Button variant="info" onClick={() => this.handleRequest(book)}> BUY</Button></td>
+                              {book.owner._id === this.context.user_id ? <td>-</td> : <td><Button variant="info" onClick={() => this.handleRequest(book)}> BUY</Button></td>}
                             </tr>
                           ))}
                         </tbody>                    

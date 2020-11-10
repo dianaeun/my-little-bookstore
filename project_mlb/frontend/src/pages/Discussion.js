@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Button, Form, Row, Col, DropdownButton, Dropdown} from "react-bootstrap";
+import { Card, Button, Form, Row, Col, DropdownButton, Dropdown, Spinner} from "react-bootstrap";
 import AddDiscussion from "../components/AddDiscussion";
 import MlbNavbar from '../components/NavigationBar.js'
 import AuthContext from '../context/AuthContext';
@@ -13,7 +13,7 @@ class Discussion extends Component {
     sortBy: "Date", searchTerm: "", searchOption: "",
     shownDiscussions: [], shownComments: [], liked: [],
     addDiscussionModal: false,
-    discussions: [], baseDiscussions: [],
+    discussions: [], baseDiscussions: [], isLoadingDiscussion: false
   };
   constructor(props){
     super(props);
@@ -24,6 +24,7 @@ class Discussion extends Component {
     this.fetchDiscussions();
   }
   fetchDiscussions() {
+    this.setState({isLoadingDiscussion: true})
     const requestBody = {
       query: `
           query{
@@ -60,7 +61,7 @@ class Discussion extends Component {
       else if (this.state.sortBy === "Comments")
         discussions.sort(function(a, b){return b.comments.length - a.comments.length});
       else;
-      this.setState({discussions: discussions, baseDiscussions: discussions});
+      this.setState({discussions: discussions, baseDiscussions: discussions, isLoadingDiscussion: false});
       for (var i=0; i < this.state.discussions.length; i++)
         this.commentRef.push(React.createRef());
     })
@@ -238,6 +239,7 @@ class Discussion extends Component {
               </Form>
             </div>
           </div>
+          {this.state.isLoadingDiscussion && <Spinner animation="border" variant="primary" style={{marginLeft: "55rem", marginTop: "0.3rem"}}/>}
           {this.state.discussions.map((discussion, i) => (
             <Card
               style={{width: "60%", marginLeft: "20%", marginBottom: "1rem", background: "#CEE4E9"}}
