@@ -44,9 +44,38 @@ class IndividualBookpage extends Component{
     handleAddreview = () => {
       this.setState({addreview: true});
     }
-    handleRequestmodal = () => {
+    handleRequest = (book) => {
       this.setState({request: true});
+      const requestBody = {
+        query: `
+              mutation CreateRequest($bookTitle: String!, $book: ID!, $sender: ID!, $receiver: ID!, $status: String!, $date: String!){
+                  createRequest(requestInput: {bookTitle: $bookTitle, book: $book, sender: $sender, receiver: $receiver, status: $status, date: $date}) {
+                      _id
+                  }
+              }
+          `,
+          variables: {
+              bookTitle: book.title,
+              book: book._id,
+              sender: this.context.user_id,
+              receiver: book.owner._id,
+              status: "pending",
+              date: new Date()
+          }
+      };
+      fetch('http://localhost:8000/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+            throw new Error("Failed to fetch requests!")
+        }
+        return res.json()
+      })
+      .then(resData => {
+          console.log("Create Requests are successfully fetched", resData);
+          
+      })
     }
+
     fetchSameBooks() {
       console.log(this.context.user_id);
       this.setState({isLoading: true});
@@ -131,7 +160,7 @@ class IndividualBookpage extends Component{
                               <td>{book.owner.userID}'s BOOKSTORE</td>
                               <td>{book.date}</td>
                               <td>{book.price}</td>
-                              <td><Button variant="info" onClick={this.handleRequestmodal}> BUY</Button></td>
+                              <td><Button variant="info" onClick={() => this.handleRequest(book)}> BUY</Button></td>
                             </tr>
                           ))}
                         </tbody>                    
