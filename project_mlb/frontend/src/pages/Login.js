@@ -30,6 +30,8 @@ class Login extends Component {
             query Login($email: String!, $password: String!) {
                 login(email: $email, password: $password){
                     email
+                    firstName
+                    preferredGenres
                     userID
                     token
                     tokenExpiration
@@ -54,7 +56,7 @@ class Login extends Component {
     .then(resData => {
       console.log("successful login!", resData);
       if (resData.data.login.token) {
-          this.context.login(resData.data.login.token, resData.data.login.email, resData.data.login.userID, resData.data.login.user_id, resData.data.login.tokenExpiration)
+          this.context.login(resData.data.login.token, resData.data.login.firstName, resData.data.login.preferredGenres, resData.data.login.email, resData.data.login.userID, resData.data.login.user_id, resData.data.login.tokenExpiration)
       }})
     .catch(err =>{
       this.setState({authWarning: true})

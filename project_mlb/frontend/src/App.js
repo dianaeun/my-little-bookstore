@@ -16,15 +16,17 @@ import Signup from './pages/Signup';
 class App extends Component {
   state = {
     token: null,
+    firstName: null,
+    preferredGenres: null,
     userEmail: null,
     userID: null,
     user_id: null
   }
-  login = (token, userEmail, userID, user_id, tokenExpiration) => {
-    this.setState({token: token, userEmail: userEmail, userID: userID, user_id: user_id});
+  login = (token, firstName, preferredGenres, userEmail, userID, user_id, tokenExpiration) => {
+    this.setState({token: token, firstName: firstName, preferredGenres: preferredGenres, userEmail: userEmail, userID: userID, user_id: user_id});
   }
   logout = () => {
-    this.setState({token: null, userEmail: null, userID: null});
+    this.setState({token: null, firstName: null, preferredGenres: null, userEmail: null, userID: null, user_id: null});
   }
   render() {
     return (
@@ -33,6 +35,8 @@ class App extends Component {
           <AuthContext.Provider
               value ={{
                 token: this.state.token,
+                firstName: this.state.firstName,
+                preferredGenres: this.state.preferredGenres,
                 login: this.login,
                 logout: this.logout,
                 userID: this.state.userID,

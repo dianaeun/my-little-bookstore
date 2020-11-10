@@ -14,6 +14,8 @@ class Signup extends Component {
   static contextType = AuthContext;
   constructor(props){
     super(props);
+    this.firstNameRef = React.createRef();
+    this.lastNameRef = React.createRef();
     this.emailPreRef = React.createRef();
     this.emailPostRef = React.createRef();
     this.passwordRef = React.createRef();
@@ -58,6 +60,8 @@ class Signup extends Component {
   }
   handleSubmit = event => {
     event.preventDefault();
+    const firstName = this.firstNameRef.current.value;
+    const lastName = this.lastNameRef.current.value;
     const emailPre = this.emailPreRef.current.value;
     const emailPost = this.emailPostRef.current.value;
     const password = this.passwordRef.current.value;
@@ -75,9 +79,11 @@ class Signup extends Component {
     const email = emailPre + "@" + emailPost
     const requestBody = {
       query: `
-            mutation CreateUser($email: String!, $password: String!, $userID: String!, $location: String, $preferredGenres: [String]!){
-              createUser(userInput: {email: $email, password: $password, userID: $userID, location: $location, preferredGenres: $preferredGenres}) {
+            mutation CreateUser($firstName: String!, $lastName: String!, $email: String!, $password: String!, $userID: String!, $location: String, $preferredGenres: [String]!){
+              createUser(userInput: {firstName: $firstName, lastName: $lastName, email: $email, password: $password, userID: $userID, location: $location, preferredGenres: $preferredGenres}) {
                   _id
+                  firstName
+                  lastName
                   email
                   userID
                   location
@@ -86,6 +92,8 @@ class Signup extends Component {
             }
         `,
         variables: {
+            firstName: firstName,
+            lastName: lastName,
             email: email,
             password: password,
             userID: userID,
@@ -136,6 +144,18 @@ class Signup extends Component {
               <div style={{ paddingLeft: "10%", paddingTop: "5%" }}>
                 <h3 style={{ marginBottom: "30px", fontWeight: "bold", fontStyle: "italic" }}>CREATE ACCOUNT</h3> 
                 <Form onSubmit={this.handleSubmit} style={{ width: "fit-content" }}>
+                    <Form.Group controlId="formBasicPassword" as={Row}>
+                      <Form.Label column sm={2} style={{fontWeight: "bold"}} > First Name </Form.Label>
+                      <Col sm={3}>
+                        <Form.Control type="text" ref={this.firstNameRef}/>
+                      </Col>
+                      <Form.Label column sm={2} style={{fontWeight: "bold"}} > Last Name </Form.Label>
+                      <Col sm={3}>
+                        <Form.Control type="text" ref={this.lastNameRef}/>
+                      </Col>
+                    </Form.Group>
+                    
+                      
                     <Form.Group controlId="formBasicuserID" as={Row}>
                       <Form.Label column sm={2} style={{fontWeight: "bold"}}> userID </Form.Label>
                       <Col sm={4}>

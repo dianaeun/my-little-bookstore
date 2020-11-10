@@ -10,39 +10,39 @@ class Main extends Component {
   state={books:[], genres: []}
   static contextType = AuthContext;
   componentDidMount() {
-    this.fetchGenres();
+    // this.fetchGenres();
     this.fetchBooks();
   }
-  fetchGenres() {
-    if (!this.context.userID){
-      console.log("userID is: ", this.context.userID, "Canceling fetchGenres()");
-      return;
-    }
-    const requestBody = {
-      query: `
-          query{
-              findByUserID(userID: "${this.context.userID}"){
-                  userID
-                  preferredGenres
-                  location
-              }
-          }
-      `
-    }
-    fetch('http://localhost:8000/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
-    .then(res => {
-        if (res.status !== 200 && res.status !== 201) {
-          throw new Error("Failed to fetch User")
-        }
-        return res.json()
-    })
-    .then(resData => {
-      console.log("User successfully fetched! ", resData);
-      const user = resData.data.findByUserID;
-      console.log(user);
-      this.setState({genres: user.preferredGenres});
-  })
-  }
+  // fetchGenres() {
+  //   if (!this.context.userID){
+  //     console.log("userID is: ", this.context.userID, "Canceling fetchGenres()");
+  //     return;
+  //   }
+  //   const requestBody = {
+  //     query: `
+  //         query{
+  //             findByUserID(userID: "${this.context.userID}"){
+  //                 userID
+  //                 preferredGenres
+  //                 location
+  //             }
+  //         }
+  //     `
+  //   }
+  //   fetch('http://localhost:8000/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+  //   .then(res => {
+  //       if (res.status !== 200 && res.status !== 201) {
+  //         throw new Error("Failed to fetch User")
+  //       }
+  //       return res.json()
+  //   })
+  //   .then(resData => {
+  //     console.log("User successfully fetched! ", resData);
+  //     const user = resData.data.findByUserID;
+  //     console.log(user);
+  //     this.setState({genres: user.preferredGenres});
+  // })
+  // }
   fetchBooks() {
       const requestBody = {
           query: `
@@ -108,7 +108,7 @@ class Main extends Component {
           <div style={{ width: "800px", marginLeft: "auto", marginRight: "auto"}}>
             {this.context.userID !== null ? 
               <h3 style={{ fontFamily: "Kurale", textAlign: "center", marginTop: "2rem", marginBottom: "1rem"}}>
-                {this.state.genres.map((genre) => (
+                {this.context.preferredGenres.map((genre) => (
                   <Button variant="outline-danger" size="sm" style={{marginRight:"0.7rem"}} disabled>{genre}</Button>
                 ))}
                 books in Songo
@@ -130,7 +130,7 @@ class Main extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.context.token ? this.state.books.filter(book => book.genre.split(',').filter(genre => this.state.genres.includes(genre)).length > 0).slice(0,10).map((book, i) => (
+                {this.context.token ? this.state.books.filter(book => book.genre.split(',').filter(genre => this.context.preferredGenres.includes(genre)).length > 0).slice(0,10).map((book, i) => (
                   <tr>
                     <td>{i+1}</td>
                     <td><Link href="#">{book.title}</Link></td>

@@ -206,7 +206,7 @@ class MyBookstore extends Component{
                                       :
                   <React.Fragment>
                     <div style={{marginLeft: "10%", marginTop: "2rem", background: "#eeeeee", width: "25%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>
-                      <h1 style={{fontSize: "2rem"}}>{this.context.userID}'s Bookstore</h1>
+                      <h1 style={{fontSize: "2rem"}}>{this.context.firstName}'s Bookstore</h1>
                     </div>
                     <Table className="myTable" size="sm" style={{ width: "80%", marginTop: "1.5rem", marginLeft: "auto", marginRight: "auto", paddingTop: "1rem"}}>
                       <thead>
