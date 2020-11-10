@@ -3,6 +3,7 @@ import {Collapse,Button, Table, Card, CardDeck } from "react-bootstrap";
 import Addreview from '../components/Addreview';
 import RequestModal from '../components/RequestModal';
 import MlbNavbar from '../components/NavigationBar.js'
+import AuthContext from '../context/AuthContext';
 
 const star = require("../icons/star.png");
 const harry = require("../icons/harrypotter.png");
@@ -12,15 +13,18 @@ class IndividualBookpage extends Component{
     state = {
         addreview: false,
         request: false,
+        isLoading: false,
+        sameBooks: []
     }
-
     constructor(){
         super();
         this.state = { showText: false };
         this.state = { showText1: false};
-
     }
-
+    static contextType = AuthContext;
+    componentDidMount() {
+      this.fetchSameBooks();
+    }
     toggle = () => {
       this.setState({ isOpen: !this.state.isOpen });
     }
@@ -42,6 +46,44 @@ class IndividualBookpage extends Component{
     }
     handleRequestmodal = () => {
       this.setState({request: true});
+    }
+    fetchSameBooks() {
+      console.log(this.context.user_id);
+      this.setState({isLoading: true});
+      const requestBody = {
+        query: `
+            query{
+              sameBooks(bookTitle: "${this.props.location.book.title}"){
+                _id
+                date
+                title
+                author
+                publisher
+                rating
+                price
+                genre
+                owner{
+                  _id
+                  userID
+                  email
+                }
+              }
+            }
+        `
+      }
+      fetch('http://localhost:8000/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+            throw new Error("Failed to fetch requests!")
+        }
+        return res.json()
+      })
+      .then(resData => {
+          console.log("Received Requests are successfully fetched", resData);
+          const sameBooks = resData.data.sameBooks;
+          console.log(sameBooks);
+          this.setState({sameBooks: sameBooks, isLoading: false});
+      })
     }
 
     render(){
@@ -78,24 +120,20 @@ class IndividualBookpage extends Component{
                         <thead style={{ marginTop: "4rem" }}>
                           <tr>
                             <th style={{width: '30%'}}>BOOKSTORE NAME</th>
-                            <th style={{width: '20%'}}>CONDITION</th>
+                            <th style={{width: '20%'}}>DATE</th>
                             <th style={{width: '20%'}}>PRICE </th>
                             <th style={{width: '30%'}}>PURCHASE REQUEST</th>                    
                           </tr>
                         </thead>
                         <tbody style={{  marginTop: "2rem" }}>
-                          <tr>
-                          <td>HYEONJOON's BOOKSTORE</td>
-                          <td>LIKE NEW</td>
-                          <td>$15</td>
-                          <td><Button variant="info" onClick={this.handleRequestmodal}> BUY</Button></td>
-                          </tr>
-                          <tr>
-                          <td>DAYE's BOOKSTORE</td>
-                          <td>SOME MARKS</td>
-                          <td>$5 </td>
-                          <td><Button variant="info" onClick={this.handleRequestmodal}> BUY</Button></td>
-                          </tr>
+                          {this.state.sameBooks && this.state.sameBooks.map((book) => (
+                            <tr>
+                              <td>{book.owner.userID}'s BOOKSTORE</td>
+                              <td>{book.date}</td>
+                              <td>{book.price}</td>
+                              <td><Button variant="info" onClick={this.handleRequestmodal}> BUY</Button></td>
+                            </tr>
+                          ))}
                         </tbody>                    
                       </Table>
                     </Card.Body>

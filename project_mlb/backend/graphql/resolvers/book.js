@@ -24,7 +24,20 @@ module.exports = {
         // ownerID = req.userId;
         // ownerID = "5f976afd74382937987f902f"; //default id
         try {
-            const books = await Book.find({owner : ownerID});
+            const books = await Book.find({owner: ownerID});
+            console.log("userBooks:", books);
+            return books.map(book => {
+                return transformBook(book);
+            })
+        }
+        catch(err){
+            throw err;
+        }
+    },
+    sameBooks: async ({bookTitle}) => {
+        try {
+            const books = await Book.find({title : bookTitle});
+            console.log("same books: ", books);
             return books.map(book => {
                 return transformBook(book);
             })

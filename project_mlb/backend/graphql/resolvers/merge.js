@@ -8,6 +8,7 @@ const dateToString = date => {
 
 const DataLoader = require('dataloader');
 const userLoader = new DataLoader( userIDs => {
+    console.log("userLoader", userIDs)
     return User.find({ _id: { $in: userIDs }});
 });
 const bookLoader = new DataLoader( bookIDs => {
@@ -16,8 +17,9 @@ const bookLoader = new DataLoader( bookIDs => {
 
 const findUser = async userID => {
     try{
-        const user = await userLoader.load(userID.toString());
-        console.log("Find user while fetching book:", user._doc);
+        console.log("findUser...");
+        const user = await userLoader.load(userID.toString()); // -> Error
+        console.log("Found user while fetching book:", user._doc);
         return {
             ...user._doc,
             _id: user.id,
@@ -32,7 +34,7 @@ const findUser = async userID => {
 const findBook = async bookID => {
     try{
         const book = await bookLoader.load(bookID.toString());
-        console.log("Find Book while fetching book:", book._doc);
+        console.log("Found Book while fetching book:", book._doc);
         return {
             ...book._doc,
             _id: book.id
@@ -43,11 +45,13 @@ const findBook = async bookID => {
     }
 }
 const transformBook = book => {
+    console.log("transforming book...", book._doc.owner);
+    //console.log("owner:", findUser(book.owner));
     return {
         ...book._doc,
         _id: book.id,
         date: dateToString(book._doc.date),
-        owner: findUser.bind(this, book.owner)
+        owner: findUser.bind(this, book._doc.owner)
     }
 };
 const transformDiscussion = discussion => {
@@ -70,10 +74,10 @@ const transformRequest = request => {
     return {
         ...request._doc,
         _id: request.id,
-        date: dateToString(request._doc.request),
-        sender: findUser.bind(this, request.sender),
-        receiver: findUser.bind(this, request.receiver),
-        book: findBook.bind(this, request.book)
+        date: dateToString(request._doc.date),
+        sender: findUser.bind(this, request._doc.sender),
+        receiver: findUser.bind(this, request._doc.receiver),
+        book: findBook.bind(this, request._doc.book)
     }
 }
 exports.transformBook = transformBook;

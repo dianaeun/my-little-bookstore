@@ -12,15 +12,14 @@ const schema =  buildSchema(`
         price: Float!
         genre: String!
         description: String
-        owner: String!
-        requests: [String]!
+        owner: User!
     }
     type User{
         _id: ID!
         email: String!
         password: String!
         userID: String!
-        location: String
+        location: String!
         preferredGenres: [String]!
     }
     type Discussion{
@@ -66,7 +65,7 @@ const schema =  buildSchema(`
         price: Float!
         genre: String!
         description: String
-        owner: String!
+        owner: ID!
     }
     input UserInput {
         email: String!
@@ -99,14 +98,14 @@ const schema =  buildSchema(`
     type RootQuery {
         books: [Book]!
         userBooks(ownerID: String!): [Book]!
+        sameBooks(bookTitle: String!) : [Book]!
         login(email: String!, password: String!): AuthData!
         users: [User]!
         findByUserID(userID: String!): User
         discussions: [Discussion]!
         comments: [Comment]!
         receivedRequests(receiverID: String!): [Request]!
-        sentRequests(senderID: String!): [Request]!
-        
+        sentRequests(senderID: String!): [Request]! 
     }
     type RootMutation {
         createBook(bookInput: BookInput): Book

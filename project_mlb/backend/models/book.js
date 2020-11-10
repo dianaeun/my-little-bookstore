@@ -38,12 +38,8 @@ const bookSchema = new Schema({
         required: false
     },
     owner: {
-        type: String,
-        required: true
-    },
-    requests: {
-        type: [Schema.Types.ObjectId],
-        ref: 'Request'
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     }
 });
 module.exports = mongoose.model('Book', bookSchema);

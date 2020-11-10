@@ -83,7 +83,7 @@ class AddBookModal extends Component{
     ];
     handleSubmit = event => {
         event.preventDefault();
-        console.log(this.props);
+        console.log("handleSubmit owner..?", this.props.owner);
         const title = this.titleRef.current.value;
         const author = this.authorRef.current.value;
         const publisher = this.publisherRef.current.value;
@@ -95,7 +95,7 @@ class AddBookModal extends Component{
         }
         const requestBody = {
           query: `
-                mutation CreateBook($title: String!, $author: String!, $publisher: String!, $price: Float!, $date: String!, $owner: String!, $rating: Int!, $genre: String!, $isbn: String!){
+                mutation CreateBook($title: String!, $author: String!, $publisher: String!, $price: Float!, $date: String!, $owner: ID!, $rating: Int!, $genre: String!, $isbn: String!){
                     createBook(bookInput: {title: $title, author: $author, publisher: $publisher, price: $price, date: $date, owner: $owner, rating: $rating, genre: $genre, isbn: $isbn}) {
                         _id
                     }
@@ -117,7 +117,7 @@ class AddBookModal extends Component{
         .then(res => {
           console.log(res.status);
           if (res.status !== 200 && res.status !== 201) {
-              throw new Error('Failed to fetch during add book!!!!');
+              throw new Error('Failed to create book!!!!');
           }
           return res.json();
         })

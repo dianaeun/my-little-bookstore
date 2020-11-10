@@ -7,16 +7,16 @@ const requestSchema = new Schema({
         required: true
     },
     book: {
-        type: String,
-        required: true
+        type: Schema.Types.ObjectId,
+        ref: 'Book'
     },
     sender: {
-        type: String,
-        required: true
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     },
     receiver: {
-        type: String,
-        required: true
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     },
     status: {
         type: String,

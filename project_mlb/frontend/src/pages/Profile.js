@@ -120,7 +120,7 @@ class Profile extends Component{
                     </tr>
                   </thead>
                   <tbody>
-                    {this.state.sentRequests.map((request) => (    
+                    {this.state.sentRequests && this.state.sentRequests.map((request) => (    
                       <tr>
                         <td>{request.date}</td>
                         <td>{request.status}</td>

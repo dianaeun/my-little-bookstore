@@ -25,6 +25,7 @@ module.exports = {
     receivedRequests: async ({receiverID}) => {
         try {
             const requests = await Request.find({receiver: receiverID});
+            console.log(requests);
             return requests.map(request => {
                 return transformRequest(request);
             })
