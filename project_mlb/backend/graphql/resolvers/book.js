@@ -1,5 +1,6 @@
 const Book = require('../../models/book');
 const User = require('../../models/user');
+const Request = require('../../models/request');
 const {transformBook} = require('./merge');
 const DataLoader = require('dataloader')
 const userLoader = new DataLoader( userIDs => {
@@ -86,6 +87,8 @@ module.exports = {
             const book = await Book.findById(args.bookId).populate('book');
             const deletedBook = transformBook(book);
             await Book.deleteOne({ _id: args.bookId });
+            await Request.deleteMany({book: args.bookId});
+
             return deletedBook;
         } catch (err) {
             throw err;
