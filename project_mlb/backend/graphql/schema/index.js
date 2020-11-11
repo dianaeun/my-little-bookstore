@@ -117,6 +117,7 @@ const schema =  buildSchema(`
         createBook(bookInput: BookInput): Book
         createUser(userInput: UserInput): User
         deleteBook(bookId: ID!): Book!
+        editBook(bookId: ID!, bookInput: BookInput): Book!
         createRequest(requestInput: RequestInput): Request
         cancelRequest(requestID: ID!): Request
         acceptRequest(requestID: ID!): Request
