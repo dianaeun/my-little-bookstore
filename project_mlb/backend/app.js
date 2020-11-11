@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+//const expressPlayground = require("graphql-playground-middleware-express").default;
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
@@ -25,6 +26,8 @@ app.use(
         graphiql: true
     })
 );
+
+//app.get("/playground", expressPlayground({ endpoint: "/graphql" }));
 
 const mongoose = require('mongoose');
 const connect = mongoose
