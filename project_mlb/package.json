@@ -1,7 +1,7 @@
 {
-  "name": "backend",
+  "name": "my-little-bookstore",
   "version": "1.0.0",
-  "description": "backend for project_mlb",
+  "description": "project_mlb (my little bookstore)",
   "main": "app.js",
   "engine": {
     "node": "13.9.0",
