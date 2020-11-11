@@ -35,6 +35,8 @@ mongoose
         console.log(err)
     });
 
+module.exports = {mongoose}
+
 if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === 'staging') {
 
     // Set static folder
