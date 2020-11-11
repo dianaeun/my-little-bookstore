@@ -12,6 +12,7 @@ app.use((req, res, next) => {
     next();
 });
 
+const config = require("./config/key");
 
 const graphQlSchema = require('./graphql/schema/index');
 const graphQlResolvers = require('./graphql/resolvers/index');
@@ -26,8 +27,8 @@ app.use(
 );
 
 const mongoose = require('mongoose');
-mongoose
-    .connect(process.env.MONGODB_URI || `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.oszf0.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`)
+const connect = mongoose
+    .connect(config.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log('MongoDB Connected...')
     })
