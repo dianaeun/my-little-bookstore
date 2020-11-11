@@ -2,7 +2,65 @@ import React, {Component} from 'react';
 import {Modal, Button, Form, Row, Col} from 'react-bootstrap';
 
 class EditBookModal extends Component{
-    
+    constructor(props){
+        super(props);
+        this.titleRef = React.createRef();
+        this.authorRef = React.createRef();
+        this.publisherRef = React.createRef();
+        this.priceRef = React.createRef();
+    }
+    handleSubmit = event => {
+        event.preventDefault();
+        console.log("handleSubmit owner..?", this.props.owner);
+        const title = this.titleRef.current.value;
+        const author = this.authorRef.current.value;
+        const publisher = this.publisherRef.current.value;
+        const price = this.priceRef.current.value;
+        const date = new Date();
+        if (title.trim().length === 0 || author.trim().length === 0 || publisher.trim().length === 0 || price.trim().length === 0){
+          console.log("warning modal (null type input)");
+          return;
+        }
+        const requestBody = {
+          query: `
+                mutation EditBook($bookID: ID!, $title: String!, $author: String!, $publisher: String!, $price: Float!, $date: String!, $owner: ID!, $rating: Int!, $genre: String!, $isbn: String!){
+                    editBook(bookID: $bookID, bookInput: {title: $title, author: $author, publisher: $publisher, price: $price, date: $date, owner: $owner, rating: $rating, genre: $genre, isbn: $isbn}) {
+                        _id
+                    }
+                }
+            `,
+            variables: {
+                title: title,
+                author: author,
+                publisher: publisher,
+                price: parseFloat(price),
+                date: date,
+                owner: this.props.owner,
+                rating: 0,
+                genre: "",
+                isbn: ""
+            }
+        };
+        fetch("http://localhost:8000/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+        .then(res => {
+          console.log(res.status);
+          if (res.status !== 200 && res.status !== 201) {
+              throw new Error('Failed to fetch during edit book!!!!');
+          }
+          return res.json();
+        })
+        .then(resData => {
+          console.log("successful edited your book!", resData);
+          this.setState({createdAccount: true});
+        })
+        .catch(err =>{
+          console.log(err);
+          //throw err;    => user 가 이미 존재할때 그냥 error 을 throw 시켜버릴때 먹통이된다! 
+        });
+        this.setState({rawBookInfo: [], bookInfo: []});
+        alert("you have successfully edited a book!");
+        this.props.handleClose();
+    }
     render(){
         return(
             <Modal
@@ -24,7 +82,7 @@ class EditBookModal extends Component{
                                             Title
                                         </Form.Label>
                                         <Col sm={9}>
-                                            <Form.Control type="text" placeholder={this.props.book.title} />
+                                            <Form.Control type="text" defaultValue={this.props.book.title} ref={this.titleRef}/>
                                         </Col>
                                     </Form.Group>
                               
@@ -33,7 +91,7 @@ class EditBookModal extends Component{
                                             Author
                                         </Form.Label>
                                         <Col sm={9}>
-                                            <Form.Control type="text" placeholder={this.props.book.author}/>
+                                            <Form.Control type="text" defaultValue={this.props.book.author} ref={this.authorRef}/>
                                         </Col>
                                     </Form.Group>
                                     
@@ -42,7 +100,7 @@ class EditBookModal extends Component{
                                             Publisher
                                         </Form.Label>
                                         <Col sm={9}>
-                                            <Form.Control type="text" placeholder={this.props.book.publisher} />
+                                            <Form.Control type="text" defaultValue={this.props.book.publisher} ref={this.publisherRef}/>
                                         </Col>
                                     </Form.Group>
 
@@ -51,7 +109,7 @@ class EditBookModal extends Component{
                                             Price ($)
                                         </Form.Label>
                                         <Col sm={9}>
-                                            <Form.Control type="number" placeholder={this.props.book.price} />
+                                            <Form.Control type="number" defaultValue={this.props.book.price} ref={this.priceRef}/>
                                         </Col>
                                     </Form.Group>
                                     </Form>
@@ -60,7 +118,7 @@ class EditBookModal extends Component{
                 
                 <Modal.Footer>
                     <Button variant="secondary" onClick={this.props.handleClose}> Close </Button>
-                    <Button variant="success" onClick={this.props.handleClose}> Save </Button>
+                    <Button variant="success" onClick={(event) => this.handleSubmit(event)}> Save </Button>
                 </Modal.Footer>
             </Modal>
         )

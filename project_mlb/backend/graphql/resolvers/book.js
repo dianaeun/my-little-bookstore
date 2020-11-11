@@ -93,5 +93,19 @@ module.exports = {
         } catch (err) {
             throw err;
         }
+    },
+    editBook: async (args) => {
+        // if (!req.isAuth) {
+        //     throw new Error('Unauthenticated!');
+        // }
+        try {
+            const book = await Book.findByIdAndUpdate(args.bookId, args.bookInput, {
+                new: true
+              }).populate('book');
+            const editBook = transformBook(book);
+            return editBook;
+        } catch (err) {
+            throw err;
+        }
     }
 };
