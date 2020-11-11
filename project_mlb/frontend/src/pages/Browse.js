@@ -52,7 +52,7 @@ class Browse extends Component{
         .then(resData => {
             console.log("Books are successfully fetched! ", resData);
             const books = resData.data.books;
-            // books.sort((a, b) => b.rating - a.rating);
+            //books.sort((a, b) => b.price - a.price);
             // let selectedBooks = books.slice(0,10);
             // console.log(selectedBooks);
             this.setState({books: books, sortedbook: books} );
@@ -199,10 +199,10 @@ class Browse extends Component{
                               <tr>                            
                               <td><Link href="#">{book.title}</Link></td>
                               <td><Link href="#">{book.author}</Link></td>                                                      
-                              <td style={{width:"8rem"}}>
+                              <td style={{width:"10rem"}}>
                                 {this.createStar(book.rating)}
                               </td>
-                              <td>{book.price}</td>
+                              <td>${book.price}</td>
                             </tr>  
                           
                             )}
