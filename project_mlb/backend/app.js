@@ -29,13 +29,11 @@ const mongoose = require('mongoose');
 mongoose
     .connect(process.env.MONGODB_URI || `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.oszf0.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`)
     .then(() => {
-        app.listen(process.env.PORT || 8000);
+        console.log('MongoDB Connected...')
     })
     .catch(err => {
         console.log(err)
     });
-
-module.exports = {mongoose}
 
 if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === 'staging') {
 
@@ -48,4 +46,8 @@ if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === 'staging')
     });
 }
 
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 8000
+
+app.listen(port, () => {
+    console.log(`Server Running at ${port}`)
+});
