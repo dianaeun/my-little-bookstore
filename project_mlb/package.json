@@ -3,9 +3,17 @@
   "version": "1.0.0",
   "description": "backend for project_mlb",
   "main": "app.js",
+  "engine": {
+    "node": "13.9.0",
+    "npm": "6.14.8"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "node backend/app.js",
+    "backend": "nodemon backend/app.js",
+    "frontend": "npm run front --prefix frontend",
+    "dev": "concurrently \"npm run backend\" \"npm run start --prefix frontend\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend "
   },
   "author": "DongHunKim",
   "license": "ISC",
