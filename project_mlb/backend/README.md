@@ -13,7 +13,7 @@ If you execute npm start, it will automatically run nodemon which automatically 
 Once you run 'npm start', you can access 'http://localhost:8000/graphql' to test interactions using GraphiQL.  
 Example queries and mutations are list below.  
 
-## GraphiQl
+## GraphiQL
 
 ### mutation
 
