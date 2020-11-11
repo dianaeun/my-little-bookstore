@@ -7,6 +7,8 @@ import AuthContext from '../context/AuthContext';
 
 class Profile extends Component{
     state = {
+      user: [],
+      prefList: [],
       editProfile: false,
       viewrequestInfo : false,
       requestSelected: null,
@@ -15,7 +17,54 @@ class Profile extends Component{
     }
     static contextType = AuthContext;
     componentDidMount() {
+      this.fetchUserInfo();
       this.fetchRequests();
+    }
+    fetchUserInfo() {
+      this.setState({isLoading: true});
+      const requestBody = {
+        query: `
+            query{
+              findByUserID(userID: "${this.context.userID}"){
+                _id
+                firstName
+    						lastName
+    						email
+    						userID
+    						location
+    						preferredGenres
+              }
+            }
+        `
+      }
+      fetch('http://localhost:8000/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+            throw new Error("Failed to fetch user!")
+        }
+        return res.json()
+      })
+      .then(resData => {
+          console.log("User info successfully fetched", resData);
+          const userInfo = resData.data.findByUserID;
+          console.log(userInfo);
+          const user = [];
+          const prefList = [];
+          for (const [i, value] of userInfo.preferredGenres.entries()) {
+              prefList.push(<Button key={i} variant="outline-danger" size="sm" style={{marginLeft:"0.2rem"}} disabled>{value}</Button>)
+          }
+          user.push(
+            <Table size="sm" style={{ minWidth: "900px", maxWidth: "1100px", marginLeft: "10%", marginRight: "auto", marginTop: "1.2rem"}}>
+                    <tr><td>Name </td><td>{userInfo.firstName + " " + userInfo.lastName}</td></tr>
+                    <tr><td>User ID </td><td>{userInfo.userID}</td></tr>
+                    <tr><td>Location </td><td>{userInfo.location}</td></tr>
+                    <tr><td>Email </td><td>{userInfo.email}</td></tr>
+                    <tr><td>Preference </td><td>{prefList}</td></tr>
+                    <tr><td></td><td style={{textAlign:"right"}}><Button variant="info" onClick={this.handleEditProfile} style={{marginRight:"0.2rem"}}>Edit Profile</Button><Button variant="info" onClick={this.handleChangePassword}>Change Password</Button></td></tr>
+                </Table>
+          );
+          this.setState({user: user, isLoading: false, prefList: prefList});
+      })
     }
     fetchRequests() {
       this.setState({isLoading: true});
@@ -74,16 +123,7 @@ class Profile extends Component{
               iD: 'donghun123', password: '0000', email: 'Donghun.kim@stonybrook.edu',
             phone: '010-0113-0328', preference: ['SF', 'Fantasy', 'Romance']};
 
-    requests = [{date: '2019/09/04', status: 'Accepted', title: 'Harry Potter and the Philosopher', owner: 'Daye Eun'},
-                {date: '2019/09/05', status: 'Declined', title: 'Life', owner: 'Simok Hwang'},
-               {date: '2019/09/28', status: 'Pending', title: 'Harry Potter and the Prisoner of Azkaban', owner: 'Jongsun Park'}]
-
     render(){
-        const prefList = []
-
-        for (const [i, value] of this.person.preference.entries()) {
-            prefList.push(<Button key={i} variant="outline-danger" size="sm" style={{marginLeft:"0.2rem"}} disabled>{value}</Button>)
-        }
 
         return (
             <React.Fragment>
@@ -96,15 +136,16 @@ class Profile extends Component{
                 <Container style={{marginLeft: "10%",  marginTop: "2rem"}}>
                   <h4>Personal Information</h4>
                 </Container>
-                <Table size="sm" style={{ minWidth: "900px", maxWidth: "1100px", marginLeft: "10%", marginRight: "auto", marginTop: "1.2rem"}}>
-                    <tr><td>Name </td><td>{this.person.name}</td></tr>
-                    <tr><td>User ID </td><td>{this.person.iD}</td></tr>
-                    <tr><td>Location </td><td>{this.person.location}</td></tr>
-                    <tr><td>Email </td><td>{this.person.email}</td></tr>
-                    <tr><td>Phone Number </td><td>{this.person.phone}</td></tr>
-                    <tr><td>Preference </td><td>{prefList}</td></tr>
+                {this.state.user}
+                {/*<Table size="sm" style={{ minWidth: "900px", maxWidth: "1100px", marginLeft: "10%", marginRight: "auto", marginTop: "1.2rem"}}>
+                    <tr><td>Name </td><td>{this.state.user.firstName + " " + this.state.user.lastName}</td></tr>
+                    <tr><td>User ID </td><td>{this.state.user.userID}</td></tr>
+                    <tr><td>Location </td><td>{this.state.user.location}</td></tr>
+                    <tr><td>Email </td><td>{this.state.user.email}</td></tr>
+                    <tr><td>Phone Number </td><td>{this.person.phone}</td></tr>}
+                    <tr><td>Preference </td><td>{this.state.prefList}</td></tr>
                     <tr><td></td><td style={{textAlign:"right"}}><Button variant="info" onClick={this.handleEditProfile} style={{marginRight:"0.2rem"}}>Edit Profile</Button><Button variant="info" onClick={this.handleChangePassword}>Change Password</Button></td></tr>
-                </Table>
+                </Table>*/}
 
                 <Container style={{marginLeft: "10%"}}>
                   <h4>My Requests</h4>
