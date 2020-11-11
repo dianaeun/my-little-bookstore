@@ -4,6 +4,10 @@ const bodyParser = require('body-parser');
 //const expressPlayground = require("graphql-playground-middleware-express").default;
 app.use(bodyParser.json());
 
+const cors = require('cors');
+const path = require('path');
+app.use(cors());
+
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
