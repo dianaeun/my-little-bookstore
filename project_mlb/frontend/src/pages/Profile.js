@@ -7,6 +7,7 @@ import AuthContext from '../context/AuthContext';
 
 class Profile extends Component{
     state = {
+      userInfo: {lastName:"", firstName:"", location:"", email:"", preferredGenres:[]},
       user: [],
       prefList: [],
       editProfile: false,
@@ -63,7 +64,7 @@ class Profile extends Component{
                     <tr><td></td><td style={{textAlign:"right"}}><Button variant="info" onClick={this.handleEditProfile} style={{marginRight:"0.2rem"}}>Edit Profile</Button><Button variant="info" onClick={this.handleChangePassword}>Change Password</Button></td></tr>
                 </Table>
           );
-          this.setState({user: user, isLoading: false, prefList: prefList});
+          this.setState({userInfo: userInfo, user: user, isLoading: false, prefList: prefList});
       })
     }
     fetchRequests() {
@@ -118,17 +119,13 @@ class Profile extends Component{
     handleClose = () => {
       this.setState({editProfile: false, viewrequestInfo : false});
     }
-    // dummy data for profile
-    person = {name: 'Donghun Kim', location: 'Incheon Songdo', 
-              iD: 'donghun123', password: '0000', email: 'Donghun.kim@stonybrook.edu',
-            phone: '010-0113-0328', preference: ['SF', 'Fantasy', 'Romance']};
 
     render(){
 
         return (
             <React.Fragment>
                 <MlbNavbar/>
-                <EditProfileModal  show={this.state.editProfile} handleClose={this.handleClose} person={this.person}/>
+                <EditProfileModal  show={this.state.editProfile} handleClose={this.handleClose} person={this.state.userInfo}/>
                 {this.state.requestSelected && <ViewRequestInfoModal show={this.state.viewrequestInfo} handleClose={this.handleClose} request={this.state.requestSelected}/>}
                 <div style={{marginLeft: "10%", marginTop: "2rem", background: "#eeeeee", width: "15%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>
                   <h1 style={{fontSize: "2rem"}}>Profile</h1>
