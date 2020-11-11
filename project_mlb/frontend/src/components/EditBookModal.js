@@ -24,7 +24,7 @@ class EditBookModal extends Component{
         const requestBody = {
           query: `
                 mutation EditBook($bookID: ID!, $title: String!, $author: String!, $publisher: String!, $price: Float!, $date: String!, $owner: ID!, $rating: Int!, $genre: String!, $isbn: String!){
-                    editBook(bookID: $bookID, bookInput: {title: $title, author: $author, publisher: $publisher, price: $price, date: $date, owner: $owner, rating: $rating, genre: $genre, isbn: $isbn}) {
+                    editBook(bookId: $bookID, bookInput: {title: $title, author: $author, publisher: $publisher, price: $price, date: $date, owner: $owner, rating: $rating, genre: $genre, isbn: $isbn}) {
                         _id
                     }
                 }

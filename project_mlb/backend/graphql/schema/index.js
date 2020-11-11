@@ -50,6 +50,13 @@ const schema =  buildSchema(`
         status: String!
         date: String!
     }
+    type Review{
+        _id: ID!
+        reviewer: User!
+        book: Book!
+        date: String!
+        content: String!
+    }
     type AuthData{
         firstName: String!
         preferredGenres: [String]!
@@ -94,6 +101,12 @@ const schema =  buildSchema(`
         status: String!
         date: String!   
     }
+    input ReviewInput {
+        book: ID!
+        reviewer: ID!
+        date: String!
+        content: String!
+    }
     input DiscussionInput {
         owner: String!
         date: String!
@@ -111,7 +124,8 @@ const schema =  buildSchema(`
         discussions: [Discussion]!
         comments: [Comment]!
         receivedRequests(receiverID: String!): [Request]!
-        sentRequests(senderID: String!): [Request]! 
+        sentRequests(senderID: String!): [Request]!
+        bookReviews(bookID: String!): [Review]! 
     }
     type RootMutation {
         createBook(bookInput: BookInput): Book
@@ -125,6 +139,7 @@ const schema =  buildSchema(`
         createDiscussion(discussionInput: DiscussionInput): Discussion
         createComment(commentInput: CommentInput): Comment
         updateLikes(_id: ID!, likes: Int!): Discussion
+        createReview(reviewInput: ReviewInput): Review
     }
     schema{
         query: RootQuery

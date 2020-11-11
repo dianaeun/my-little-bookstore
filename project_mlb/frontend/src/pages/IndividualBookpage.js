@@ -14,7 +14,9 @@ class IndividualBookpage extends Component{
         addreview: false,
         request: false,
         isLoading: false,
-        sameBooks: []
+        sameBooks: [],
+        isLoadingReviews: false,
+        reviews: []
     }
     constructor(){
         super();
@@ -42,6 +44,10 @@ class IndividualBookpage extends Component{
         this.setState({addreview: false, request: false});
     }
     handleAddreview = () => {
+      if (this.context.userID === null){
+        alert("You must login first!");
+        return;
+      }
       this.setState({addreview: true});
     }
     handleRequest = (book) => {
@@ -99,7 +105,7 @@ class IndividualBookpage extends Component{
               }
             }
         `
-      }
+      };
       fetch('http://localhost:8000/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
@@ -114,13 +120,43 @@ class IndividualBookpage extends Component{
           this.setState({sameBooks: sameBooks, isLoading: false});
       })
     }
+    fetchReviews() {
+      this.setState({isLoadingReviews: true});
+      console.log(this.props.location.book);
+      const requestBody = {
+        query: `
+            query{
+              bookReviews(bookID: "${this.props.location.book._id}"){
+                _id
+                reviewer
+                book
+                date
+                content
+              }
+            }
+        `
+      }
+      fetch('http://localhost:8000/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed to fetch discussions!")
+        }
+        return res.json()
+      })
+      .then(resData => {
+        console.log("Reviews are successfully fetched! ", resData);
+        const reviews = resData.data.reviews;
+        this.setState({reviews: reviews, baseReviews: reviews, isLoadingReviews: false});
+      })
+      .catch(err => { console.log(err);});
+    }
 
     render(){
         return (
           <React.Fragment>
             <MlbNavbar/>
             <div>
-              <Addreview show={this.state.addreview} handleClose={this.handleClose}/>
+              <Addreview show={this.state.addreview} handleClose={this.handleClose} fetchReviews={this.fetchReviews} handleClose={this.handleClose} reviewer={this.context.userID} book={this.props.location.book}/>
                 <RequestModal show={this.state.request} handleClose={this.handleClose}/>
                 <div style={{marginLeft: "2%", marginTop: "2rem", background: "#eeeeee", width: "30%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>
                   <h1 style={{fontSize: "2rem"}}>Book Information</h1>
@@ -178,40 +214,25 @@ class IndividualBookpage extends Component{
                             </tr>
                         </thead>
                         <tbody style={{ textAlign: "center", marginTop: "2rem" }}>
-                            <tr>
-                            <td>HYEONJOON LEE</td>
-                            <td>{this.props.location.book.Title1}
-                            <div>
-                            <Collapse in={this.state.showText}>
+                          {this.state.reviews && this.state.reviews.map((review) => (
+                              <tr>
+                                <td>{review.reviewer.userID}</td>
+                                <td>{this.state.sameBooks[0].title}
                               <div>
-                                <span>                          
-                                {this.props.location.book.hycomment}
-                              </span>
-                              </div>
-                                </Collapse>
-                              </div>
-                              </td>
-                              <td>
-                              <Button variant="info" onClick={() => this.setState({ showText: !this.state.showText })}> {this.state.showText ? 'Read less' : 'Read more'}</Button>
-                              </td>
-                            </tr>
-                            <tr>
-                            <td>DAYE EUN</td>
-                            <td>{this.props.location.book.Title2}
-                            <div>
-                                <Collapse in={this.state.showText1}>
-                                  <div>
-                                    <span>
-                                    {this.props.location.book.dayecomment}
+                              <Collapse in={this.state.showText}>
+                                <div>
+                                  <span>                          
+                                  {review.comment}
                                 </span>
-                                  </div>
-                                    </Collapse>
-                                  </div>
-                            </td>
-                            <td>
-                                <Button variant="info" onClick={() => this.setState({ showText1: !this.state.showText1 })}> {this.state.showText1 ? 'Read less' : 'Read more'} </Button>
-                            </td>
-                            </tr>   
+                                </div>
+                                  </Collapse>
+                                </div>
+                                </td>
+                                <td>
+                                <Button variant="info" onClick={() => this.setState({ showText: !this.state.showText })}> {this.state.showText ? 'Read less' : 'Read more'}</Button>
+                                </td>
+                                </tr>
+                            ))}   
                         </tbody>
                       </Table>
                       <h5 style={{ textAlign: "center", marginTop: "3.5rem",marginBottom:"2rem" }}>                            
