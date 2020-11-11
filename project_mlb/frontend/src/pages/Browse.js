@@ -3,14 +3,83 @@ import Table from 'react-bootstrap/Table';
 import { Link } from 'react-router-dom';
 import {Form, Dropdown, DropdownButton, Row, Col, Button} from 'react-bootstrap';
 import MlbNavbar from '../components/NavigationBar.js'
+import AuthContext from '../context/AuthContext';
 
 const star = require("../icons/star.png");
 const blankStar = require("../icons/blank_star.png");
 
 class Browse extends Component{
-    searchBook = (val) => {
-        // do the actual searching
+    state = { 
+        books:[], 
+        genres: [],
+        searchBook : false,
+        isLoadingBook: false,
+        search : "",
+        searchTerm : "",
+        sort : "All",
+        liked : [],
+        sortedbook : [],
+        
+    };
+    static contextType = AuthContext;
+
+    componentDidMount() {
+        this.fetchBooks();
     }
+
+    fetchBooks() {
+        const requestBody = {
+            query: `
+                query{
+                    books{
+                        title
+                        author
+                        publisher
+                        rating
+                        genre
+                        price
+                    }
+                }
+            `
+        }
+        fetch('http://localhost:8000/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+        .then(res => {
+            if (res.status !== 200 && res.status !== 201) {
+                throw new Error("Failed to fetch books!")
+            }
+            return res.json()
+        })
+        .then(resData => {
+            console.log("Books are successfully fetched! ", resData);
+            const books = resData.data.books;
+            // books.sort((a, b) => b.rating - a.rating);
+            // let selectedBooks = books.slice(0,10);
+            // console.log(selectedBooks);
+            this.setState({books: books, sortedbook: books} );
+        })
+        .catch(err => { console.log(err);});
+    };
+
+      handleSearchBook = (event, search, searchTerm) => {
+        event.preventDefault();
+        let books = this.state.books;
+        if (search === "Title")
+          books = this.state.sortedbook.filter(function(book){return book.title.toLowerCase().includes(searchTerm.toLowerCase())});
+        // else if (search === "ISBN")
+        //   books = this.state.sortedbook.filter(function(book){return book.isbn.toLowerCase().includes(searchTerm.toLowerCase())});
+        //book.isbn.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        else if (search === "Author")
+          books = this.state.sortedbook.filter(function(book){return book.author.toLowerCase().includes(searchTerm.toLowerCase())});
+        else 
+          books = this.state.sortedbook.filter(function(book){
+            return  book.title.toLowerCase().includes(searchTerm.toLowerCase())
+             || book.author.toLowerCase().includes(searchTerm.toLowerCase())});
+        this.setState({books: books});
+      }
+
+    // searchBook = (val) => {
+    //     // do the actual searching
+    // }
 
     createStar = (n) => {
         let stars = [];
@@ -28,26 +97,26 @@ class Browse extends Component{
         var genres = ['Romance', 'Horror', 'Fantasy', 'Adventure', 'Science']
 
         // dummy data for book information
-        var book1 = ['Introduction To Java Programming', 'Y. Daniel Liang', 5, 3.50]
-        var book2 = ['The Three Little Pigs', 'Authur Lee', 5, 5.5]
-        var book3 = ['Cinderella', 'Alex Khun', 4, 7.0]
-        var book4 = ['Alice in Wonderland', 'Carroll', 2, 4.0]
-        var books = [book1, book2, book3, book4]
+        // var book1 = ['Introduction To Java Programming', 'Y. Daniel Liang', 5, 3.50]
+        // var book2 = ['The Three Little Pigs', 'Authur Lee', 5, 5.5]
+        // var book3 = ['Cinderella', 'Alex Khun', 4, 7.0]
+        // var book4 = ['Alice in Wonderland', 'Carroll', 2, 4.0]
+        // var bookss = [book1, book2, book3, book4]
 
-        const items = []
+        // const items = []
 
-        // books.map((book) => {
+        // bookss.map((book) => {
         //     items.push(<tr><td><Link href="#">{book[0]}</Link></td>
         //                    <td><Link href="#">{book[1]}</Link></td>
         //                    {this.createStar(book[2])}
         //                    <td>$ {book[3]}</td></tr>)
         // })
-        for (const [i, value] of books.entries()) {
-          items.push(<tr key={i}><td><Link href="#">{value[0]}</Link></td>
-                    <td><Link href="#">{value[1]}</Link></td>
-                    {this.createStar(value[2])}
-                    <td>$ {value[3]}</td></tr>)
-        }
+        // for (const [i, value] of bookss.entries()) {
+        //   items.push(<tr key={i}><td><Link href="#">{value[0]}</Link></td>
+        //             <td><Link href="#">{value[1]}</Link></td>
+        //             {this.createStar(value[2])}
+        //             <td>$ {value[3]}</td></tr>)
+        // }
         
 
         return (
@@ -55,17 +124,17 @@ class Browse extends Component{
                 <MlbNavbar/>
                 <div style={{width: "80%", margin: "auto", marginTop: "2rem"}}>
                     <div style={{}}>
-                        <Form style={{marginTop: "1rem"}}> 
+                    <Form style={{marginTop: "2rem"}} onSubmit={(event) => this.handleSearchBook(event, this.state.search, this.state.searchTerm)}> 
                         <Form.Group as={Row}>
                             <Col sm={5}>
-                            <Form.Control type="text" placeholder="Search Term" />
-                            </Col>
-                            <Button style={{fontWeight: "bold", background: "#FAC917", color: "black", border: "1px solid #FAC917", opacity: "79%"}}>Search</Button>
-                            <DropdownButton variant="outline-secondary" title="All Categories" style={{marginLeft: "1rem"}} >
-                            <Dropdown.Item eventKey='All Categories'>All Categories</Dropdown.Item>
-                            <Dropdown.Item eventKey="Title">Title</Dropdown.Item>
-                            <Dropdown.Item eventKey="Author">Author</Dropdown.Item>
-                            <Dropdown.Item eventKey="ISBN">ISBN</Dropdown.Item>
+                            <Form.Control type="text" placeholder="Search Term" onChange={(event) => this.setState({searchTerm: event.target.value})}/>
+                            </Col>                
+                            <Button style={{fontWeight: "bold", background: "#FAC917", color: "black", border: "1px solid #FAC917", opacity: "79%"}} type="submit">Search</Button>
+                            <DropdownButton id="dropdown" variant="outline-secondary" title="All Categories" style={{marginLeft: "1rem"}} >
+                            <Dropdown.Item eventKey='All Categories' onClick={()=>{document.getElementById("dropdown").innerHTML="All Categories"; this.setState({search: "All"});}}>All Categories</Dropdown.Item>
+                            <Dropdown.Item eventKey="Title" onClick={()=>{document.getElementById("dropdown").innerHTML="Title"; this.setState({search: "Title"});}}>Title</Dropdown.Item>
+                            <Dropdown.Item eventKey="Author" onClick={()=>{document.getElementById("dropdown").innerHTML="Author"; this.setState({search: "Author"});}}>Author</Dropdown.Item>
+                            {/* <Dropdown.Item eventKey="ISBN" onClick={()=>{document.getElementById("dropdown").innerHTML="ISBN"; this.setState({search: "ISBN"});}}>ISBN</Dropdown.Item> */}
                             </DropdownButton>
                         </Form.Group>
                         </Form>
@@ -125,7 +194,19 @@ class Browse extends Component{
                             </tr>
                         </thead>
                         <tbody>
-                            {items}
+                            {/* {items} */}
+                            {this.state.books.map((book,i) => 
+                              <tr>                            
+                              <td><Link href="#">{book.title}</Link></td>
+                              <td><Link href="#">{book.author}</Link></td>                                                      
+                              <td style={{width:"8rem"}}>
+                                {this.createStar(book.rating)}
+                              </td>
+                              <td>{book.price}</td>
+                            </tr>  
+                          
+                            )}
+
                         </tbody>
                     </Table>
                 </div>
