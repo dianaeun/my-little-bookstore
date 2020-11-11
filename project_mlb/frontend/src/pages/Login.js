@@ -44,7 +44,7 @@ class Login extends Component {
             password: password
         }
     };
-    fetch("https://my-little-bookstore.herokuapp.com/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+    fetch("http://localhost:8000/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
     .then(res => {
       console.log(res.status);
       if (res.status !== 200 && res.status !== 201) {
