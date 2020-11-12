@@ -184,7 +184,7 @@ class Browse extends Component{
                             <div key={`inline-radio`} >
                                 <Form style={{border:"solid grey", borderRadius:"0.2rem", float:"right", margin:"0.3rem", fontSize: "0.85rem", padding: "0.2rem"}}>
                                     <Form.Label style={{margin: "0.3rem"}}>Sort By </Form.Label>
-                                    {/* <Form.Check style={{margin: "0.3rem"}} inline label='Rating' name='sort' type='radio' id='rating' /> */}
+                                    
                                     <Form.Check inline label='Price' type='radio' name='sort' id='price' onClick={() => {this.setState({sort: "price", sortbyradio: []}); this.fetchBooks();}}/>
                                     <Form.Check inline label='Alphabet' type='radio' name='sort' id='alphabet' onClick={() => {this.setState({sort: "Alphabet", sortbyradio: []}); this.fetchBooks();}}/>
                                 </Form>
