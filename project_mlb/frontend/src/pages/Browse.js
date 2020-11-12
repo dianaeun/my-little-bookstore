@@ -19,6 +19,7 @@ class Browse extends Component{
         sort : "All",
         liked : [],
         sortedbook : [],
+        sortbyradio : []
         
     };
     static contextType = AuthContext;
@@ -52,7 +53,12 @@ class Browse extends Component{
         .then(resData => {
             console.log("Books are successfully fetched! ", resData);
             const books = resData.data.books;
-            //books.sort((a, b) => b.price - a.price);
+            if(this.state.sort === "price")
+                books.sort((a, b) => b.price - a.price);
+
+            else if(this.state.sort === "Alphabet")
+                books.sort((a,b) => a.title.localeCompare(b.title));
+            else;
             // let selectedBooks = books.slice(0,10);
             // console.log(selectedBooks);
             this.setState({books: books, sortedbook: books} );
@@ -178,9 +184,9 @@ class Browse extends Component{
                             <div key={`inline-radio`} >
                                 <Form style={{border:"solid grey", borderRadius:"0.2rem", float:"right", margin:"0.3rem", fontSize: "0.85rem", padding: "0.2rem"}}>
                                     <Form.Label style={{margin: "0.3rem"}}>Sort By </Form.Label>
-                                    <Form.Check style={{margin: "0.3rem"}} inline label='Rating' name='sort' type='radio' id='rating' />
-                                    <Form.Check style={{margin: "0.3rem"}} inline label='Price' name='sort' type='radio' id='price' />
-                                    <Form.Check style={{margin: "0.3rem"}} inline label='Alphabet' name='sort' type='radio' id='alphabet' />
+                                    {/* <Form.Check style={{margin: "0.3rem"}} inline label='Rating' name='sort' type='radio' id='rating' /> */}
+                                    <Form.Check inline label='Price' type='radio' name='sort' id='price' onClick={() => {this.setState({sort: "price", sortbyradio: []}); this.fetchBooks();}}/>
+                                    <Form.Check inline label='Alphabet' type='radio' name='sort' id='alphabet' onClick={() => {this.setState({sort: "Alphabet", sortbyradio: []}); this.fetchBooks();}}/>
                                 </Form>
                             </div>
                         </div>
