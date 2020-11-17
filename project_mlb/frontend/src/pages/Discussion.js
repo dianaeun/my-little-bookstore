@@ -23,7 +23,7 @@ class Discussion extends Component {
   componentDidMount() {
     this.fetchDiscussions();
   }
-  fetchDiscussions() {
+  fetchDiscussions = () => {
     this.setState({isLoadingDiscussion: true})
     const requestBody = {
       query: `
