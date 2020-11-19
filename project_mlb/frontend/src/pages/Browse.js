@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Table from 'react-bootstrap/Table';
 import { Link } from 'react-router-dom';
 import {Form, Dropdown, DropdownButton, Row, Col, Button} from 'react-bootstrap';
-import MlbNavbar from '../components/NavigationBar.js'
+import MlbNavbar from '../components/NavigationBar.js';
 import AuthContext from '../context/AuthContext';
 
 const star = require("../icons/star.png");
@@ -123,7 +123,6 @@ class Browse extends Component{
         //             {this.createStar(value[2])}
         //             <td>$ {value[3]}</td></tr>)
         // }
-        
 
         return (
             <React.Fragment>
@@ -184,7 +183,7 @@ class Browse extends Component{
                             <div key={`inline-radio`} >
                                 <Form style={{border:"solid grey", borderRadius:"0.2rem", float:"right", margin:"0.3rem", fontSize: "0.85rem", padding: "0.2rem"}}>
                                     <Form.Label style={{margin: "0.3rem"}}>Sort By </Form.Label>
-                                    
+
                                     <Form.Check inline label='Price' type='radio' name='sort' id='price' onClick={() => {this.setState({sort: "price", sortbyradio: []}); this.fetchBooks();}}/>
                                     <Form.Check inline label='Alphabet' type='radio' name='sort' id='alphabet' onClick={() => {this.setState({sort: "Alphabet", sortbyradio: []}); this.fetchBooks();}}/>
                                 </Form>
@@ -196,7 +195,7 @@ class Browse extends Component{
                                 <th>Title</th>
                                 <th>Author</th>
                                 <th>Avg. Rating</th>
-                                <th>Lowest Price</th>
+                                <th>Highest Price</th>
                             </tr>
                         </thead>
                         <tbody>
