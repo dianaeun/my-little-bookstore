@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Modal, Button,Form} from 'react-bootstrap';
 
-class Addreview extends Component{
+class AddReview extends Component{
     constructor(props) {
         super(props);
         this.contentRef = React.createRef();
@@ -18,7 +18,7 @@ class Addreview extends Component{
         const requestBody = {
             query: `
                 mutation CreateReview($book: ID!, $reviewer: ID!, $date: String!, $content:String!){
-                    CreateReview(reviewInput: {book: $book, reviewer: $reviewer, date: $date, content: $content}){
+                    createReview(reviewInput: {book: $book, reviewer: $reviewer, date: $date, content: $content}){
                         _id
                     }
                 }
@@ -34,7 +34,7 @@ class Addreview extends Component{
         .then(res => {
             console.log(res.status);
             if (res.status !== 200 && res.status !== 201) {
-                throw new Error('Failed to fetch during add discussion!!!!');
+                throw new Error('Failed to fetch during add review!!');
             }
             return res.json();
         })
@@ -82,4 +82,4 @@ class Addreview extends Component{
     }
 }
 
-export default Addreview;
+export default AddReview;
