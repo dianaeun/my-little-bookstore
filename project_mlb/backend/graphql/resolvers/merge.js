@@ -80,7 +80,19 @@ const transformRequest = request => {
         book: findBook.bind(this, request._doc.book)
     }
 }
+
+const transformReview = request => {
+    return {
+        ...review._doc,
+        _id: review.id,
+        date: dateToString(review._doc.date),
+        reviewer: findUser.bind(this, review._doc.reviewer),
+        book: findBook.bind(this, review._doc.book)
+    }
+}
+
 exports.transformBook = transformBook;
 exports.transformDiscussion = transformDiscussion;
 exports.transformComment = transformComment;
 exports.transformRequest = transformRequest;
+exports.transformReview = transformReview;

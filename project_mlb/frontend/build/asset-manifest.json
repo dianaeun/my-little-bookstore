@@ -1,0 +1,31 @@
+{
+  "files": {
+    "main.css": "/static/css/main.79444afd.chunk.css",
+    "main.js": "/static/js/main.e3d4f4fa.chunk.js",
+    "main.js.map": "/static/js/main.e3d4f4fa.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.7ef0d6c0.js",
+    "runtime-main.js.map": "/static/js/runtime-main.7ef0d6c0.js.map",
+    "static/css/2.d9ad5f5c.chunk.css": "/static/css/2.d9ad5f5c.chunk.css",
+    "static/js/2.94177784.chunk.js": "/static/js/2.94177784.chunk.js",
+    "static/js/2.94177784.chunk.js.map": "/static/js/2.94177784.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.764d4de6d67cba4b573ab5493e49aa6f.js": "/precache-manifest.764d4de6d67cba4b573ab5493e49aa6f.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.d9ad5f5c.chunk.css.map": "/static/css/2.d9ad5f5c.chunk.css.map",
+    "static/css/main.79444afd.chunk.css.map": "/static/css/main.79444afd.chunk.css.map",
+    "static/js/2.94177784.chunk.js.LICENSE.txt": "/static/js/2.94177784.chunk.js.LICENSE.txt",
+    "static/media/book.png": "/static/media/book.38c3b9b0.png",
+    "static/media/delete.png": "/static/media/delete.aecb55e8.png",
+    "static/media/edit_dis.png": "/static/media/edit_dis.b520b299.png",
+    "static/media/harrypotter.png": "/static/media/harrypotter.1a4c06e4.png",
+    "static/media/star.png": "/static/media/star.533817b2.png",
+    "static/media/thumbs.png": "/static/media/thumbs.6196af93.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.7ef0d6c0.js",
+    "static/css/2.d9ad5f5c.chunk.css",
+    "static/js/2.94177784.chunk.js",
+    "static/css/main.79444afd.chunk.css",
+    "static/js/main.e3d4f4fa.chunk.js"
+  ]
+}

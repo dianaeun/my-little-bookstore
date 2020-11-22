@@ -103,6 +103,7 @@ module.exports = {
                 new: true
               }).populate('book');
             const editBook = transformBook(book);
+            
             return editBook;
         } catch (err) {
             throw err;

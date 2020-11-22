@@ -13,7 +13,7 @@ class EditBookModal extends Component{
                 centered
             >
                 <Modal.Header style={{background: "#348093"}}closeButton>
-                    <Modal.Title style={{color: "white"}}>Edit Books</Modal.Title>
+                    <Modal.Title style={{color: "white"}}>Edit Profile</Modal.Title>
                 </Modal.Header>
                 
                 <Modal.Body>
@@ -24,12 +24,12 @@ class EditBookModal extends Component{
                                 Name
                             </Form.Label>
                             <Col sm={9}>
-                                <Form.Control type="text" placeholder={this.props.person.name} />
+                                <Form.Control type="text" placeholder={this.props.person.firstName + " " + this.props.person.lastName} />
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} controlId="TitleInput">
                             <Form.Label column sm={3}>
-                                location
+                                Location
                             </Form.Label>
                             <Col sm={9}>
                                 <Form.Control type="text" placeholder={this.props.person.location} />
@@ -37,10 +37,10 @@ class EditBookModal extends Component{
                         </Form.Group>
                         <Form.Group as={Row} controlId="TitleInput">
                             <Form.Label column sm={3}>
-                                contact
+                                Email
                             </Form.Label>
                             <Col sm={9}>
-                                <Form.Control type="text" placeholder={this.props.person.contact} />
+                                <Form.Control type="text" placeholder={this.props.person.email} />
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} controlId="TitleInput">
@@ -51,31 +51,31 @@ class EditBookModal extends Component{
                                 <Form.Group controlId="formBasicGenre" as={Row}>
                                     <Col key={`inline-checkbox`} className="mb-3">
                                     <Form.Check
-                                        checked = {this.props.person.preference.includes("Romance")}
+                                        checked = {this.props.person.preferredGenres.includes("Romance")}
                                         inline
                                         label="Romance"
                                         id={`inline-checkbox-1`}
                                     />
                                     <Form.Check
-                                        checked = {this.props.person.preference.includes("Horror")}                                    
+                                        checked = {this.props.person.preferredGenres.includes("Horror")}                                    
                                         inline
                                         label="Horror"
                                         id={`inline-checkbox-2`}
                                     />
                                     <Form.Check
-                                        checked = {this.props.person.preference.includes("Fantasy")}
+                                        checked = {this.props.person.preferredGenres.includes("Fantasy")}
                                         inline
                                         label="Fantasy"
                                         id={`inline-checkbox-3`}
                                     />
                                     <Form.Check
-                                        checked = {this.props.person.preference.includes("Adventure")}
+                                        checked = {this.props.person.preferredGenres.includes("Adventure")}
                                         inline
                                         label="Adventure"
                                         id={`inline-checkbox-4`}
                                     />
                                     <Form.Check
-                                        checked = {this.props.person.preference.includes("Science")}
+                                        checked = {this.props.person.preferredGenres.includes("Science")}
                                         inline
                                         label="Science"
                                         id={`inline-checkbox-5`}

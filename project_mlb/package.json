@@ -1,7 +1,7 @@
 {
-  "name": "backend",
+  "name": "my-little-bookstore",
   "version": "1.0.0",
-  "description": "backend for project_mlb",
+  "description": "project_mlb (my little bookstore)",
   "main": "app.js",
   "engine": {
     "node": "13.9.0",
@@ -9,7 +9,11 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "npm run start --prefix backend",
+    "backend": "npm run start --prefix backend",
+    "frontend": "npm run start --prefix frontend",
+    "dev": "concurrently \"npm run backend\" \"npm run start --prefix frontend\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend "
   },
   "author": "DongHunKim",
   "license": "ISC",

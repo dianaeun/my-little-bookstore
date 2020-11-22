@@ -1,7 +1,12 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+//const expressPlayground = require("graphql-playground-middleware-express").default;
 app.use(bodyParser.json());
+
+const cors = require('cors');
+const path = require('path');
+app.use(cors());
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -12,6 +17,7 @@ app.use((req, res, next) => {
     next();
 });
 
+const config = require("./config/key");
 
 const graphQlSchema = require('./graphql/schema/index');
 const graphQlResolvers = require('./graphql/resolvers/index');
@@ -25,12 +31,31 @@ app.use(
     })
 );
 
+//app.get("/playground", expressPlayground({ endpoint: "/graphql" }));
+
 const mongoose = require('mongoose');
-mongoose
-    .connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.oszf0.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`)
+const connect = mongoose
+    .connect(config.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
-        app.listen(8000);
+        console.log('MongoDB Connected...')
     })
     .catch(err => {
         console.log(err)
     });
+
+if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === 'staging') {
+
+    // Set static folder
+    app.use(express.static("frontend/build"));
+    
+    // index.html for all page routes
+    app.get("*", (req, res) => {
+        res.sendFile(path.resolve(__dirname, "../frontend", "build", "index.html"));
+    });
+}
+
+const port = process.env.PORT || 8000
+
+app.listen(port, () => {
+    console.log(`Server Running at ${port}`)
+});
