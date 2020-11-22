@@ -69,7 +69,7 @@ class IndividualBookpage extends Component{
               date: new Date()
           }
       };
-      fetch('http://localhost:8000/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+      fetch('/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
             throw new Error("Failed to fetch requests!")
@@ -106,7 +106,7 @@ class IndividualBookpage extends Component{
             }
         `
       };
-      fetch('http://localhost:8000/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+      fetch('/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
             throw new Error("Failed to fetch requests!")
@@ -136,7 +136,7 @@ class IndividualBookpage extends Component{
             }
         `
       }
-      fetch('http://localhost:8000/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+      fetch('/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error("Failed to fetch discussions!")

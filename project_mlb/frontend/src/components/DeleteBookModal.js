@@ -16,7 +16,7 @@ class DeleteBookModal extends Component{
                   bookID: book._id
               }
           };
-          fetch("http://localhost:8000/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+          fetch("/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
           .then(res => {
             console.log(res.status);
             if (res.status !== 200 && res.status !== 201) {

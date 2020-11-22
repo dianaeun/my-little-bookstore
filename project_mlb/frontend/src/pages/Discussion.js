@@ -46,7 +46,7 @@ class Discussion extends Component {
           }
       `
     }
-    fetch('http://localhost:8000/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+    fetch('/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
     .then(res => {
       if (res.status !== 200 && res.status !== 201) {
         throw new Error("Failed to fetch discussions!")
@@ -125,7 +125,7 @@ class Discussion extends Component {
         likes: like
       }
     };
-    fetch("http://localhost:8000/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+    fetch("/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
     .then(res => {
         console.log(res.status);
         if (res.status !== 200 && res.status !== 201) {
@@ -180,7 +180,7 @@ class Discussion extends Component {
             content: comment
         }
     };
-    fetch("http://localhost:8000/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+    fetch("/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
     .then(res => {
         console.log(res.status);
         if (res.status !== 200 && res.status !== 201) {
