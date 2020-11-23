@@ -9,14 +9,6 @@ To explore our application, there are two options avaiable below.
 ## 1. Using deployed application
     https://my-little-bookstore.herokuapp.com/
 You can access our application from the link above.
-However, for the full experience to our application, please do the following before performing any other action.
-### In a terminal
-```bash
-npm install
-npm start
-```
-Since our deployment does not support graphql yet, we ask you to run the local server as well.
-Opening the above link alone will show you all the frontend designs, but login and all the other cool features are not going to be supported.
 
 ## 2. Using a local server
 Please do the following in order to run the local server.
