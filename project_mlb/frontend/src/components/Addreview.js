@@ -9,6 +9,9 @@ class AddReview extends Component{
     handleSubmit = event => {
         event.preventDefault();
         const content = this.contentRef.current.value;
+        console.log(content);
+        console.log(this.props.book);
+        console.log(this.props.reviewer);
         const date = new Date();
         if (content.trim().length === 0){
             console.log("warning modal (null type input)");
@@ -17,17 +20,17 @@ class AddReview extends Component{
         }
         const requestBody = {
             query: `
-                mutation CreateReview($book: ID!, $reviewer: ID!, $date: String!, $content:String!){
-                    createReview(reviewInput: {book: $book, reviewer: $reviewer, date: $date, content: $content}){
+                mutation CreateReview($bookTitle: String!, $reviewer: String!, $date: String!, $content:String!){
+                    createReview(reviewInput: {bookTitle: $bookTitle, reviewer: $reviewer, date: $date, content: $content}){
                         _id
                     }
                 }
             `,
             variables: {
-                book: this.props.book._id,
-                reviewer: this.props.reviewer._id,
+                bookTitle: this.props.book,
+                reviewer: this.props.reviewer,
                 date: date,
-                content: content
+                content: content,
             }
         };
         fetch("/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
@@ -49,7 +52,7 @@ class AddReview extends Component{
             console.log(err);
         });
         this.props.handleClose();
-        this.props.fetchReviews();
+        //this.props.fetchReviews();
     }
     render(){
         return(

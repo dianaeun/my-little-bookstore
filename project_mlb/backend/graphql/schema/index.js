@@ -52,8 +52,8 @@ const schema =  buildSchema(`
     }
     type Review{
         _id: ID!
-        reviewer: User!
-        book: Book!
+        reviewer: String!
+        book: String!
         date: String!
         content: String!
     }
@@ -102,8 +102,8 @@ const schema =  buildSchema(`
         date: String!   
     }
     input ReviewInput {
-        book: ID!
-        reviewer: ID!
+        bookTitle: String!
+        reviewer: String!
         date: String!
         content: String!
     }

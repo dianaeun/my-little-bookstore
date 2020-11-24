@@ -121,12 +121,13 @@ class IndividualBookpage extends Component{
       })
     }
     fetchReviews() {
-      this.setState({isLoadingReviews: true});
+      this.setState({isLoading: true});
+      //this.setState({isLoadingReviews: true});
       console.log(this.props.location.book);
       const requestBody = {
         query: `
             query{
-              bookReviews(bookID: "${this.props.location.book._id}"){
+              bookReviews(bookID: "${this.props.location.book.title}"){
                 _id
                 reviewer
                 book
@@ -146,7 +147,7 @@ class IndividualBookpage extends Component{
       .then(resData => {
         console.log("Reviews are successfully fetched! ", resData);
         const reviews = resData.data.reviews;
-        this.setState({reviews: reviews, baseReviews: reviews, isLoadingReviews: false});
+        this.setState({reviews: reviews, baseReviews: reviews, isLoading: false});
       })
       .catch(err => { console.log(err);});
     }
@@ -156,7 +157,7 @@ class IndividualBookpage extends Component{
           <React.Fragment>
             <MlbNavbar/>
             <div>
-              <AddReview show={this.state.addReview} handleClose={this.handleClose} fetchReviews={this.fetchReviews} handleClose={this.handleClose} reviewer={this.context.userID} book={this.props.location.book}/>
+              <AddReview show={this.state.addReview} handleClose={this.handleClose} fetchReviews={this.fetchReviews} handleClose={this.handleClose} reviewer={this.context.userID} book={this.props.location.book.title}/>
                 <RequestModal show={this.state.request} handleClose={this.handleClose}/>
                 <div style={{marginLeft: "2%", marginTop: "2rem", background: "#eeeeee", width: "30%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>
                   <h1 style={{fontSize: "2rem"}}>Book Information</h1>

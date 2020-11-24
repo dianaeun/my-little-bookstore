@@ -86,8 +86,8 @@ const transformReview = request => {
         ...review._doc,
         _id: review.id,
         date: dateToString(review._doc.date),
-        reviewer: findUser.bind(this, review._doc.reviewer),
-        book: findBook.bind(this, review._doc.book)
+        //reviewer: findUser.bind(this, review._doc.reviewer),
+        //book: findBook.bind(this, review._doc.book)
     }
 }
 
