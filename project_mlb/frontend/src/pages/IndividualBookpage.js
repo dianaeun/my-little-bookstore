@@ -16,12 +16,11 @@ class IndividualBookpage extends Component{
         isLoading: false,
         sameBooks: [],
         isLoadingReviews: false,
-        reviews: []
+        reviews: [],
+        shownReviews: []
     }
     constructor(){
         super();
-        this.state = { showText: false };
-        this.state = { showText1: false};
     }
     static contextType = AuthContext;
     componentDidMount() {
@@ -42,7 +41,10 @@ class IndividualBookpage extends Component{
       return <td>{stars}</td>
     }
     handleClose = () => {
-        this.setState({addReview: false, request: false});
+      if(this.state.addReview) {
+        this.fetchReviews();
+      }
+      this.setState({addReview: false, request: false});
     }
     handleAddReview = () => {
       if (this.context.userID === null){
@@ -122,8 +124,8 @@ class IndividualBookpage extends Component{
       })
     }
     fetchReviews() {
-      this.setState({isLoading: true});
-      //this.setState({isLoadingReviews: true});
+      //this.setState({isLoading: true});
+      this.setState({isLoadingReviews: true});
       console.log(this.props.location.book);
       const requestBody = {
         query: `
@@ -131,7 +133,7 @@ class IndividualBookpage extends Component{
               bookReviews(bookID: "${this.props.location.book.title}"){
                 _id
                 reviewer
-                book
+                bookTitle
                 date
                 content
               }
@@ -147,18 +149,27 @@ class IndividualBookpage extends Component{
       })
       .then(resData => {
         console.log("Reviews are successfully fetched! ", resData);
-        const reviews = resData.data.reviews;
-        this.setState({reviews: reviews, baseReviews: reviews, isLoading: false});
+        const reviews = resData.data.bookReviews;
+        console.log(reviews);
+        this.setState({reviews: reviews, baseReviews: reviews, isLoadingReviews: false});
       })
       .catch(err => { console.log(err);});
     }
+    handleShowReview = (target) => {
+      let shown = this.state.shownReviews;
+      let index = shown.indexOf(target);
+      if (index === -1) {
+        shown.push(target);
+      } else shown.splice(index, 1);
+      this.setState({ shownReviews: shown });
+    };
 
     render(){
         return (
           <React.Fragment>
             <MlbNavbar/>
             <div>
-              <AddReview show={this.state.addReview} handleClose={this.handleClose} fetchReviews={this.fetchReviews} handleClose={this.handleClose} reviewer={this.context.userID} book={this.props.location.book.title}/>
+              <AddReview show={this.state.addReview} handleClose={this.handleClose} reviewer={this.context.userID} book={this.props.location.book.title}/>
                 <RequestModal show={this.state.request} handleClose={this.handleClose}/>
                 <div style={{marginLeft: "2%", marginTop: "2rem", background: "#eeeeee", width: "30%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>
                   <h1 style={{fontSize: "2rem"}}>Book Information</h1>
@@ -216,22 +227,19 @@ class IndividualBookpage extends Component{
                             </tr>
                         </thead>
                         <tbody style={{ textAlign: "center", marginTop: "2rem" }}>
-                          {this.state.reviews && this.state.reviews.map((review) => (
+                          {this.state.reviews && this.state.reviews.map((review, i) => (
                               <tr>
-                                <td>{review.reviewer.userID}</td>
-                                <td>{this.state.sameBooks[0].title}
+                                <td>{review.reviewer}</td>
+                                <td>{review.bookTitle}
                               <div>
-                              <Collapse in={this.state.showText}>
-                                <div>
-                                  <span>                          
-                                  {review.comment}
-                                </span>
-                                </div>
-                                  </Collapse>
+                              <div style={this.state.shownReviews.includes(i + "") ? {marginLeft: "1rem", marginTop: "1rem"} : { display: "none"}}>
+                                 {review.content}
+                              </div>
+                              
                                 </div>
                                 </td>
                                 <td>
-                                <Button variant="info" onClick={() => this.setState({ showText: !this.state.showText })}> {this.state.showText ? 'Read less' : 'Read more'}</Button>
+                                <Button id={"button" + i} variant="info" onClick={() => this.handleShowReview(i+"")}> {this.state.shownReviews.includes(i + "") ? 'Read less' : 'Read more'}</Button>
                                 </td>
                                 </tr>
                             ))}   

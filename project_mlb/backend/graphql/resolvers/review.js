@@ -4,7 +4,8 @@ const { transformReview } = require('./merge');
 module.exports = {
     bookReviews: async ({bookID}) => {
         try {
-            const reviews = await Review.find({bookTitle: bookID});
+            console.log("working on bookReviews...");
+            const reviews = await Review.find({bookTitle : bookID});
             console.log(reviews);
             return reviews.map(review => {
                 return transformReview(review);

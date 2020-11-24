@@ -81,7 +81,7 @@ const transformRequest = request => {
     }
 }
 
-const transformReview = request => {
+const transformReview = review => {
     return {
         ...review._doc,
         _id: review.id,
