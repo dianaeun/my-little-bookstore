@@ -9,9 +9,6 @@ class AddReview extends Component{
     handleSubmit = event => {
         event.preventDefault();
         const content = this.contentRef.current.value;
-        console.log(content);
-        console.log(this.props.book);
-        console.log(this.props.reviewer);
         const date = new Date();
         if (content.trim().length === 0){
             console.log("warning modal (null type input)");

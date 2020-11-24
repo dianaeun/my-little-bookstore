@@ -53,7 +53,7 @@ const schema =  buildSchema(`
     type Review{
         _id: ID!
         reviewer: String!
-        book: String!
+        bookTitle: String!
         date: String!
         content: String!
     }
