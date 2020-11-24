@@ -26,6 +26,7 @@ class IndividualBookpage extends Component{
     static contextType = AuthContext;
     componentDidMount() {
       this.fetchSameBooks();
+      this.fetchReviews();
     }
     toggle = () => {
       this.setState({ isOpen: !this.state.isOpen });
@@ -140,7 +141,7 @@ class IndividualBookpage extends Component{
       fetch('/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
-          throw new Error("Failed to fetch discussions!")
+          throw new Error("Failed to fetch reviews!")
         }
         return res.json()
       })
