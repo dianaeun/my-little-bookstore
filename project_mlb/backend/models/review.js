@@ -7,9 +7,9 @@ const reviewSchema = new Schema({
         type: String,
         required: true
     },
-    book: {
-        type: Schema.Types.ObjectId,
-        ref: 'Book'
+    bookTitle: {
+        type: String,
+        required: true
     },
     date: {
         type: Date,

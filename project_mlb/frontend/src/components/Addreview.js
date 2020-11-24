@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Modal, Button,Form} from 'react-bootstrap';
 
-class Addreview extends Component{
+class AddReview extends Component{
     constructor(props) {
         super(props);
         this.contentRef = React.createRef();
@@ -9,6 +9,9 @@ class Addreview extends Component{
     handleSubmit = event => {
         event.preventDefault();
         const content = this.contentRef.current.value;
+        console.log(content);
+        console.log(this.props.book);
+        console.log(this.props.reviewer);
         const date = new Date();
         if (content.trim().length === 0){
             console.log("warning modal (null type input)");
@@ -17,24 +20,24 @@ class Addreview extends Component{
         }
         const requestBody = {
             query: `
-                mutation CreateReview($book: ID!, $reviewer: ID!, $date: String!, $content:String!){
-                    CreateReview(reviewInput: {book: $book, reviewer: $reviewer, date: $date, content: $content}){
+                mutation CreateReview($bookTitle: String!, $reviewer: String!, $date: String!, $content:String!){
+                    createReview(reviewInput: {bookTitle: $bookTitle, reviewer: $reviewer, date: $date, content: $content}){
                         _id
                     }
                 }
             `,
             variables: {
-                book: this.props.book._id,
-                reviewer: this.props.reviewer._id,
+                bookTitle: this.props.book,
+                reviewer: this.props.reviewer,
                 date: date,
-                content: content
+                content: content,
             }
         };
         fetch("/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
         .then(res => {
             console.log(res.status);
             if (res.status !== 200 && res.status !== 201) {
-                throw new Error('Failed to fetch during add discussion!!!!');
+                throw new Error('Failed to fetch during add review!!');
             }
             return res.json();
         })
@@ -49,7 +52,7 @@ class Addreview extends Component{
             console.log(err);
         });
         this.props.handleClose();
-        this.props.fetchReviews();
+        //this.props.fetchReviews();
     }
     render(){
         return(
@@ -82,4 +85,4 @@ class Addreview extends Component{
     }
 }
 
-export default Addreview;
+export default AddReview;
