@@ -11,15 +11,17 @@ const blankStar = require("../icons/blank_star.png");
 class Browse extends Component{
     state = { 
         books:[], 
-        genres: [],
+        //genre: "All",
         searchBook : false,
         isLoadingBook: false,
         search : "",
         searchTerm : "",
         sort : "All",
+        filter : "",
         liked : [],
         sortedbook : [],
-        sortbyradio : []
+        sortbyradio : [],
+        sortbygenre : []
         
     };
     static contextType = AuthContext;
@@ -39,6 +41,7 @@ class Browse extends Component{
                         rating
                         genre
                         price
+                        isbn
                     }
                 }
             `
@@ -53,37 +56,78 @@ class Browse extends Component{
         .then(resData => {
             console.log("Books are successfully fetched! ", resData);
             const books = resData.data.books;
+            //let check = this.state.books;
             if(this.state.sort === "price")
                 books.sort((a, b) => b.price - a.price);
 
             else if(this.state.sort === "Alphabet")
                 books.sort((a,b) => a.title.localeCompare(b.title));
-            else;
+                    
+            else
+                if(this.state.filter === "Horror")
+                    books.filter((temp) => temp.genre.includes("Horror"));
+                    //books.filter(function(temp){return temp.genre.includes("Romance")});
+                    //books.sort((a, b) => b.price - a.price);
+                else if(this.state.filter === "Romance")
+                    //books.filter((a) => a.genre.value !== "Horror" && a.genre.value !== "Fantsy" && a.genre.value !=="Adventure" && a.genre.value !=="Science");
+                    books.filter((temp) => temp.genre.includes("Romance"));
+                else if(this.state.filter === "Fantasy")
+                    books.filter((temp) => temp.genre.includes("Fantasy"));
+                else if(this.state.filter === "Adventure")
+                    books.filter((temp) => temp.genre.includes("Adventure"));
+                else if(this.state.filter === "Science")
+                    books.filter((temp) => temp.genre.includes("Science"));
             // let selectedBooks = books.slice(0,10);
             // console.log(selectedBooks);
-            this.setState({books: books, sortedbook: books} );
+            //let arr = books.filter(function(temp){return temp.genre.includes("Romance")});
+            let arr = books.filter((temp) => temp.genre.includes("Horror"));
+            //console.log("genre arr",arr);
+            this.setState({books: books, sortbygenre: arr});
+            
         })
         .catch(err => { console.log(err);});
     };
+
+
 
       handleSearchBook = (event, search, searchTerm) => {
         event.preventDefault();
         let books = this.state.books;
         if (search === "Title")
           books = this.state.sortedbook.filter(function(book){return book.title.toLowerCase().includes(searchTerm.toLowerCase())});
-        // else if (search === "ISBN")
-        //   books = this.state.sortedbook.filter(function(book){return book.isbn.toLowerCase().includes(searchTerm.toLowerCase())});
-        //book.isbn.toLowerCase().includes(searchTerm.toLowerCase()) ||
         else if (search === "Author")
           books = this.state.sortedbook.filter(function(book){return book.author.toLowerCase().includes(searchTerm.toLowerCase())});
+        else if (search === "ISBN")
+            books = this.state.sortedbook.filter(function(book){return book.isbn.toLowerCase().includes(searchTerm.toLowerCase())});
         else 
           books = this.state.sortedbook.filter(function(book){
-            return  book.title.toLowerCase().includes(searchTerm.toLowerCase())
+            return  book.title.toLowerCase().includes(searchTerm.toLowerCase())            
+            || book.isbn.toLowerCase().includes(searchTerm.toLowerCase())
              || book.author.toLowerCase().includes(searchTerm.toLowerCase())});
         this.setState({books: books});
+        console.log("I want check",books);
       }
 
-    // searchBook = (val) => {
+    // advanceSearchBook = (event, search) => {
+    //     event.preventDefault();
+    //     let books = this.state.books;
+    //     if(search === "Romance")
+    //         books = this.state.sortbygenre.filter(
+    //             function(book){
+    //                 if(book.genre.value === "Romance"){
+    //                     return book.genre.toLowerCase().includes(searchTerm.toLowerCase())
+    //                 }
+    //                 return book.genre.toLowerCase().includes(searchTerm.toLowerCase())
+    //             }
+    //         );
+            
+    //     else
+    //         books = this.state.sortedbook.filter(function(book){
+            
+    //         return book.genre.toLowerCase().includes(searchTerm.toLowerCase())});
+
+    //         this.setState({books: books});
+        
     //     // do the actual searching
     // }
 
@@ -136,26 +180,34 @@ class Browse extends Component{
                             </Col>                
                             <Button style={{fontWeight: "bold", background: "#FAC917", color: "black", border: "1px solid #FAC917", opacity: "79%"}} type="submit">Search</Button>
                             <DropdownButton id="dropdown" variant="outline-secondary" title="All Categories" style={{marginLeft: "1rem"}} >
-                            <Dropdown.Item eventKey='All Categories' onClick={()=>{document.getElementById("dropdown").innerHTML="All Categories"; this.setState({search: "All"});}}>All Categories</Dropdown.Item>
+                            <Dropdown.Item eventKey='All Categories' onClick={()=>{document.getElementById("dropdown").innerHTML="All Categories";}}>All Categories</Dropdown.Item>
                             <Dropdown.Item eventKey="Title" onClick={()=>{document.getElementById("dropdown").innerHTML="Title"; this.setState({search: "Title"});}}>Title</Dropdown.Item>
                             <Dropdown.Item eventKey="Author" onClick={()=>{document.getElementById("dropdown").innerHTML="Author"; this.setState({search: "Author"});}}>Author</Dropdown.Item>
-                            {/* <Dropdown.Item eventKey="ISBN" onClick={()=>{document.getElementById("dropdown").innerHTML="ISBN"; this.setState({search: "ISBN"});}}>ISBN</Dropdown.Item> */}
+                            <Dropdown.Item eventKey="ISBN" onClick={()=>{document.getElementById("dropdown").innerHTML="ISBN"; this.setState({search: "ISBN"});}}>ISBN</Dropdown.Item>
                             </DropdownButton>
                         </Form.Group>
                         </Form>
                         <h5>Advanced Search</h5>
                         <Form>
+            
                             <Table borderless size="sm" style={{ maxWidth: "700px"}}>
                             <tr>
                                 <td>
                                 <Form.Label>Genre</Form.Label>
                                 </td>
                                 <td>
-                                {genres.map((gen) => (
+                                <Form.Check inline label='Romance' type='radio' name='genre' id='romance' onClick = {() => {this.setState({filter: "Romance"}); this.fetchBooks();}}/>
+                                <Form.Check inline label='Horror' type='radio' name='genre' id='horror' onClick={() => {this.setState({filter: "Horror", sortbygenre: []}); this.fetchBooks();}}/>
+                                <Form.Check inline label='Fantasy' type='radio' name='genre' id='fantasy' onClick={() => {this.setState({filter: "Fantasy", sortbygenre: []}); this.fetchBooks();}}/>
+                                <Form.Check inline label='Adventure' type='radio' name='genre' id='adventure' onClick={() => {this.setState({filter: "Adventure", sortbygenre: []}); this.fetchBooks();}}/>
+                                <Form.Check inline label='Science' type='radio' name='genre' id='science' onClick={() => {this.setState({filter: "Science", sortbygenre: []}); this.fetchBooks();}}/>
+                                
+                                {/* {genres.map((gen) => (
                                     <Form.Check inline label={gen} type='checkbox' id={gen} />
-                                ))}
+                                ))} */}
                                 </td>
                             </tr>
+                            
                             <tr>
                                 <td><Form.Label>Location Level</Form.Label></td>
                                 {/* <td><Form.Control type="range" step="1" min="0" max="4" list="level"/></td>
@@ -183,8 +235,7 @@ class Browse extends Component{
                             <div key={`inline-radio`} >
                                 <Form style={{border:"solid grey", borderRadius:"0.2rem", float:"right", margin:"0.3rem", fontSize: "0.85rem", padding: "0.2rem"}}>
                                     <Form.Label style={{margin: "0.3rem"}}>Sort By </Form.Label>
-
-                                    <Form.Check inline label='Price' type='radio' name='sort' id='price' onClick={() => {this.setState({sort: "price", sortbyradio: []}); this.fetchBooks();}}/>
+                                    <Form.Check inline label='Price' type='radio' name='sort' id='price' onClick={() => {this.setState({sort: "price"}); this.fetchBooks();}}/>
                                     <Form.Check inline label='Alphabet' type='radio' name='sort' id='alphabet' onClick={() => {this.setState({sort: "Alphabet", sortbyradio: []}); this.fetchBooks();}}/>
                                 </Form>
                             </div>
@@ -194,6 +245,7 @@ class Browse extends Component{
                             <tr>
                                 <th>Title</th>
                                 <th>Author</th>
+                                <th>Genre</th>
                                 <th>Avg. Rating</th>
                                 <th>Highest Price</th>
                             </tr>
@@ -203,7 +255,8 @@ class Browse extends Component{
                             {this.state.books.map((book,i) => 
                               <tr>                            
                               <td><Link href="#">{book.title}</Link></td>
-                              <td><Link href="#">{book.author}</Link></td>                                                      
+                              <td><Link href="#">{book.author}</Link></td>
+                            <td>{book.genre}</td>                                                
                               <td style={{width:"10rem"}}>
                                 {this.createStar(book.rating)}
                               </td>
