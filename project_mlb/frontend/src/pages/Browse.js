@@ -85,6 +85,7 @@ class Browse extends Component{
         else if (filter === "Romance"){
             
             books = this.state.sortedbook.filter((temp) => temp.genre.includes("Romance"));
+        
         }
 
         else if (filter === "Science"){
