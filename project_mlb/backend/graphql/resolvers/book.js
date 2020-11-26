@@ -1,11 +1,13 @@
 const Book = require('../../models/book');
 const User = require('../../models/user');
 const Request = require('../../models/request');
+const Rating = require('../../models/rating');
 const {transformBook} = require('./merge');
 const DataLoader = require('dataloader')
 const userLoader = new DataLoader( userIDs => {
     return User.find( { _id: {$in: userIDs}});
 })
+
 module.exports = {
     books: async () => {
         try {
@@ -19,11 +21,6 @@ module.exports = {
         }
     },
     userBooks: async ({ownerID}) => {
-        // if (!req.isAuth) {
-        //     throw new Error('Unauthenticated!');
-        // }
-        // ownerID = req.userId;
-        // ownerID = "5f976afd74382937987f902f"; //default id
         try {
             const books = await Book.find({owner: ownerID});
             console.log("userBooks:", books);
@@ -39,6 +36,7 @@ module.exports = {
         try {
             const books = await Book.find({title : bookTitle});
             console.log("same books: ", books);
+
             return books.map(book => {
                 return transformBook(book);
             })
@@ -48,30 +46,36 @@ module.exports = {
         }
     },
     createBook: async(args) => {
-        // if (!req.isAuth) {
-        //     throw new Error('Unauthenticated!');
-        // }
-        // ownerID = req.userId;
-        // ownerID = "5f976afd74382937987f902f";
+        let rating_id;
+        let rating = await Rating.findOne({bookTitle: args.bookInput.title});
+        console.log("found rating!", rating);
+        if (rating){
+            rating_id = rating._id;
+        }
+        else{
+            rating = new Rating({bookTitle: args.bookInput.title, rating: 0, ratingSum: 0, raters: []});
+            const result = await rating.save();
+            console.log("This is a new book, successfully created rating", result);
+            rating_id = result.id;
+        }
+        console.log("rating_id", rating_id);
         const book = new Book({
             title: args.bookInput.title,
             date: new Date(args.bookInput.date),
             publisher: args.bookInput.publisher,
             author: args.bookInput.author,
             isbn: args.bookInput.isbn,
-            rating: args.bookInput.rating,
+            rating: rating_id,
             price: args.bookInput.price,
             genre: args.bookInput.genre,
             description: args.bookInput.description,
             owner: args.bookInput.owner,
             requests: [],
         });
-        // const owner = await User.find({ownerID: args.bookInput.owner});
-        // if (!owner) {
-        //     throw new Error('User not found.');
-        // }
+
         try{
             const result = await book.save();
+            console.log("Successfully Created Book", result);
             return transformBook(result);
         }
         catch (err){
@@ -80,9 +84,6 @@ module.exports = {
 
     },
     deleteBook: async (args, req) => {
-        // if (!req.isAuth) {
-        //     throw new Error('Unauthenticated!');
-        // }
         try {
             const book = await Book.findById(args.bookId).populate('book');
             const deletedBook = transformBook(book);
@@ -95,9 +96,6 @@ module.exports = {
         }
     },
     editBook: async (args) => {
-        // if (!req.isAuth) {
-        //     throw new Error('Unauthenticated!');
-        // }
         try {
 
             

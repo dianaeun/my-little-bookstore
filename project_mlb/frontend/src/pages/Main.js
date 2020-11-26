@@ -51,7 +51,10 @@ class Main extends Component {
                       title
                       author
                       publisher
-                      rating
+                      rating{
+                        _id
+                        rating
+                      }
                       genre
                   }
               }
@@ -159,7 +162,7 @@ class Main extends Component {
                       <Button variant="outline-danger" size="sm" style={{marginRight:"0.5rem"}} disabled>{genre}</Button>
                     ))}</td>
                     <td style={{width:"8rem"}}>
-                      {this.createStar(book.rating)}
+                      {this.createStar(book.rating.rating)}
                     </td>
                   </tr>))   
                 }
