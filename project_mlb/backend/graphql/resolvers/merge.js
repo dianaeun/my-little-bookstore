@@ -1,11 +1,12 @@
 const User = require('../../models/user');
 const Book = require('../../models/book');
+const Rating = require('../../models/rating');
+
 const dateToString = date => {
     const newDate = new Date(date);
     const month = newDate.getMonth()+1;
     return newDate.getFullYear()+'/'+month+'/'+newDate.getDate();
 }
-
 const DataLoader = require('dataloader');
 const userLoader = new DataLoader( userIDs => {
     console.log("userLoader", userIDs)
@@ -14,7 +15,9 @@ const userLoader = new DataLoader( userIDs => {
 const bookLoader = new DataLoader( bookIDs => {
     return Book.find({ _id: { $in: bookIDs }});
 });
-
+const ratingLoader = new DataLoader( ratingIDs => {
+    return Rating.find({_id: { $in: ratingIDs }});
+});
 const findUser = async userID => {
     try{
         console.log("findUser...");
@@ -44,6 +47,25 @@ const findBook = async bookID => {
         throw err;
     }
 }
+const findRating = async ratingID => {
+    try{
+        // const rating = await ratingLoader.load(ratingID.toString());
+        const rating = await Rating.findById(ratingID);
+        console.log("Found Rating while fetching rating:", rating);
+        const result = await rating.raters.length === 0 ? 0 : rating.ratingSum / rating.raters.length;
+        console.log("Computed Rate>>", result);
+
+        return {
+            ...rating._doc,
+            rating: result
+        };
+    }
+    catch (err){
+        throw err;
+    }
+}
+
+
 const transformBook = book => {
     console.log("transforming book...", book._doc.owner);
     //console.log("owner:", findUser(book.owner));
@@ -51,7 +73,8 @@ const transformBook = book => {
         ...book._doc,
         _id: book.id,
         date: dateToString(book._doc.date),
-        owner: findUser.bind(this, book._doc.owner)
+        owner: findUser.bind(this, book._doc.owner),
+        rating: findRating.bind(this, book._doc.rating)
     }
 };
 const transformDiscussion = discussion => {
@@ -90,9 +113,16 @@ const transformReview = review => {
         //book: findBook.bind(this, review._doc.book)
     }
 }
+const transformRating = rating => {
+    return {
+        ...rating._doc,
+        _id: rating.id
+    }
+}
 
 exports.transformBook = transformBook;
 exports.transformDiscussion = transformDiscussion;
 exports.transformComment = transformComment;
 exports.transformRequest = transformRequest;
 exports.transformReview = transformReview;
+exports.transformRating = transformRating;

@@ -22,8 +22,8 @@ const bookSchema = new Schema({
         required: false
     },
     rating:{
-        type: Number,
-        required: true
+        type: Schema.Types.ObjectId,
+        ref: 'Rating'
     },
     price:{
         type: Number,
