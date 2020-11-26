@@ -99,7 +99,18 @@ module.exports = {
         //     throw new Error('Unauthenticated!');
         // }
         try {
-            const book = await Book.findByIdAndUpdate(args.bookId, args.bookInput, {
+
+            
+            //let result = await Request.findOneAndUpdate({_id: requestID}, {status: "declined"}, {new: true});
+            const book = await Book.findByIdAndUpdate({_id: args.bookId}, {title: args.bookInput.title,
+                date: new Date(args.bookInput.date),
+                publisher: args.bookInput.publisher,
+                author: args.bookInput.author,
+                isbn: args.bookInput.isbn,
+                rating: args.bookInput.rating,
+                price: args.bookInput.price,
+                genre: args.bookInput.genre,
+                description: args.bookInput.description}, {
                 new: true
               }).populate('book');
             const editBook = transformBook(book);

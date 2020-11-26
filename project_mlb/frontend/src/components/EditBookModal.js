@@ -30,6 +30,7 @@ class EditBookModal extends Component{
                 }
             `,
             variables: {
+                bookId: this.props.book._id,
                 title: title,
                 author: author,
                 publisher: publisher,
@@ -37,8 +38,8 @@ class EditBookModal extends Component{
                 date: date,
                 owner: this.props.owner,
                 rating: 0,
-                genre: "",
-                isbn: ""
+                genre: this.props.book.genre,
+                isbn: this.props.book.isbn
             }
         };
         fetch("/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
@@ -51,14 +52,11 @@ class EditBookModal extends Component{
         })
         .then(resData => {
           console.log("successful edited your book!", resData);
-          this.setState({createdAccount: true});
         })
         .catch(err =>{
           console.log(err);
           //throw err;    => user 가 이미 존재할때 그냥 error 을 throw 시켜버릴때 먹통이된다! 
         });
-        this.setState({rawBookInfo: [], bookInfo: []});
-        alert("you have successfully edited a book!");
         this.props.handleClose();
     }
     render(){
