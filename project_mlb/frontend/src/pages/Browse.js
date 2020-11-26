@@ -38,7 +38,11 @@ class Browse extends Component{
                         title
                         author
                         publisher
-                        rating
+                        rating{
+                            _id
+                            rating
+                            raters
+                        }
                         genre
                         price
                         isbn
