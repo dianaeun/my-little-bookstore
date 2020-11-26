@@ -90,13 +90,13 @@ class AddBookModal extends Component{
         const price = this.priceRef.current.value;
         const date = new Date();
         if (title.trim().length === 0 || author.trim().length === 0 || publisher.trim().length === 0 || price.trim().length === 0){
-          console.log("warning modal (null type input)");
-          return;
+            console.log("warning modal (null type input)");
+            return;
         }
         const requestBody = {
           query: `
-                mutation CreateBook($title: String!, $author: String!, $publisher: String!, $price: Float!, $date: String!, $owner: ID!, $rating: Int!, $genre: String!, $isbn: String!){
-                    createBook(bookInput: {title: $title, author: $author, publisher: $publisher, price: $price, date: $date, owner: $owner, rating: $rating, genre: $genre, isbn: $isbn}) {
+                mutation CreateBook($title: String!, $author: String!, $publisher: String!, $price: Float!, $date: String!, $owner: ID!, $genre: String!, $isbn: String!){
+                    createBook(bookInput: {title: $title, author: $author, publisher: $publisher, price: $price, date: $date, owner: $owner, genre: $genre, isbn: $isbn}) {
                         _id
                     }
                 }
@@ -108,22 +108,24 @@ class AddBookModal extends Component{
                 price: parseFloat(price),
                 date: date,
                 owner: this.props.owner,
-                rating: 0,
                 genre: "",
                 isbn: ""
             }
         };
         fetch("/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
         .then(res => {
-          console.log(res.status);
-          if (res.status !== 200 && res.status !== 201) {
-              throw new Error('Failed to create book!!!!');
-          }
-          return res.json();
+            console.log(res.status);
+            if (res.status !== 200 && res.status !== 201) {
+                throw new Error('Failed to create book!!!!');
+            }
+            return res.json();
         })
         .then(resData => {
-          console.log("successful added your book!", resData);
-          this.setState({createdAccount: true});
+            if (resData.data.createBook){
+                console.log("successful added your book!", resData);
+                this.setState({createdAccount: true});
+            }
+          
         })
         .catch(err =>{
           console.log(err);

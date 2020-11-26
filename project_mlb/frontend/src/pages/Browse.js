@@ -258,7 +258,7 @@ class Browse extends Component{
                               <td><Link href="#">{book.author}</Link></td>
                             <td>{book.genre}</td>                                                
                               <td style={{width:"10rem"}}>
-                                {this.createStar(book.rating)}
+                                {this.createStar(book.rating.rating)}
                               </td>
                               <td>${book.price}</td>
                             </tr>  

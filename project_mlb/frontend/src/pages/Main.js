@@ -51,7 +51,10 @@ class Main extends Component {
                       title
                       author
                       publisher
-                      rating
+                      rating{
+                        _id
+                        rating
+                      }
                       genre
                   }
               }
