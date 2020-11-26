@@ -82,17 +82,16 @@ class Browse extends Component{
             //let arr = books.filter(function(temp){return temp.genre.includes("Romance")});
             let arr = books.filter((temp) => temp.genre.includes("Horror"));
             //console.log("genre arr",arr);
-            this.setState({books: books, sortbygenre: arr});
+            this.setState({books: books, sortedbook: books});
             
         })
         .catch(err => { console.log(err);});
     };
 
-
-
       handleSearchBook = (event, search, searchTerm) => {
         event.preventDefault();
         let books = this.state.books;
+        console.log("nothing",books);
         if (search === "Title")
           books = this.state.sortedbook.filter(function(book){return book.title.toLowerCase().includes(searchTerm.toLowerCase())});
         else if (search === "Author")
@@ -103,7 +102,8 @@ class Browse extends Component{
           books = this.state.sortedbook.filter(function(book){
             return  book.title.toLowerCase().includes(searchTerm.toLowerCase())            
             || book.isbn.toLowerCase().includes(searchTerm.toLowerCase())
-             || book.author.toLowerCase().includes(searchTerm.toLowerCase())});
+            || book.author.toLowerCase().includes(searchTerm.toLowerCase())});
+            console.log("I want check",books);
         this.setState({books: books});
         console.log("I want check",books);
       }
@@ -180,7 +180,7 @@ class Browse extends Component{
                             </Col>                
                             <Button style={{fontWeight: "bold", background: "#FAC917", color: "black", border: "1px solid #FAC917", opacity: "79%"}} type="submit">Search</Button>
                             <DropdownButton id="dropdown" variant="outline-secondary" title="All Categories" style={{marginLeft: "1rem"}} >
-                            <Dropdown.Item eventKey='All Categories' onClick={()=>{document.getElementById("dropdown").innerHTML="All Categories";}}>All Categories</Dropdown.Item>
+                            <Dropdown.Item eventKey='All Categories' onClick={()=>{document.getElementById("dropdown").innerHTML="All Categories"; this.setState({search: "All"});}}>All Categories</Dropdown.Item>
                             <Dropdown.Item eventKey="Title" onClick={()=>{document.getElementById("dropdown").innerHTML="Title"; this.setState({search: "Title"});}}>Title</Dropdown.Item>
                             <Dropdown.Item eventKey="Author" onClick={()=>{document.getElementById("dropdown").innerHTML="Author"; this.setState({search: "Author"});}}>Author</Dropdown.Item>
                             <Dropdown.Item eventKey="ISBN" onClick={()=>{document.getElementById("dropdown").innerHTML="ISBN"; this.setState({search: "ISBN"});}}>ISBN</Dropdown.Item>

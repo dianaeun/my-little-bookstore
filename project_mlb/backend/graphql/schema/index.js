@@ -7,10 +7,10 @@ const schema =  buildSchema(`
         date: String!
         publisher: String!
         author: String!
-        isbn: String
-        rating: Int!
+        isbn: String!
+        rating: Int
         price: Float!
-        genre: String!
+        genre: String
         description: String
         owner: User!
     }
