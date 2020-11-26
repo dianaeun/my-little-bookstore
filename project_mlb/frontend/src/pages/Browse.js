@@ -82,11 +82,10 @@ class Browse extends Component{
             books = this.state.sortedbook.filter((temp) => temp.genre.includes("Horror"));
         }
 
-        else if (filter === "Romance"){
+        // else if (filter === "Romance"){
             
-            books = this.state.sortedbook.filter((temp) => temp.genre.includes("Romance"));
-        
-        }
+        //     books = this.state.sortedbook.filter((temp) => temp.genre.includes("Romance"));
+        // }
 
         else if (filter === "Science"){
             
@@ -111,13 +110,10 @@ class Browse extends Component{
       handleSearchBook = (event, search, searchTerm, filter) => {
         event.preventDefault();
         let books = this.state.books;
-        
-        if (search === "Title" && filter === "Romance")
-            
-          books = this.state.sortedbook.filter(function(book){
-              let temp = book.genre.includes("Romance");
-              console.log("let check temp",temp);
-              return temp.title.toLowerCase().includes(searchTerm.toLowerCase())});
+        const modifiedarray = this.state.sortedbook.filter((temp) => temp.genre.includes("Romance"));
+        console.log(modifiedarray);
+        if (search === "Title")
+          books = modifiedarray.filter(function(book){return book.title.toLowerCase().includes(searchTerm.toLowerCase())});
 
         else if (search === "Author")
           books = this.state.sortedbook.filter(function(book){return book.author.toLowerCase().includes(searchTerm.toLowerCase())});
@@ -134,7 +130,7 @@ class Browse extends Component{
             || book.author.toLowerCase().includes(searchTerm.toLowerCase())});
             
         this.setState({books: books});
-        console.log("I want check",books);
+        //console.log("I want check",books);
 
       }
 
