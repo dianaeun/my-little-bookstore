@@ -75,7 +75,7 @@ class Browse extends Component{
         .catch(err => { console.log(err);});
     };
     handleGenre = (filter) => {
-        let books = this.state.books;
+        let books = this.state.sortbygenre;
         console.log(books);
         if (filter === "Horror"){
             
@@ -104,28 +104,37 @@ class Browse extends Component{
             books = this.state.sortedbook.filter((temp) => temp.genre.includes("Autobiography"));
         
         this.setState({books: books});
-        
+        console.log(books);
       }
 
-      handleSearchBook = (event, search, searchTerm) => {
+      handleSearchBook = (event, search, searchTerm, filter) => {
         event.preventDefault();
         let books = this.state.books;
         
-        if (search === "Title")
-          books = this.state.sortedbook.filter(function(book){return book.title.toLowerCase().includes(searchTerm.toLowerCase())});
+        if (search === "Title" && filter === "Romance")
+            
+          books = this.state.sortedbook.filter(function(book){
+              let temp = book.genre.includes("Romance");
+              console.log("let check temp",temp);
+              return temp.title.toLowerCase().includes(searchTerm.toLowerCase())});
+
         else if (search === "Author")
           books = this.state.sortedbook.filter(function(book){return book.author.toLowerCase().includes(searchTerm.toLowerCase())});
         else if (search === "ISBN")
             books = this.state.sortedbook.filter(function(book){return book.isbn.toLowerCase().includes(searchTerm.toLowerCase())});
+            if(filter === "Romance"){
+                books = this.state.sortedbook.filter((temp) => temp.genre.includes("Romance"));
+                console.log("filtering",books);
+            }
         else 
           books = this.state.sortedbook.filter(function(book){
             return  book.title.toLowerCase().includes(searchTerm.toLowerCase())            
             || book.isbn.toLowerCase().includes(searchTerm.toLowerCase())
             || book.author.toLowerCase().includes(searchTerm.toLowerCase())});
-            console.log("I want check",books);
             
         this.setState({books: books});
         console.log("I want check",books);
+
       }
 
 
@@ -155,8 +164,8 @@ class Browse extends Component{
                             </Col>                
                             <Button style={{fontWeight: "bold", background: "#FAC917", color: "black", border: "1px solid #FAC917", opacity: "79%"}} type="submit">Search</Button>
                             <DropdownButton id="dropdown" variant="outline-secondary" title="All Categories" style={{marginLeft: "1rem"}} >
-                            <Dropdown.Item eventKey='All Categories' onClick={()=>{document.getElementById("dropdown").innerHTML="All Categories"; this.setState({search: "All"}); }}>All Categories</Dropdown.Item>
-                            <Dropdown.Item eventKey="Title" onClick={()=>{document.getElementById("dropdown").innerHTML="Title"; this.setState({search: "Title"});}}>Title</Dropdown.Item>
+                            <Dropdown.Item eventKey='All Categories' onClick={()=>{document.getElementById("dropdown").innerHTML="All Categories"; this.setState({search: "All"});}}>All Categories</Dropdown.Item>
+                            <Dropdown.Item eventKey="Title" onClick={()=>{document.getElementById("dropdown").innerHTML="Title"; this.setState({search: "Title"}); this.setState({filter: "Horror"})}}>Title</Dropdown.Item>
                             <Dropdown.Item eventKey="Author" onClick={()=>{document.getElementById("dropdown").innerHTML="Author"; this.setState({search: "Author"});}}>Author</Dropdown.Item>
                             <Dropdown.Item eventKey="ISBN" onClick={()=>{document.getElementById("dropdown").innerHTML="ISBN"; this.setState({search: "ISBN"}); }}>ISBN</Dropdown.Item>
                             </DropdownButton>
