@@ -7,10 +7,10 @@ const schema =  buildSchema(`
         date: String!
         publisher: String!
         author: String!
-        isbn: String!
-        rating: Int
+        isbn: String
+        rating: Rating!
         price: Float!
-        genre: String
+        genre: String!
         description: String
         owner: User!
     }
@@ -66,16 +66,21 @@ const schema =  buildSchema(`
         tokenExpiration: Int!
         user_id: ID!
     }
+    type Rating{
+        _id: ID!
+        bookTitle: String!
+        ratingSum: Int!
+        raters: [ID]!
+        rating: Float!
+    }
     input BookInput {
         title: String!
         date: String!
         publisher: String!
         author: String!
         isbn: String!
-        rating: Int!
         price: Float!
         genre: String!
-        description: String
         owner: ID!
     }
     input UserInput {
@@ -125,7 +130,7 @@ const schema =  buildSchema(`
         comments: [Comment]!
         receivedRequests(receiverID: String!): [Request]!
         sentRequests(senderID: String!): [Request]!
-        bookReviews(bookID: String!): [Review]! 
+        bookReviews(bookID: String!): [Review]!
     }
     type RootMutation {
         createBook(bookInput: BookInput): Book
@@ -140,6 +145,7 @@ const schema =  buildSchema(`
         createComment(commentInput: CommentInput): Comment
         updateLikes(_id: ID!, likes: Int!): Discussion
         createReview(reviewInput: ReviewInput): Review
+        rate(_id: ID!, rating: Int!, userID: ID!): Rating 
     }
     schema{
         query: RootQuery

@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import {Collapse,Button, Table, Card, CardDeck } from "react-bootstrap";
+import {Collapse,Button, Table, Card, CardDeck, Row } from "react-bootstrap";
 import AddReview from '../components/AddReview';
 import RequestModal from '../components/RequestModal';
 import MlbNavbar from '../components/NavigationBar.js'
 import AuthContext from '../context/AuthContext';
+import RateBookModal from '../components/RateBookModal';
 
 const star = require("../icons/star.png");
 const harry = require("../icons/harrypotter.png");
@@ -11,6 +12,7 @@ const blankStar = require("../icons/blank_star.png");
 
 class IndividualBookpage extends Component{
     state = {
+        rateBook: false,
         addReview: false,
         request: false,
         isLoading: false,
@@ -38,13 +40,16 @@ class IndividualBookpage extends Component{
       for (let i = n; i < 5; i++) {
           stars.push(<img src={blankStar} alt="star" style={{ width: "22px" }} />);
       }
-      return <td>{stars}</td>
+      return stars;
     }
     handleClose = () => {
       if(this.state.addReview) {
         this.fetchReviews();
       }
       this.setState({addReview: false, request: false});
+    }
+    handleCloseRating = () => {
+      this.setState({rateBook: false});
     }
     handleAddReview = () => {
       if (this.context.userID === null){
@@ -85,7 +90,7 @@ class IndividualBookpage extends Component{
       })
     }
 
-    fetchSameBooks() {
+    fetchSameBooks = () => {
       console.log(this.context.user_id);
       this.setState({isLoading: true});
       const requestBody = {
@@ -97,7 +102,11 @@ class IndividualBookpage extends Component{
                 title
                 author
                 publisher
-                rating
+                rating{
+                  rating
+                  ratingSum
+                  raters
+                }
                 price
                 genre
                 owner{
@@ -163,12 +172,20 @@ class IndividualBookpage extends Component{
       } else shown.splice(index, 1);
       this.setState({ shownReviews: shown });
     };
-
+    handleRateBook = (book) => {
+      console.log(book);
+      if (book.rating.raters.includes(this.context.user_id)){
+        alert("Already Rated This Book!!");
+        return;
+      }
+      this.setState({rateBook: true});
+    }
     render(){
         return (
           <React.Fragment>
             <MlbNavbar/>
             <div>
+              <RateBookModal show={this.state.rateBook} handleClose={this.handleCloseRating} book={this.props.location.book} fetchBooks={this.fetchSameBooks}/>
               <AddReview show={this.state.addReview} handleClose={this.handleClose} reviewer={this.context.userID} book={this.props.location.book.title}/>
                 <RequestModal show={this.state.request} handleClose={this.handleClose}/>
                 <div style={{marginLeft: "2%", marginTop: "2rem", background: "#eeeeee", width: "30%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>
@@ -183,10 +200,18 @@ class IndividualBookpage extends Component{
                       <Table className="myTable" size="sm">
                         <tr><td><b>AUTHOR:</b> </td><td>{this.props.location.book.author}</td></tr>
                         <tr><td><b>PUBLISHER:</b> </td><td>{this.props.location.book.publisher}</td></tr>
-                        <tr><td><b>ISBN:</b> </td><td>{this.props.location.book.isbn}</td></tr>
-                        <tr><td><b>GENRE:</b> </td><td>{this.props.location.book.genre}</td></tr>
-                        <tr><td><b>RATE:</b> </td>{this.createStar(this.props.location.book.rate)}<Button>Rate</Button></tr>
-                        <tr><td><b>DESCRITION:</b> </td><td>{this.props.location.book.description}</td></tr>
+                        <tr><td><b>ISBN:</b> </td><td>{this.props.location.book.isbn || 'N/A'}</td></tr>
+                        <tr><td><b>GENRE:</b> </td><td>{this.props.location.book.genre || 'N/A'}</td></tr>
+                        <tr>
+                          <td><b>RATING:</b></td>
+                          <td style={{ paddingTop: "0.5rem"}}>
+                            <Row onClick={() => {this.handleRateBook(this.props.location.book)}} style={{width: "fit-content", paddingLeft: "6rem", cursor: "pointer"}}>
+                              {this.createStar(this.props.location.book.rating.rating)} 
+                              ({this.props.location.book.rating.rating})
+                            </Row>
+                          </td>
+                        </tr>
+                        <tr><td><b>DESCRITION:</b> </td><td>{this.props.location.book.description || 'N/A'}</td></tr>
                       </Table>
                     </Card.Body>
                   </Card>

@@ -38,7 +38,11 @@ class Browse extends Component{
                         title
                         author
                         publisher
-                        rating
+                        rating{
+                            _id
+                            rating
+                            raters
+                        }
                         genre
                         price
                         isbn
@@ -222,7 +226,7 @@ class Browse extends Component{
                               <td><Link href="#">{book.author}</Link></td>
                             <td>{book.genre}</td>                                                
                               <td style={{width:"10rem"}}>
-                                {this.createStar(book.rating)}
+                                {this.createStar(book.rating.rating)}
                               </td>
                               <td>${book.price}</td>
                             </tr>  
