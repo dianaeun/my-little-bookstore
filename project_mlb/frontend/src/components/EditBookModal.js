@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Modal, Button, Form, Row, Col} from 'react-bootstrap';
+import AuthContext from '../context/AuthContext';
 
 class EditBookModal extends Component{
     constructor(props){
@@ -9,9 +10,11 @@ class EditBookModal extends Component{
         this.publisherRef = React.createRef();
         this.priceRef = React.createRef();
     }
+    static contextType = AuthContext;
     handleSubmit = event => {
         event.preventDefault();
         console.log("handleSubmit owner..?", this.props.owner);
+        console.log(this.props.book);
         const title = this.titleRef.current.value;
         const author = this.authorRef.current.value;
         const publisher = this.publisherRef.current.value;
@@ -23,8 +26,8 @@ class EditBookModal extends Component{
         }
         const requestBody = {
           query: `
-                mutation EditBook($bookID: ID!, $title: String!, $author: String!, $publisher: String!, $price: Float!, $date: String!, $owner: ID!, $rating: Int!, $genre: String!, $isbn: String!){
-                    editBook(bookId: $bookID, bookInput: {title: $title, author: $author, publisher: $publisher, price: $price, date: $date, owner: $owner, rating: $rating, genre: $genre, isbn: $isbn}) {
+                mutation EditBook($bookId: ID!, $title: String!, $author: String!, $publisher: String!, $price: Float!, $date: String!, $owner: ID!, $genre: String!, $isbn: String!){
+                    editBook(bookId: $bookId, bookInput: {title: $title, author: $author, publisher: $publisher, price: $price, date: $date, owner: $owner, genre: $genre, isbn: $isbn}) {
                         _id
                     }
                 }
@@ -37,7 +40,6 @@ class EditBookModal extends Component{
                 price: parseFloat(price),
                 date: date,
                 owner: this.props.owner,
-                rating: 0,
                 genre: this.props.book.genre,
                 isbn: this.props.book.isbn
             }

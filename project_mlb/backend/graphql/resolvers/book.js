@@ -98,21 +98,22 @@ module.exports = {
     editBook: async (args) => {
         try {
 
-            
+            console.log("Editbook called");
             //let result = await Request.findOneAndUpdate({_id: requestID}, {status: "declined"}, {new: true});
-            const book = await Book.findByIdAndUpdate({_id: args.bookId}, {title: args.bookInput.title,
+            //const book = await Book.findById(args.bookId).populate('book');
+            const book = await Book.findOneAndUpdate({_id: args.bookId}, 
+                {title: args.bookInput.title,
                 date: new Date(args.bookInput.date),
                 publisher: args.bookInput.publisher,
                 author: args.bookInput.author,
                 isbn: args.bookInput.isbn,
-                rating: args.bookInput.rating,
                 price: args.bookInput.price,
                 genre: args.bookInput.genre,
                 description: args.bookInput.description}, {
                 new: true
               }).populate('book');
             const editBook = transformBook(book);
-            
+            // return book;
             return editBook;
         } catch (err) {
             throw err;
