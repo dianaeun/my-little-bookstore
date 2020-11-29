@@ -227,7 +227,7 @@ class MyBookstore extends Component{
                 <DeleteBookModal show={this.state.deleteBook} handleClose={this.handleClose} book={this.state.bookForDelete}/>
                 {this.state.rateBook && <RateBookModal show={this.state.rateBook} handleClose={this.handleCloseRating} book={this.state.bookSelected} fetchBooks={this.fetchBooks}/>}
 
-                {this.state.bookSelected && <EditBookModal show={this.state.editBook} handleClose={this.handleClose} book={this.state.bookSelected}/>}
+                {this.state.bookSelected && <EditBookModal show={this.state.editBook} handleClose={this.handleClose} book={this.state.bookSelected} owner={this.context.user_id}/>}
                   <React.Fragment>
                     <div style={{marginLeft: "10%", marginTop: "2rem", background: "#eeeeee", width: "25%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>
                       <h1 style={{fontSize: "2rem"}}>{this.context.firstName}'s Bookstore</h1>
