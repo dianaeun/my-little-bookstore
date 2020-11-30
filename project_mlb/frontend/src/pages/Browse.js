@@ -455,7 +455,10 @@ class Browse extends Component{
                         <tbody>
                             {this.state.books.map((book) => 
                               <tr>                            
-                              <td><Link href="#">{book.title}</Link></td>
+                              <td>
+                              <Link className="nav-link" to={{pathname: "/IndividualBookpage" , book:book}} style={{paddingLeft: 0, paddingRight: 0}}>{book.title}</Link>
+                                
+                                  </td>
                               <td><Link href="#">{book.author}</Link></td>
                             <td>{book.genre}</td>                                                
                               <td style={{width:"10rem"}}>
