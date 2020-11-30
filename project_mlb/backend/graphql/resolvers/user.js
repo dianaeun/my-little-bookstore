@@ -49,6 +49,24 @@ module.exports = {
             throw err;
         }
     },
+    editUser: async (args) => {
+        try {
+            const user = await User.findOneAndUpdate({userID: args.userInput.userID}, 
+                {
+                    firstName: args.userInput.firstName,
+                    lastName: args.userInput.lastName,
+                    email: args.userInput.email,
+                    location: args.userInput.location,
+                    preferredGenres: args.userInput.preferredGenres
+                }, {
+                new: true
+            })
+            const result = await user.save();
+            return { ...result._doc, password: null, _id: result.id };
+        } catch (err) {
+            throw err;
+        }
+    },
     login: async ({ email, password }) => {
         let user = null;
         if (email.includes('@')){

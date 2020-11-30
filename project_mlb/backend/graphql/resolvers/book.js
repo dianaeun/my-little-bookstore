@@ -97,10 +97,6 @@ module.exports = {
     },
     editBook: async (args) => {
         try {
-
-            console.log("Editbook called");
-            //let result = await Request.findOneAndUpdate({_id: requestID}, {status: "declined"}, {new: true});
-            //const book = await Book.findById(args.bookId).populate('book');
             const book = await Book.findOneAndUpdate({_id: args.bookId}, 
                 {title: args.bookInput.title,
                 date: new Date(args.bookInput.date),
@@ -113,7 +109,6 @@ module.exports = {
                 new: true
               }).populate('book');
             const editBook = transformBook(book);
-            // return book;
             return editBook;
         } catch (err) {
             throw err;

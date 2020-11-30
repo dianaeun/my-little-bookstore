@@ -135,6 +135,7 @@ const schema =  buildSchema(`
     type RootMutation {
         createBook(bookInput: BookInput): Book
         createUser(userInput: UserInput): User
+        editUser(userInput: UserInput): User
         deleteBook(bookId: ID!): Book!
         editBook(bookId: ID!, bookInput: BookInput): Book!
         createRequest(requestInput: RequestInput): Request

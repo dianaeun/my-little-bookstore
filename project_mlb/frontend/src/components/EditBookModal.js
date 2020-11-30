@@ -13,8 +13,8 @@ class EditBookModal extends Component{
     static contextType = AuthContext;
     handleSubmit = event => {
         event.preventDefault();
-        console.log("handleSubmit owner..?", this.props.owner);
-        console.log(this.props.book);
+        //console.log("handleSubmit owner..?", this.props.owner);
+        //console.log(this.props.book);
         const title = this.titleRef.current.value;
         const author = this.authorRef.current.value;
         const publisher = this.publisherRef.current.value;
