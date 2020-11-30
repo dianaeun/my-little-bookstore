@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import {Form, Dropdown, DropdownButton, Row, Col, Button} from 'react-bootstrap';
 import MlbNavbar from '../components/NavigationBar.js';
 import AuthContext from '../context/AuthContext';
+import { search } from 'superagent';
+
 
 const star = require("../icons/star.png");
 const blankStar = require("../icons/blank_star.png");
@@ -11,20 +13,20 @@ const blankStar = require("../icons/blank_star.png");
 class Browse extends Component{
     state = { 
         books:[], 
-        //genre: "All",
-        searchBook : false,
-        isLoadingBook: false,
         search : "",
         searchTerm : "",
         sort : "All",
         filter : "",
         liked : [],
         sortedbook : [],
-        sortbyradio : [],
-        sortbygenre : []
+        init : [],
+        check : "all"
         
     };
     static contextType = AuthContext;
+    constructor(){
+        super();
+    }
 
     componentDidMount() {
         this.fetchBooks();
@@ -48,7 +50,7 @@ class Browse extends Component{
                         isbn
                     }
                 }
-            `
+            `,
         }
         fetch('/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
         .then(res => {
@@ -61,77 +63,302 @@ class Browse extends Component{
             console.log("Books are successfully fetched! ", resData);
             const books = resData.data.books;
             //let check = this.state.books;
-            if(this.state.sort === "price")
-                books.sort((a, b) => b.price - a.price);
+            // if(this.state.sort === "price")
+            //     books.sort((a, b) => b.price - a.price);
 
-            else if(this.state.sort === "Alphabet")
-                books.sort((a,b) => a.title.localeCompare(b.title));
-            else;
+            // else if(this.state.sort === "Alphabet")
+            //     books.sort((a,b) => a.title.localeCompare(b.title));
+            // else;
                 // if(this.state.filter === "Horror")
                 //     books.filter((temp) => temp.genre.includes("Horror"));
                 //     books.filter(function(temp){return temp.genre.includes("Romance")});
-            this.setState({books: books, sortedbook: books, sortbygenre: books});
+            this.setState({books: books, sortedbook: books, init: books});
         })
         .catch(err => { console.log(err);});
     };
-    handleGenre = (filter) => {
-        let books = this.state.sortbygenre;
-        console.log(books);
-        if (filter === "Horror"){
-            
-            books = this.state.sortedbook.filter((temp) => temp.genre.includes("Horror"));
+
+    handlePrice = (sort) =>{
+        let books = this.state.sortedbook;
+        if(sort === "Price"){
+            books.sort((a, b) => b.price - a.price);
         }
 
-        // else if (filter === "Romance"){
-            
-        //     books = this.state.sortedbook.filter((temp) => temp.genre.includes("Romance"));
-        // }
+        else if(sort === "Alphabet"){
+            books.sort((a,b) => a.title.localeCompare(b.title));
+        }
+
+        else{
+
+        }
+        
+        this.setState({sortedbook: books, sort: sort});
+    }
+
+    handleGenre = (filter) => {
+
+        let books = this.state.sortedbook;
+        let initialization = this.state.init;
+
+        //console.log(books);
+        if (filter === "Horror"){
+            this.state.check = "horror"
+            books = initialization;
+            books = books.filter((temp) => temp.genre.includes("Horror"));  
+        }
+
+        else if (filter === "Romance"){
+            this.state.check = "romance"
+            books = initialization;
+            books = books.filter((temp) => temp.genre.includes("Romance"));
+        }
 
         else if (filter === "Science"){
-            
-            books = this.state.sortedbook.filter((temp) => temp.genre.includes("Science"));
+            this.state.check = "science"
+            books = initialization;
+            books = books.filter((temp) => temp.genre.includes("Science"));
         }
 
         else if (filter === "Fantasy"){
-            books = this.state.sortedbook.filter((temp) => temp.genre.includes("Fantasy"));
+            this.state.check = "fantasy"
+            books = initialization;
+            books = books.filter((temp) => temp.genre.includes("Fantasy"));
         }
 
         else if (filter === "Adventure"){
-            books = this.state.sortedbook.filter((temp) => temp.genre.includes("Adventure"));
+            this.state.check = "adventure"
+            books = initialization;
+            books = books.filter((temp) => temp.genre.includes("Adventure"));
         }
 
-        else if(filter === "Autobiography")
-            books = this.state.sortedbook.filter((temp) => temp.genre.includes("Autobiography"));
+        else if(filter === "Autobiography"){
+            this.state.check = "autobiography"
+            books = initialization;
+            books = books.filter((temp) => temp.genre.includes("Autobiography"));
+        }
+           
         
-        this.setState({books: books});
-        console.log(books);
+        else{
+            this.state.check = "all"
+            books = initialization;
+        }
+        
+        this.setState({books: books, sortedbook: books, filter: filter});
+        
       }
 
-      handleSearchBook = (event, search, searchTerm, filter) => {
+      handleSearchBook = (event, search, searchTerm, init) => {
         event.preventDefault();
-        let books = this.state.books;
-        const modifiedarray = this.state.sortedbook.filter((temp) => temp.genre.includes("Romance"));
-        console.log(modifiedarray);
-        if (search === "Title")
-          books = modifiedarray.filter(function(book){return book.title.toLowerCase().includes(searchTerm.toLowerCase())});
-
-        else if (search === "Author")
-          books = this.state.sortedbook.filter(function(book){return book.author.toLowerCase().includes(searchTerm.toLowerCase())});
-        else if (search === "ISBN")
-            books = this.state.sortedbook.filter(function(book){return book.isbn.toLowerCase().includes(searchTerm.toLowerCase())});
-            if(filter === "Romance"){
-                books = this.state.sortedbook.filter((temp) => temp.genre.includes("Romance"));
-                console.log("filtering",books);
+        let books = this.state.sortedbook;
+        //let initialization = this.state.init;
+    
+        if (search === "Title"){
+            //books = init;
+            //books = books.filter(function(book){return book.title.toLowerCase().includes(searchTerm.toLowerCase())});
+            if(this.state.check === "romance"){
+                books = init;
+                books = books.filter((temp) => temp.genre.includes("Romance"));
+                books = books.filter(function(book){return book.title.toLowerCase().includes(searchTerm.toLowerCase())});
             }
-        else 
-          books = this.state.sortedbook.filter(function(book){
-            return  book.title.toLowerCase().includes(searchTerm.toLowerCase())            
-            || book.isbn.toLowerCase().includes(searchTerm.toLowerCase())
-            || book.author.toLowerCase().includes(searchTerm.toLowerCase())});
-            
-        this.setState({books: books});
-        //console.log("I want check",books);
 
+            else if(this.state.check === "horror"){
+                books = init;
+                books = books.filter((temp) => temp.genre.includes("Horror"));
+                books = books.filter(function(book){return book.title.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+
+            else if(this.state.check === "science"){
+                books = init;
+                books = books.filter((temp) => temp.genre.includes("Science"));
+                books = books.filter(function(book){return book.title.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+
+            else if(this.state.check === "fantasy"){
+                books = init;
+                books = books.filter((temp) => temp.genre.includes("Fantasy"));
+                books = books.filter(function(book){return book.title.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+
+            else if(this.state.check === "adventure"){
+                books = init;
+                books = books.filter((temp) => temp.genre.includes("Adventure"));
+                books = books.filter(function(book){return book.title.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+
+            else if(this.state.check === "autobiography"){
+                books = init;
+                books = books.filter((temp) => temp.genre.includes("Autobiography"));
+                books = books.filter(function(book){return book.title.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+
+            else{
+                books = books.filter(function(book){return book.title.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+        }
+          
+        else if (search === "Author"){
+            //books = init;
+            if(this.state.check === "romance"){
+                books = init;
+                books = books.filter((temp) => temp.genre.includes("Romance"));
+                books = books.filter(function(book){return book.author.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+
+            else if(this.state.check === "horror"){
+                books = init;
+                books = books.filter((temp) => temp.genre.includes("Horror"));
+                books = books.filter(function(book){return book.author.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+
+            else if(this.state.check === "science"){
+                books = init;
+                books = books.filter((temp) => temp.genre.includes("Science"));
+                books = books.filter(function(book){return book.author.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+
+            else if(this.state.check === "fantasy"){
+                books = init;
+                books = books.filter((temp) => temp.genre.includes("Fantasy"));
+                books = books.filter(function(book){return book.author.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+
+            else if(this.state.check === "adventure"){
+                books = init;
+                books = books.filter((temp) => temp.genre.includes("Adventure"));
+                books = books.filter(function(book){return book.author.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+
+            else if(this.state.check === "autobiography"){
+                books = init;
+                books = books.filter((temp) => temp.genre.includes("Autobiography"));
+                books = books.filter(function(book){return book.author.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+
+            else{
+                books = books.filter(function(book){return book.author.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+
+        }
+          
+        else if (search === "ISBN"){
+            //books = init;
+
+            if(this.state.check === "romance"){
+                books = init;
+                books = books.filter((temp) => temp.genre.includes("Romance"));
+                books = books.filter(function(book){return book.isbn.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+            else if(this.state.check === "horror"){
+                books = init;
+                books = books.filter((temp) => temp.genre.includes("Horror"));
+                books = books.filter(function(book){return book.isbn.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+
+            else if(this.state.check === "science"){
+                books = init;
+                books = books.filter((temp) => temp.genre.includes("Science"));
+                books = books.filter(function(book){return book.isbn.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+
+            else if(this.state.check === "fantasy"){
+                books = init;
+                books = books.filter((temp) => temp.genre.includes("Fantasy"));
+                books = books.filter(function(book){return book.isbn.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+
+            else if(this.state.check === "adventure"){
+                books = init;
+                books = books.filter((temp) => temp.genre.includes("Adventure"));
+                books = books.filter(function(book){return book.isbn.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+
+            else if(this.state.check === "autobiography"){
+                books = init;
+                books = books.filter((temp) => temp.genre.includes("Autobiography"));
+                books = books.filter(function(book){return book.isbn.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+
+            else{
+                books = books.filter(function(book){return book.isbn.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+
+        }
+
+        else{
+            
+            if(this.state.check === "romance"){
+                books = init;
+                books = books.filter((temp) => temp.genre.includes("Romance"));
+                books = books.filter(function(book){
+                    return  book.title.toLowerCase().includes(searchTerm.toLowerCase())            
+                    || book.isbn.toLowerCase().includes(searchTerm.toLowerCase())
+                    || book.author.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+            else if(this.state.check === "horror"){
+                books = init;
+                books = books.filter((temp) => temp.genre.includes("Horror"));
+                books = books.filter(function(book){
+                    return  book.title.toLowerCase().includes(searchTerm.toLowerCase())            
+                    || book.isbn.toLowerCase().includes(searchTerm.toLowerCase())
+                    || book.author.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+
+            else if(this.state.check === "science"){
+                books = init;
+                books = books.filter((temp) => temp.genre.includes("Science"));
+                books = books.filter(function(book){
+                    return  book.title.toLowerCase().includes(searchTerm.toLowerCase())            
+                    || book.isbn.toLowerCase().includes(searchTerm.toLowerCase())
+                    || book.author.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+
+            else if(this.state.check === "fantasy"){
+                books = init;
+                books = books.filter((temp) => temp.genre.includes("Fantasy"));
+                books = books.filter(function(book){
+                    return  book.title.toLowerCase().includes(searchTerm.toLowerCase())            
+                    || book.isbn.toLowerCase().includes(searchTerm.toLowerCase())
+                    || book.author.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+
+            else if(this.state.check === "adventure"){
+                books = init;
+                books = books.filter((temp) => temp.genre.includes("Adventure"));
+                books = books.filter(function(book){
+                    return  book.title.toLowerCase().includes(searchTerm.toLowerCase())            
+                    || book.isbn.toLowerCase().includes(searchTerm.toLowerCase())
+                    || book.author.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+
+            else if(this.state.check === "autobiography"){
+                books = init;
+                books = books.filter((temp) => temp.genre.includes("Autobiography"));
+                books = this.state.sortedbook.filter(function(book){
+                    return  book.title.toLowerCase().includes(searchTerm.toLowerCase())            
+                    || book.isbn.toLowerCase().includes(searchTerm.toLowerCase())
+                    || book.author.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+
+            else{
+                books = this.state.sortedbook.filter(function(book){
+                    return  book.title.toLowerCase().includes(searchTerm.toLowerCase())            
+                    || book.isbn.toLowerCase().includes(searchTerm.toLowerCase())
+                    || book.author.toLowerCase().includes(searchTerm.toLowerCase())});
+            }
+
+            
+
+            // books = this.state.sortedbook.filter(function(book){
+            //     return  book.title.toLowerCase().includes(searchTerm.toLowerCase())            
+            //     || book.isbn.toLowerCase().includes(searchTerm.toLowerCase())
+            //     || book.author.toLowerCase().includes(searchTerm.toLowerCase())});
+
+            // if(searchTerm === ""){
+            //     books = init;
+            // }
+                
+        }
+
+        this.setState({books: books, sortedbook: books});
       }
 
 
@@ -154,17 +381,17 @@ class Browse extends Component{
                 <MlbNavbar/>
                 <div style={{width: "80%", margin: "auto", marginTop: "2rem"}}>
                     <div style={{}}>
-                    <Form style={{marginTop: "2rem"}} onSubmit={(event) => this.handleSearchBook(event, this.state.search, this.state.searchTerm)}> 
+                    <Form style={{marginTop: "2rem"}} onSubmit={(event) => this.handleSearchBook(event, this.state.search, this.state.searchTerm, this.state.init)}> 
                         <Form.Group as={Row}>
                             <Col sm={5}>
-                            <Form.Control type="text" placeholder="Search Term" onChange={(event) => this.setState({searchTerm: event.target.value})}/>
+                            <Form.Control type="text" placeholder="Search Term" onChange={(event) => this.setState({searchTerm: event.target.value, sortedbook: this.state.init})}/>
                             </Col>                
                             <Button style={{fontWeight: "bold", background: "#FAC917", color: "black", border: "1px solid #FAC917", opacity: "79%"}} type="submit">Search</Button>
                             <DropdownButton id="dropdown" variant="outline-secondary" title="All Categories" style={{marginLeft: "1rem"}} >
-                            <Dropdown.Item eventKey='All Categories' onClick={()=>{document.getElementById("dropdown").innerHTML="All Categories"; this.setState({search: "All"});}}>All Categories</Dropdown.Item>
-                            <Dropdown.Item eventKey="Title" onClick={()=>{document.getElementById("dropdown").innerHTML="Title"; this.setState({search: "Title"}); this.setState({filter: "Horror"})}}>Title</Dropdown.Item>
+                            <Dropdown.Item eventKey='All Categories' onClick={()=>{document.getElementById("dropdown").innerHTML="All Categories"; this.setState({search: "All Categories"});}}>All Categories</Dropdown.Item>
+                            <Dropdown.Item eventKey="Title" onClick={()=>{document.getElementById("dropdown").innerHTML="Title"; this.setState({search: "Title"});}}>Title</Dropdown.Item>
                             <Dropdown.Item eventKey="Author" onClick={()=>{document.getElementById("dropdown").innerHTML="Author"; this.setState({search: "Author"});}}>Author</Dropdown.Item>
-                            <Dropdown.Item eventKey="ISBN" onClick={()=>{document.getElementById("dropdown").innerHTML="ISBN"; this.setState({search: "ISBN"}); }}>ISBN</Dropdown.Item>
+                            <Dropdown.Item eventKey="ISBN" onClick={()=>{document.getElementById("dropdown").innerHTML="ISBN"; this.setState({search: "ISBN"});}}>ISBN</Dropdown.Item>
                             </DropdownButton>
                         </Form.Group>
                         </Form>
@@ -179,12 +406,13 @@ class Browse extends Component{
                                 </td>
                                 <td>
                                 {/* <Form.Check inline label='Romance' type='radio' name='genre' id='romance' onClick = {() => {this.setState({filter: "Romance"}); this.fetchBooks();}}/> */}
-                                <Form.Check inline label='Romance' type='radio' name='genre' id='romance' onClick = {() => {this.handleGenre("Romance");}}/>
-                                <Form.Check inline label='Horror' type='radio' name='genre' id='horror' onClick={() => { this.handleGenre("Horror");}}/>
-                                <Form.Check inline label='Fantasy' type='radio' name='genre' id='fantasy' onClick={() => {this.handleGenre("Fantasy");}}/>
-                                <Form.Check inline label='Adventure' type='radio' name='genre' id='adventure' onClick={() => {this.handleGenre( "Adventure");}}/>
-                                <Form.Check inline label='Science' type='radio' name='genre' id='science' onClick={() => {this.handleGenre("Science");}}/>
-                                <Form.Check inline label='Autobiography' type='radio' name='genre' id='autobiography' onClick={() => {this.handleGenre("Autobiography");}}/>
+                                <Form.Check inline label='All' type='radio' name='genre' id='all' checked = {this.state.check === "all"} onClick = {() => {this.handleGenre("All");}}/>
+                                <Form.Check inline label='Romance' type='radio' name='genre' id='romance' checked = {this.state.check === "romance"} onClick = {() => {this.handleGenre("Romance");}}/>
+                                <Form.Check inline label='Horror' type='radio' name='genre' id='horror' checked = {this.state.check === "horror"} onClick={() => { this.handleGenre("Horror");}}/>
+                                <Form.Check inline label='Fantasy' type='radio' name='genre' id='fantasy' checked = {this.state.check === "fantasy"} onClick={() => {this.handleGenre("Fantasy");}}/>
+                                <Form.Check inline label='Adventure' type='radio' name='genre' id='adventure' checked = {this.state.check === "adventure"} onClick={() => {this.handleGenre( "Adventure");}}/>
+                                <Form.Check inline label='Science' type='radio' name='genre' id='science' checked = {this.state.check === "science"} onClick={() => {this.handleGenre("Science");}}/>
+                                <Form.Check inline label='Autobiography' type='radio' name='genre' id='autobiography' checked = {this.state.check === "autobiography"} onClick={() => {this.handleGenre("Autobiography");}}/>
                                 
             
                                 </td>
@@ -209,8 +437,8 @@ class Browse extends Component{
                             <div key={`inline-radio`} >
                                 <Form style={{border:"solid grey", borderRadius:"0.2rem", float:"right", margin:"0.3rem", fontSize: "0.85rem", padding: "0.2rem"}}>
                                     <Form.Label style={{margin: "0.3rem"}}>Sort By </Form.Label>
-                                    <Form.Check inline label='Price' type='radio' name='sort' id='price' onClick={() => {this.setState({sort: "price"}); this.fetchBooks();}}/>
-                                    <Form.Check inline label='Alphabet' type='radio' name='sort' id='alphabet' onClick={() => {this.setState({sort: "Alphabet", sortbyradio: []}); this.fetchBooks();}}/>
+                                    <Form.Check inline label='Price' type='radio' name='sort' id='price' onClick={() => {this.handlePrice("Price")}}/>
+                                    <Form.Check inline label='Alphabet' type='radio' name='sort' id='alphabet' onClick={() => {this.handlePrice("Alphabet")}}/>
                                 </Form>
                             </div>
                         </div>
@@ -225,8 +453,7 @@ class Browse extends Component{
                             </tr>
                         </thead>
                         <tbody>
-                            {/* {items} */}
-                            {this.state.books.map((book,i) => 
+                            {this.state.books.map((book) => 
                               <tr>                            
                               <td><Link href="#">{book.title}</Link></td>
                               <td><Link href="#">{book.author}</Link></td>
