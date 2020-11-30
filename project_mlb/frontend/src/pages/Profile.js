@@ -48,7 +48,7 @@ class Profile extends Component{
       .then(resData => {
           console.log("User info successfully fetched", resData);
           const userInfo = resData.data.findByUserID;
-          console.log(userInfo);
+          console.log("user Info is: " + userInfo);
           const user = [];
           const prefList = [];
           for (const [i, value] of userInfo.preferredGenres.entries()) {
@@ -125,7 +125,7 @@ class Profile extends Component{
         return (
             <React.Fragment>
                 <MlbNavbar/>
-                <EditProfileModal  show={this.state.editProfile} handleClose={this.handleClose} person={this.state.userInfo}/>
+                <EditProfileModal show={this.state.editProfile} handleClose={this.handleClose} user={this.state.userInfo} userID = {this.context.userID}/>
                 {this.state.requestSelected && <ViewRequestInfoModal show={this.state.viewrequestInfo} handleClose={this.handleClose} request={this.state.requestSelected}/>}
                 <div style={{marginLeft: "10%", marginTop: "2rem", background: "#eeeeee", width: "15%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>
                   <h1 style={{fontSize: "2rem"}}>Profile</h1>
@@ -133,17 +133,15 @@ class Profile extends Component{
                 <Container style={{marginLeft: "10%",  marginTop: "2rem"}}>
                   <h4>Personal Information</h4>
                 </Container>
-                {this.state.user}
-                {/*<Table size="sm" style={{ minWidth: "900px", maxWidth: "1100px", marginLeft: "10%", marginRight: "auto", marginTop: "1.2rem"}}>
-                    <tr><td>Name </td><td>{this.state.user.firstName + " " + this.state.user.lastName}</td></tr>
-                    <tr><td>User ID </td><td>{this.state.user.userID}</td></tr>
-                    <tr><td>Location </td><td>{this.state.user.location}</td></tr>
-                    <tr><td>Email </td><td>{this.state.user.email}</td></tr>
-                    <tr><td>Phone Number </td><td>{this.person.phone}</td></tr>}
+                {/* {this.state.user} */}
+                <Table size="sm" style={{ minWidth: "900px", maxWidth: "1100px", marginLeft: "10%", marginRight: "auto", marginTop: "1.2rem"}}>
+                    <tr><td>Name </td><td>{this.state.userInfo.firstName + " " + this.state.userInfo.lastName}</td></tr>
+                    <tr><td>User ID </td><td>{this.state.userInfo.userID}</td></tr>
+                    <tr><td>Location </td><td>{this.state.userInfo.location}</td></tr>
+                    <tr><td>Email </td><td>{this.state.bodyuserInfo.email}</td></tr>
                     <tr><td>Preference </td><td>{this.state.prefList}</td></tr>
                     <tr><td></td><td style={{textAlign:"right"}}><Button variant="info" onClick={this.handleEditProfile} style={{marginRight:"0.2rem"}}>Edit Profile</Button><Button variant="info" onClick={this.handleChangePassword}>Change Password</Button></td></tr>
-                </Table>*/}
-
+                </Table>
                 <Container style={{marginLeft: "10%"}}>
                   <h4>My Requests</h4>
                 </Container>

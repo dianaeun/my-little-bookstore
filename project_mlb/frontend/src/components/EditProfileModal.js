@@ -2,7 +2,84 @@ import React, {Component} from 'react';
 import {Modal, Button, Form, Row, Col} from 'react-bootstrap';
 
 class EditBookModal extends Component{
-    
+    state = {
+        genres: this.props.user.preferredGenres
+    };
+    constructor(props){
+        super(props);
+        this.firstNameRef = React.createRef();
+        this.lastNameRef = React.createRef();
+        this.locationRef = React.createRef();
+        this.emailRef = React.createRef();
+        this.setState({genres: this.props.user.preferredGenres});
+    }
+    handleCheckBoxes = target => {
+        const genres = this.state.genres;
+        if (genres.indexOf(target) === -1) {
+          genres.push(target);
+        }
+        else {
+          genres.splice(genres.indexOf(target), 1);
+        }
+        this.setState({genres: genres});
+    }
+    handleSubmit = event => {
+        event.preventDefault();
+        console.log(this.props.user);
+        const firstName = this.firstNameRef.current.value;
+        const lastName = this.lastNameRef.current.value;
+        const location = this.locationRef.current.value;
+        const email = this.emailRef.current.value;
+        const preferredGenres = this.state.genres;
+        console.log(preferredGenres);
+        if (firstName.trim().length === 0 || lastName.trim().length === 0 || email.trim().length === 0){
+          console.log("warning modal (null type input)");
+          return;
+        }
+        if(location.trim().length === 0) {
+            location = "";
+        }
+        const requestBody = {
+          query: `
+                mutation EditUser($firstName: String!, $lastName: String!, $email: String!, $password: String!, $userID: String!, $location: String, $preferredGenres: [String]!){
+                    editUser(userInput: {firstName: $firstName, lastName: $lastName, email: $email, password: $password, userID: $userID, location: $location, preferredGenres: $preferredGenres}) {
+                        _id
+                        firstName
+                        lastName
+                        email
+                        userID
+                        location
+                        preferredGenres
+                    }
+                  }
+            `,
+            variables: {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                password: "",
+                userID: this.props.userID,
+                location: location,
+                preferredGenres: preferredGenres
+            }
+        };
+        fetch("/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+        .then(res => {
+          console.log(res.status);
+          if (res.status !== 200 && res.status !== 201) {
+              throw new Error('Failed to fetch during edit profile!!!!');
+          }
+          return res.json();
+        })
+        .then(resData => {
+          console.log("successfully edited user!", resData);
+        })
+        .catch(err =>{
+          console.log(err);
+          //throw err;    => user 가 이미 존재할때 그냥 error 을 throw 시켜버릴때 먹통이된다! 
+        });
+        this.props.handleClose();
+    }
     render(){
         return(
             <Modal
@@ -23,8 +100,11 @@ class EditBookModal extends Component{
                             <Form.Label column sm={3}>
                                 Name
                             </Form.Label>
-                            <Col sm={9}>
-                                <Form.Control type="text" placeholder={this.props.person.firstName + " " + this.props.person.lastName} />
+                            <Col sm={5}>
+                                <Form.Control type="text" defaultValue={this.props.user.firstName} ref={this.firstNameRef}/>
+                            </Col>
+                            <Col sm={4}>
+                                <Form.Control type="text" defaultValue={this.props.user.lastName} ref={this.lastNameRef}/>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} controlId="TitleInput">
@@ -32,7 +112,7 @@ class EditBookModal extends Component{
                                 Location
                             </Form.Label>
                             <Col sm={9}>
-                                <Form.Control type="text" placeholder={this.props.person.location} />
+                                <Form.Control type="text" defaultValue={this.props.user.location} ref={this.locationRef}/>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} controlId="TitleInput">
@@ -40,7 +120,7 @@ class EditBookModal extends Component{
                                 Email
                             </Form.Label>
                             <Col sm={9}>
-                                <Form.Control type="text" placeholder={this.props.person.email} />
+                                <Form.Control type="text" defaultValue={this.props.user.email} ref={this.emailRef}/>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} controlId="TitleInput">
@@ -51,34 +131,39 @@ class EditBookModal extends Component{
                                 <Form.Group controlId="formBasicGenre" as={Row}>
                                     <Col key={`inline-checkbox`} className="mb-3">
                                     <Form.Check
-                                        checked = {this.props.person.preferredGenres.includes("Romance")}
+                                        defaultChecked = {this.props.user.preferredGenres.includes("Romance")}
                                         inline
                                         label="Romance"
                                         id={`inline-checkbox-1`}
+                                        onChange={() => this.handleCheckBoxes("Romance")}
                                     />
                                     <Form.Check
-                                        checked = {this.props.person.preferredGenres.includes("Horror")}                                    
+                                        defaultChecked = {this.props.user.preferredGenres.includes("Horror")}                                    
                                         inline
                                         label="Horror"
                                         id={`inline-checkbox-2`}
+                                        onChange={() => this.handleCheckBoxes("Horror")}
                                     />
                                     <Form.Check
-                                        checked = {this.props.person.preferredGenres.includes("Fantasy")}
+                                        defaultChecked = {this.props.user.preferredGenres.includes("Fantasy")}
                                         inline
                                         label="Fantasy"
                                         id={`inline-checkbox-3`}
+                                        onChange={() => this.handleCheckBoxes("Fantasy")}
                                     />
                                     <Form.Check
-                                        checked = {this.props.person.preferredGenres.includes("Adventure")}
+                                        defaultChecked = {this.props.user.preferredGenres.includes("Adventure")}
                                         inline
                                         label="Adventure"
                                         id={`inline-checkbox-4`}
+                                        onChange={() => this.handleCheckBoxes("Adventure")}
                                     />
                                     <Form.Check
-                                        checked = {this.props.person.preferredGenres.includes("Science")}
+                                        defaultChecked = {this.props.user.preferredGenres.includes("Science")}
                                         inline
                                         label="Science"
                                         id={`inline-checkbox-5`}
+                                        onChange={() => this.handleCheckBoxes("Science")}
                                     />
                                     </Col>
                                 </Form.Group>
@@ -88,7 +173,7 @@ class EditBookModal extends Component{
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={this.props.handleClose}> Close </Button>
-                    <Button variant="success" onClick={this.props.handleClose}> Save </Button>
+                    <Button variant="success" onClick={(event) => this.handleSubmit(event)}> Save </Button>
                 </Modal.Footer>
             </Modal>
         )
