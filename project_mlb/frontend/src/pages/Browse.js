@@ -69,6 +69,14 @@ class Browse extends Component{
                             raters
                         }
                         genre
+                        owner{
+                            firstName
+                            lastName
+                            email
+                            userID
+                            location
+                            preferredGenres
+                          }
                         price
                         isbn
                     }
@@ -409,6 +417,7 @@ class Browse extends Component{
                                 <th>Title</th>
                                 <th>Author</th>
                                 <th>Genre</th>
+                                <th>Seller</th>
                                 <th>Avg. Rating</th>
                                 <th>Highest Price</th>
                             </tr>
@@ -420,7 +429,12 @@ class Browse extends Component{
                                 <Link className="nav-link" to={{pathname: "/IndividualBookpage" , book:book}} style={{paddingLeft: 0, paddingRight: 0}}>{book.title}</Link>                            
                                 </td>                                
                                 <td><Link href="#">{book.author}</Link></td>
-                                <td>{book.genre}</td>                                                
+                                <td>{book.genre}</td>
+                                <td>
+                                    <Link className="nav-link" to={`${this.props.match.url}/${book.owner.userID}`} style={{paddingLeft: 0, paddingRight: 0}}>
+                                        {book.owner.userID}
+                                    </Link>
+                                </td>                                                
                                 <td style={{width:"10rem"}}>
                                 {this.createStar(book.rating.rating)}
                                 </td>

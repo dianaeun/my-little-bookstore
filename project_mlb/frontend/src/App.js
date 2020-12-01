@@ -56,6 +56,8 @@ class App extends Component {
                     <Route path='/IndividualBookpage' component={IndividualBookpage} />
                     <Route path='/Seller' component={SellerBookstorePage} />
                     <Route path='/Main/:user_id' component={SellerBookstorePage} />
+                    <Route path='/Browse/:user_id' component={SellerBookstorePage} />
+
                     <Redirect to="/Main" />
                   </Switch>
                 </main>
