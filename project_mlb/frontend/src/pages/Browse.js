@@ -362,16 +362,17 @@ class Browse extends Component{
       }
 
 
-    createStar = (n) => {
+      createStar = (n) => {
+        let rounded = Math.round(n);
         let stars = [];
-        for (let i = 0; i < n; i++){
+        for (let i = 0; i < rounded; i++){
             stars.push(<img src={star} alt="star" style={{ width: "22px" }} />);
         }
-        for (let i = n; i < 5; i++) {
+        for (let i = rounded; i < 5; i++) {
             stars.push(<img src={blankStar} alt="star" style={{ width: "22px" }} />);
         }
-        return <td>{stars}</td>
-    }
+        return stars;
+      }
     
 
     render(){
