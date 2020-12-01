@@ -14,6 +14,14 @@ const schema =  buildSchema(`
         description: String
         owner: User!
     }
+    type EBook{
+        _id: ID!
+        title: String!
+        file: String!
+        date: String!
+        rating: Rating!
+        owner: User!
+    }
     type User{
         _id: ID!
         firstName: String!
@@ -83,6 +91,12 @@ const schema =  buildSchema(`
         genre: String!
         owner: ID!
     }
+    input EBookInput {
+        title: String!
+        file: String!
+        date: String!
+        owner: ID!
+    }
     input UserInput {
         firstName: String!
         lastName: String!
@@ -121,7 +135,9 @@ const schema =  buildSchema(`
     }
     type RootQuery {
         books: [Book]!
+        ebooks: [EBook]!
         userBooks(ownerID: String!): [Book]!
+        userEBooks(ownerID: String!): [EBook]!
         sameBooks(bookTitle: String!) : [Book]!
         login(email: String!, password: String!): AuthData!
         users: [User]!
@@ -134,6 +150,7 @@ const schema =  buildSchema(`
     }
     type RootMutation {
         createBook(bookInput: BookInput): Book
+        createEBook(eBookInput: EBookInput): EBook
         createUser(userInput: UserInput): User
         editUser(userInput: UserInput): User
         deleteBook(bookId: ID!): Book!

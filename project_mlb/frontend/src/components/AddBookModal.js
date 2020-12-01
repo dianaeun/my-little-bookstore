@@ -15,6 +15,7 @@ class AddBookModal extends Component{
         this.authorRef = React.createRef();
         this.publisherRef = React.createRef();
         this.priceRef = React.createRef();
+        this.bookFile = null;
       }
     setRadioValue = (n) => {
         this.setState({radioValue: n})
@@ -76,63 +77,130 @@ class AddBookModal extends Component{
         return cleanData;
     }
     
+    handleFileSelected = (e) => {
+        e.preventDefault();
+        this.bookFile = e.target.files[0];
+        //console.log(this.bookFile);
+    }
+
+    convertBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+          const fileReader = new FileReader();
+          fileReader.readAsDataURL(file);
+    
+          fileReader.onload = () => {
+            resolve(fileReader.result);
+          };
+    
+          fileReader.onerror = (error) => {
+            reject(error);
+          };
+        });
+    };
+
+    
     radios = [
       { name: 'Search By ISBN', value: '1' },
       { name: 'Manual Entry', value: '2' },
       { name: 'Upload E-Book', value: '3' },
     ];
-    handleSubmit = event => {
+
+    handleSubmit = async event => {
         event.preventDefault();
-        console.log("handleSubmit owner..?", this.props.owner);
-        const title = this.titleRef.current.value;
-        const author = this.authorRef.current.value;
-        const publisher = this.publisherRef.current.value;
-        const price = this.priceRef.current.value;
-        const date = new Date();
-        if (title.trim().length === 0 || author.trim().length === 0 || publisher.trim().length === 0 || price.trim().length === 0){
-            console.log("warning modal (null type input)");
-            return;
-        }
-        const requestBody = {
-          query: `
-                mutation CreateBook($title: String!, $author: String!, $publisher: String!, $price: Float!, $date: String!, $owner: ID!, $genre: String!, $isbn: String!){
-                    createBook(bookInput: {title: $title, author: $author, publisher: $publisher, price: $price, date: $date, owner: $owner, genre: $genre, isbn: $isbn}) {
-                        _id
+        if (this.state.radioValue === '3') {
+            // Handling Upload E-book case
+            console.log("this is Ebook case!!");
+            if (this.bookFile == null) {
+                alert("Please choose a file");
+                return
+            }
+            const fileName = this.bookFile.name;
+            const base64String = await this.convertBase64(this.bookFile);
+            //console.log(base64String);
+            const date = new Date();
+            const requestBody = {
+                query: `
+                        mutation CreateEBook($title: String!, $file: String!, $date: String!, $owner: ID!){
+                            createEBook(eBookInput: {title: $title, file: $file, date: $date, owner: $owner}) {
+                                _id
+                            }
+                        }
+                    `,
+                    variables: {
+                        title: fileName,
+                        file: base64String,
+                        date: date,
+                        owner: this.props.owner
                     }
+                };
+                fetch("/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+                .then(res => {
+                    console.log(res.status);
+                    if (res.status !== 200 && res.status !== 201) {
+                        throw new Error('Failed to create E-book!');
+                    }
+                    return res.json();
+                })
+                .then(resData => {
+                    if (resData.data.creatEBook){
+                        console.log("successfully added your E-book!", resData);
+                    }
+                })
+                .catch(err =>{
+                    console.log(err);
+                });
+                alert("you have successfully added an E-book!");
+        }
+        else {
+            // Handling Add Book case
+            const title = this.titleRef.current.value;
+            const author = this.authorRef.current.value;
+            const publisher = this.publisherRef.current.value;
+            const price = this.priceRef.current.value;
+            const date = new Date();
+            if (title.trim().length === 0 || author.trim().length === 0 || publisher.trim().length === 0 || price.trim().length === 0){
+                console.log("warning modal (null type input)");
+                return;
+            }
+            const requestBody = {
+            query: `
+                    mutation CreateBook($title: String!, $author: String!, $publisher: String!, $price: Float!, $date: String!, $owner: ID!, $genre: String!, $isbn: String!){
+                        createBook(bookInput: {title: $title, author: $author, publisher: $publisher, price: $price, date: $date, owner: $owner, genre: $genre, isbn: $isbn}) {
+                            _id
+                        }
+                    }
+                `,
+                variables: {
+                    title: title,
+                    author: author,
+                    publisher: publisher,
+                    price: parseFloat(price),
+                    date: date,
+                    owner: this.props.owner,
+                    genre: "",
+                    isbn: ""
                 }
-            `,
-            variables: {
-                title: title,
-                author: author,
-                publisher: publisher,
-                price: parseFloat(price),
-                date: date,
-                owner: this.props.owner,
-                genre: "",
-                isbn: ""
-            }
-        };
-        fetch("/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
-        .then(res => {
-            console.log(res.status);
-            if (res.status !== 200 && res.status !== 201) {
-                throw new Error('Failed to create book!!!!');
-            }
-            return res.json();
-        })
-        .then(resData => {
-            if (resData.data.createBook){
-                console.log("successful added your book!", resData);
-                this.setState({createdAccount: true});
-            }
-          
-        })
-        .catch(err =>{
-          console.log(err);
-          //throw err;    => user 가 이미 존재할때 그냥 error 을 throw 시켜버릴때 먹통이된다! 
-        });
-        this.setState({rawBookInfo: [], bookInfo: []});
-        alert("you have successfully added a book!");
+            };
+            fetch("/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+            .then(res => {
+                console.log(res.status);
+                if (res.status !== 200 && res.status !== 201) {
+                    throw new Error('Failed to create book!');
+                }
+                return res.json();
+            })
+            .then(resData => {
+                if (resData.data.createBook){
+                    //console.log("successful added your book!", resData);
+                }
+            
+            })
+            .catch(err =>{
+                console.log(err);
+            });
+            this.setState({rawBookInfo: [], bookInfo: []});
+            alert("you have successfully added a book!");
+        }
         this.props.handleClose();
     }
     render(){
@@ -270,7 +338,7 @@ class AddBookModal extends Component{
                             {this.state.radioValue === '3' && 
                                 <Form>
                                     <Form.Group>
-                                    <Form.File id="exampleFormControlFile1" label="The E-Book must be copyright free" />
+                                    <Form.File onChange={(e) => this.handleFileSelected(e)} id="FormControlFile" label="The E-Book must be copyright free" />
                                     </Form.Group>
                                 </Form>
                             }
