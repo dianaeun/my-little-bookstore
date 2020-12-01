@@ -77,6 +77,19 @@ const transformBook = book => {
         rating: findRating.bind(this, book._doc.rating)
     }
 };
+
+const transformEBook = ebook => {
+    console.log("transforming Ebook...", ebook._doc.owner);
+    //console.log("owner:", findUser(book.owner));
+    return {
+        ...ebook._doc,
+        _id: ebook.id,
+        date: dateToString(ebook._doc.date),
+        owner: findUser.bind(this, ebook._doc.owner),
+        rating: findRating.bind(this, ebook._doc.rating)
+    }
+};
+
 const transformDiscussion = discussion => {
     return {
         ...discussion._doc,
@@ -121,6 +134,7 @@ const transformRating = rating => {
 }
 
 exports.transformBook = transformBook;
+exports.transformEBook = transformEBook;
 exports.transformDiscussion = transformDiscussion;
 exports.transformComment = transformComment;
 exports.transformRequest = transformRequest;

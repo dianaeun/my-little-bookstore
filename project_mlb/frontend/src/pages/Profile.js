@@ -138,7 +138,7 @@ class Profile extends Component{
                     <tr><td>Name </td><td>{this.state.userInfo.firstName + " " + this.state.userInfo.lastName}</td></tr>
                     <tr><td>User ID </td><td>{this.state.userInfo.userID}</td></tr>
                     <tr><td>Location </td><td>{this.state.userInfo.location}</td></tr>
-                    <tr><td>Email </td><td>{this.state.bodyuserInfo.email}</td></tr>
+                    <tr><td>Email </td><td>{this.state.userInfo.email}</td></tr>
                     <tr><td>Preference </td><td>{this.state.prefList}</td></tr>
                     <tr><td></td><td style={{textAlign:"right"}}><Button variant="info" onClick={this.handleEditProfile} style={{marginRight:"0.2rem"}}>Edit Profile</Button><Button variant="info" onClick={this.handleChangePassword}>Change Password</Button></td></tr>
                 </Table>
