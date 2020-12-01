@@ -10,39 +10,10 @@ class Main extends Component {
   state={books:[], genres: []}
   static contextType = AuthContext;
   componentDidMount() {
-    // this.fetchGenres();
+    console.log("match: ", this.props.match);
     this.fetchBooks();
   }
-  // fetchGenres() {
-  //   if (!this.context.userID){
-  //     console.log("userID is: ", this.context.userID, "Canceling fetchGenres()");
-  //     return;
-  //   }
-  //   const requestBody = {
-  //     query: `
-  //         query{
-  //             findByUserID(userID: "${this.context.userID}"){
-  //                 userID
-  //                 preferredGenres
-  //                 location
-  //             }
-  //         }
-  //     `
-  //   }
-  //   fetch('/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
-  //   .then(res => {
-  //       if (res.status !== 200 && res.status !== 201) {
-  //         throw new Error("Failed to fetch User")
-  //       }
-  //       return res.json()
-  //   })
-  //   .then(resData => {
-  //     console.log("User successfully fetched! ", resData);
-  //     const user = resData.data.findByUserID;
-  //     console.log(user);
-  //     this.setState({genres: user.preferredGenres});
-  // })
-  // }
+  
   fetchBooks() {
       const requestBody = {
           query: `
@@ -56,6 +27,14 @@ class Main extends Component {
                         rating
                       }
                       genre
+                      owner{
+                        firstName
+                        lastName
+                        email
+                        userID
+                        location
+                        preferredGenres
+                      }
                   }
               }
           `
@@ -128,6 +107,7 @@ class Main extends Component {
                   <th>Title</th>
                   <th>Author</th>
                   <th>Publisher</th>
+                  <th>Seller</th>
                   <th>Genre</th>
                   <th>Rating</th>
                 </tr>
@@ -141,6 +121,7 @@ class Main extends Component {
                     <td>
                       {book.publisher}
                     </td>
+                    <td><Link to={`${this.props.match.url}/${book.owner.userID}`}>{book.owner.userID}</Link></td>
                     <td>{book.genre.split(",").map((genre) => (
                       <Button variant="outline-danger" size="sm" style={{marginRight:"0.5rem"}} disabled>{genre}</Button>
                     ))}</td>
@@ -157,7 +138,13 @@ class Main extends Component {
                     <td><Link href="#">{book.author}</Link></td>
                     <td>
                       {book.publisher}
-                    </td>                    
+                    </td>          
+                    <td>
+                      <Link className="nav-link" to={`${this.props.match.url}/${book.owner.userID}`} style={{paddingLeft: 0, paddingRight: 0}}>
+                        {book.owner.userID}
+                      </Link>
+                    </td>
+
                     <td>{book.genre!=="" && book.genre.split(",").map((genre) => (
                       <Button variant="outline-danger" size="sm" style={{marginRight:"0.5rem"}} disabled>{genre}</Button>
                     ))}</td>

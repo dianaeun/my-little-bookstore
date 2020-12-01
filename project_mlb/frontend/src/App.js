@@ -11,7 +11,7 @@ import Login from "./pages/Login";
 import AuthContext from './context/AuthContext';
 import Premain from './pages/Premain';
 import Signup from './pages/Signup';
-
+import SellerBookstorePage from './pages/SellerBookstorePage';
 
 class App extends Component {
   state = {
@@ -54,6 +54,8 @@ class App extends Component {
                     <Route exact path='/Discussion' component={Discussion} />
                     {this.state.token &&  <Route exact path='/Profile' component={Profile} />}
                     <Route path='/IndividualBookpage' component={IndividualBookpage} />
+                    <Route path='/Seller' component={SellerBookstorePage} />
+                    <Route path='/Main/:user_id' component={SellerBookstorePage} />
                     <Redirect to="/Main" />
                   </Switch>
                 </main>
