@@ -62,16 +62,6 @@ class Browse extends Component{
         .then(resData => {
             console.log("Books are successfully fetched! ", resData);
             const books = resData.data.books;
-            //let check = this.state.books;
-            // if(this.state.sort === "price")
-            //     books.sort((a, b) => b.price - a.price);
-
-            // else if(this.state.sort === "Alphabet")
-            //     books.sort((a,b) => a.title.localeCompare(b.title));
-            // else;
-                // if(this.state.filter === "Horror")
-                //     books.filter((temp) => temp.genre.includes("Horror"));
-                //     books.filter(function(temp){return temp.genre.includes("Romance")});
             this.setState({books: books, sortedbook: books, init: books});
         })
         .catch(err => { console.log(err);});
@@ -149,11 +139,8 @@ class Browse extends Component{
       handleSearchBook = (event, search, searchTerm, init) => {
         event.preventDefault();
         let books = this.state.sortedbook;
-        //let initialization = this.state.init;
     
         if (search === "Title"){
-            //books = init;
-            //books = books.filter(function(book){return book.title.toLowerCase().includes(searchTerm.toLowerCase())});
             if(this.state.check === "romance"){
                 books = init;
                 books = books.filter((temp) => temp.genre.includes("Romance"));
@@ -196,7 +183,6 @@ class Browse extends Component{
         }
           
         else if (search === "Author"){
-            //books = init;
             if(this.state.check === "romance"){
                 books = init;
                 books = books.filter((temp) => temp.genre.includes("Romance"));
@@ -240,7 +226,6 @@ class Browse extends Component{
         }
           
         else if (search === "ISBN"){
-            //books = init;
 
             if(this.state.check === "romance"){
                 books = init;
@@ -344,17 +329,6 @@ class Browse extends Component{
                     || book.isbn.toLowerCase().includes(searchTerm.toLowerCase())
                     || book.author.toLowerCase().includes(searchTerm.toLowerCase())});
             }
-
-            
-
-            // books = this.state.sortedbook.filter(function(book){
-            //     return  book.title.toLowerCase().includes(searchTerm.toLowerCase())            
-            //     || book.isbn.toLowerCase().includes(searchTerm.toLowerCase())
-            //     || book.author.toLowerCase().includes(searchTerm.toLowerCase())});
-
-            // if(searchTerm === ""){
-            //     books = init;
-            // }
                 
         }
 
