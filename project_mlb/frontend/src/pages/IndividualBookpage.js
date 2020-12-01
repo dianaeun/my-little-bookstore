@@ -168,9 +168,13 @@ class IndividualBookpage extends Component{
     handleShowReview = (target) => {
       let shown = this.state.shownReviews;
       let index = shown.indexOf(target);
+      console.log("shown",shown);
+      console.log(target);
+      console.log("test",index);
       if (index === -1) {
         shown.push(target);
       } else shown.splice(index, 1);
+      console.log("why?", shown.slice(index,1));
       this.setState({ shownReviews: shown });
     };
     handleRateBook = (book) => {
