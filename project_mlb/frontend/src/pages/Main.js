@@ -90,12 +90,14 @@ class Main extends Component {
         </h1>
           <div style={{ width: "800px", marginLeft: "auto", marginRight: "auto"}}>
             {this.context.userID !== null ? 
-              <h3 style={{ fontFamily: "Kurale", textAlign: "center", marginTop: "2rem", marginBottom: "1rem"}}>
-                {this.context.preferredGenres.map((genre) => (
-                  <Button variant="outline-danger" size="sm" style={{marginRight:"0.7rem"}} disabled>{genre}</Button>
-                ))}
-                books in Songo
-              </h3>
+              <div style={{display: "inline-flex", flexDirection: "row", justifyContent: "center", marginLeft: "11rem"}}>
+                <h3 style={{color: "#C71585", fontFamily: 'Caveat', textAlign: "center", marginTop: "2rem", marginBottom: "1rem"}}>
+                  {this.context.preferredGenres.map((genre) => (
+                    genre + "          "
+                  ))}
+                </h3>
+                <h3 style={{ fontFamily: 'Kurale', textAlign: "center", marginTop: "2rem", marginBottom: "1rem", marginLeft: "1rem"}}>books in Songdo</h3>
+              </div>
               :
               <h3 style={{ fontFamily: "Kurale", textAlign: "center", marginTop: "2rem", marginBottom: "1rem"}}>
                 Books in Songo with Highest Ratings
@@ -117,21 +119,25 @@ class Main extends Component {
                 {this.context.token ? this.state.books.filter(book => book.genre.split(',').filter(genre => this.context.preferredGenres.includes(genre)).length > 0).slice(0,10).map((book, i) => (
                   <tr>
                     <td>{i+1}</td>
-                      <Link className="nav-link" to={`/book/${book._id}`} style={{paddingLeft: 0, paddingRight: 0}}>
+                      <Link className="nav-link" to={`/book/${book._id}`} style={{padding: 0}}>
                             {book.title}
                       </Link>
-                    <td><Link href="#">{book.author}</Link></td>
+                    <td>{book.author}</td>
                     <td>
                       {book.publisher}
                     </td>
                     <td>
-                      <Link className="nav-link" to={`/seller/${book.owner.userID}`} style={{paddingLeft: 0, paddingRight: 0}}>
+                      <Link className="nav-link" to={`/seller/${book.owner.userID}`} style={{padding: 0}}>
                         {book.owner.userID}
                       </Link>
                     </td>
-                    <td>{book.genre.split(",").map((genre) => (
-                      <Button variant="outline-danger" size="sm" style={{marginRight:"0.5rem"}} disabled>{genre}</Button>
-                    ))}</td>
+                    <td>
+                      <div style={{display: "flex", flexDirection: "column", justifyContent: "center"}}>
+                          {book.genre!=="" && book.genre.split(",").map((genre) => (
+                            <p style={{color: "#C71585", fontFamily: 'Caveat', textAlign: "center", margin: "0rem"}}>{genre}</p>
+                          ))}
+                      </div>
+                    </td>
                     <td style={{width:"8rem"}}>
                       {this.createStar(book.rating)}
                     </td>
@@ -142,23 +148,27 @@ class Main extends Component {
                   <tr>
                     <td>{i+1}</td>
                     <td>
-                      <Link className="nav-link" to={`/book/${book._id}`} style={{paddingLeft: 0, paddingRight: 0}}>
+                      <Link className="nav-link" to={`/book/${book._id}`} style={{padding: 0}}>
                             {book.title}
                       </Link>
                     </td>
-                    <td><Link href="#">{book.author}</Link></td>
+                    <td>{book.author}</td>
                     <td>
                       {book.publisher}
                     </td>          
                     <td>
-                      <Link className="nav-link" to={`/seller/${book.owner.userID}`} style={{paddingLeft: 0, paddingRight: 0}}>
+                      <Link className="nav-link" to={`/seller/${book.owner.userID}`} style={{padding: 0}}>
                         {book.owner.userID}
                       </Link>
                     </td>
 
-                    <td>{book.genre!=="" && book.genre.split(",").map((genre) => (
-                      <Button variant="outline-danger" size="sm" style={{marginRight:"0.5rem"}} disabled>{genre}</Button>
-                    ))}</td>
+                    <td>
+                      <div style={{display: "flex", flexDirection: "column", justifyContent: "center"}}>
+                          {book.genre!=="" && book.genre.split(",").map((genre) => (
+                            <p style={{color: "#C71585", fontFamily: 'Caveat', textAlign: "center", margin: "0rem"}}>{genre}</p>
+                          ))}
+                      </div>
+                    </td>
                     <td style={{width:"8rem"}}>
                       {this.createStar(book.rating.rating)}
                     </td>
