@@ -92,6 +92,7 @@ const schema =  buildSchema(`
         genre: String!
         image: String!
         owner: ID!
+        description: String!
     }
     input EBookInput {
         title: String!
