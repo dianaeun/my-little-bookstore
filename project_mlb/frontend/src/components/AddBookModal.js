@@ -8,11 +8,11 @@ class AddBookModal extends Component{
         radioValue : '1',
         searchField: '',
         rawBookInfo: [],
-        bookInfo: [],
         isbn: ""
     };
     constructor(props){
         super(props);
+        this.bookInfo = [];
         this.titleRef = React.createRef();
         this.authorRef = React.createRef();
         this.publisherRef = React.createRef();
@@ -41,28 +41,8 @@ class AddBookModal extends Component{
         .then((data) => {
             const cleanData = this.cleanData(data)
             this.setState({rawBookInfo: [cleanData[0]]})
+            console.log(cleanData)
         })
-
-        this.state.bookInfo.length = 0
-        for (const [i, book] of this.state.rawBookInfo.entries()) {
-            console.log(book);
-            this.state.bookInfo.push(
-                <Card key={i}>
-                    <Card.Img variant="top" src={book.volumeInfo.imageLinks.smallThumbnail}/>
-                    <Card.Body>
-                        <Card.Title>{book.volumeInfo.title}</Card.Title>
-                        <Card.Subtitle>{book.volumeInfo.authors}</Card.Subtitle>
-                        <Card.Text>
-                        Published Date: {book.volumeInfo.publishedDate}
-                        </Card.Text>
-                    </Card.Body>
-                </Card>
-            )
-            this.titleRef.current.value = book.volumeInfo.title;
-            this.authorRef.current.value = book.volumeInfo.authors;
-            this.publisherRef.current.value = book.volumeInfo.publisher;
-        }
-            
     }
 
     cleanData = (data) => {
@@ -72,6 +52,9 @@ class AddBookModal extends Component{
             }
             if(book.volumeInfo.hasOwnProperty('imageLinks') === false) {
                 book.volumeInfo['imageLinks'] = {thumbnail: ''};
+            }
+            if(book.volumeInfo.hasOwnProperty('authors') === false) {
+                book.volumeInfo['authors'] = 'unknown';
             }
 
             return book;
@@ -106,6 +89,11 @@ class AddBookModal extends Component{
       { name: 'Manual Entry', value: '2' },
       { name: 'Upload E-Book', value: '3' },
     ];
+
+    handleAddBookClose = () => {
+        this.setState({rawBookInfo: []});
+        this.props.handleClose();
+    }
 
     handleSubmit = async event => {
         event.preventDefault();
@@ -270,16 +258,27 @@ class AddBookModal extends Component{
                                     <Row>
                                         <Col> Result </Col>
                                     </Row>
-                                    <Row>
-                                        {this.state.bookInfo}
-                                    </Row>
-
+                                    
+                                    {this.state.rawBookInfo.map((book) =>(
+                                    <div>
+                                    <Row style={{marginLeft: "20%"}}>
+                                        <Card>
+                                            <Card.Img variant="top" src={book.volumeInfo.imageLinks.smallThumbnail}/>
+                                            <Card.Body>
+                                                <Card.Title>{book.volumeInfo.title}</Card.Title>
+                                                <Card.Subtitle>{book.volumeInfo.authors}</Card.Subtitle>
+                                                <Card.Text>
+                                                Published Date: {book.volumeInfo.publishedDate}
+                                                </Card.Text>
+                                            </Card.Body>
+                                        </Card>
+                                        </Row>
                                     <Form.Group as={Row} controlId="TitleInput">
                                         <Form.Label column sm={3}>
                                             Title
                                         </Form.Label>
                                         <Col sm={9}>
-                                            <Form.Control type="text" placeholder="Title" ref={this.titleRef}/>
+                                            <Form.Control id="title" type="text" value={book.volumeInfo.title} ref={this.titleRef}/>
                                         </Col>
                                     </Form.Group>
                               
@@ -288,7 +287,7 @@ class AddBookModal extends Component{
                                             Author
                                         </Form.Label>
                                         <Col sm={9}>
-                                            <Form.Control type="text" placeholder="Author" ref={this.authorRef}/>
+                                            <Form.Control id="author" type="text" value={book.volumeInfo.authors} ref={this.authorRef}/>
                                         </Col>
                                     </Form.Group>
                                     
@@ -297,7 +296,7 @@ class AddBookModal extends Component{
                                             Publisher
                                         </Form.Label>
                                         <Col sm={9}>
-                                            <Form.Control type="text" placeholder="Publisher" ref={this.publisherRef}/>
+                                            <Form.Control id="publisher" type="text" value={book.volumeInfo.publisher} ref={this.publisherRef} />
                                         </Col>
                                     </Form.Group>
 
@@ -308,7 +307,8 @@ class AddBookModal extends Component{
                                         <Col sm={9}>
                                             <Form.Control type="number" placeholder="0.00" ref={this.priceRef}/>
                                         </Col>
-                                    </Form.Group>
+                                    </Form.Group></div>
+                                    ))}
                                 </Form>
                             }
                             {this.state.radioValue === '2' &&
@@ -362,7 +362,7 @@ class AddBookModal extends Component{
                 </Modal.Body>
                 
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={this.props.handleClose}> Close </Button>
+                    <Button variant="secondary" onClick={()=>this.handleAddBookClose()}> Close </Button>
                     <Button variant="success" onClick={(event) => this.handleSubmit(event)}> Save </Button>
                 </Modal.Footer>
             </Modal>

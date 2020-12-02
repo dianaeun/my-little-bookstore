@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Table, Spinner, Row} from 'react-bootstrap';
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import MlbNavbar from '../components/NavigationBar.js'
 
 import AddBookModal from '../components/AddBookModal';
@@ -24,9 +24,11 @@ class MyBookstore extends Component{
         editBook : false,
         bookSelected: null,
         books: [],
+        ebooks: [],
         bookForDelete: null,
         receivedRequests: [],
         isLoadingBook: false,
+        isLoadingEBook: false,
         isLoadingRequest: false,
         rateBook: false
     }
@@ -34,6 +36,7 @@ class MyBookstore extends Component{
     componentDidMount() {
       this.fetchRequests();
       this.fetchBooks();
+      this.fetchEBooks();
     }
     fetchBooks = () => {
       this.setState({isLoadingBook: true});
@@ -75,6 +78,40 @@ class MyBookstore extends Component{
           const books = resData.data.userBooks;
           // console.log("Books: ", books);
           this.setState({books: books, isLoadingBook: false});
+      })
+      .catch(err => { console.log(err);});
+    };
+    fetchEBooks = () => {
+      this.setState({isLoadingEBook: true});
+      const requestBody = {
+          query: `
+              query{
+                userEBooks(ownerID: "${this.context.user_id}"){
+                    _id
+                    date
+                    title
+                    file
+                    rating{
+                      _id
+                      rating
+                      raters
+                    }             
+                  }
+              }
+          `
+      }
+      fetch('/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+      .then(res => {
+          if (res.status !== 200 && res.status !== 201) {
+              throw new Error("Failed to fetch Ebooks!")
+          }
+          return res.json()
+      })
+      .then(resData => {
+          console.log("user E-Books are successfully fetched! ", resData);
+          const books = resData.data.userEBooks;
+          //console.log("Books: ", books);
+          this.setState({ebooks: books, isLoadingEBook: false});
       })
       .catch(err => { console.log(err);});
     };
@@ -175,6 +212,7 @@ class MyBookstore extends Component{
     handleClose = () => {
       this.setState({deleteBook: false, addBook: false, editBook: false, bookForDelete: null, rateBook: false, bookSelected: null});
       this.fetchBooks();
+      this.fetchEBooks();
     }
     handleCloseRating = () => {
       this.setState(prevState => {
@@ -223,6 +261,10 @@ class MyBookstore extends Component{
     createRequestsCol = (request) => {
       return request > 0  ? <p style={{color: "red", fontWeight: "bold"}}>{request}</p> : <p>{request}</p>
     }
+    openEbook = (file) => {
+      let fileWindow = window.open("")
+      fileWindow.document.write("<body><embed width='100%' height='100%' src='" + file + "'></embed></body>")
+    }
     render(){
         return (
             <div>
@@ -235,6 +277,9 @@ class MyBookstore extends Component{
                   <React.Fragment>
                     <div style={{marginLeft: "10%", marginTop: "2rem", background: "#eeeeee", width: "25%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>
                       <h1 style={{fontSize: "2rem"}}>{this.context.firstName}'s Bookstore</h1>
+                    </div>
+                    <div style={{marginLeft: "10%", marginTop: "0.5rem", background: "#eeeeee", width: "20%", textAlign: "left", borderRadius: "1rem", padding: "0.1rem"}}>
+                      <h3>Books</h3>
                     </div>
                     <Table className="myTable" size="sm" style={{ width: "80%", marginTop: "1.5rem", marginLeft: "auto", marginRight: "auto", paddingTop: "1rem"}}>
                       <thead>
@@ -281,8 +326,42 @@ class MyBookstore extends Component{
                             </tr>
                         ))}
                       </tbody>
+                    </Table>
+                    <div style={{marginLeft: "10%", marginTop: "0.5rem", background: "#eeeeee", width: "20%", textAlign: "left", borderRadius: "1rem", padding: "0.1rem"}}>
+                      <h3>E-Books</h3>
+                    </div>     
+                    <Table className="myTable" size="sm" style={{ width: "80%", marginTop: "1.5rem", marginLeft: "auto", marginRight: "auto", paddingTop: "1rem"}}>
+                      <thead>
+                        <tr>
+                          <th>Date Added</th>
+                          <th>Title</th>
+                          <th style={{paddingLeft: "1.5rem"}}>Rating</th>
+                          <th>View</th>
+                        </tr>
+                      </thead>
+                      
+                      <tbody>
+                        {this.state.isLoadingEBook ? 
+                            <Spinner animation="border" variant="primary" style={{marginLeft: "48rem", marginTop: "0.5rem"}}/>
+                          :
+                          this.state.ebooks.map((book) => (
+                            <tr>
+                              <td style={{paddingTop: "0.5rem"}}>{book.date}</td>
+                              <td style={{paddingTop: "0.5rem", paddingLeft: 0, paddingRight: 0}}>
+                                  {book.title}
+                              </td>
+                              <td style={{ paddingTop: "0.5rem"}}>
+                                <Row onClick={() => {this.handleRateBook(book)}} style={{width: "fit-content", paddingLeft: "2rem", cursor: "pointer"}}>{this.createStar(book.rating.rating)} ({book.rating.rating})</Row>
+                              </td>                   
+                              <td>
+                                  <Button variant="link" onClick={()=> {this.openEbook(book.file)}}>Read</Button>
+                              </td>
+                              </tr>
+                        ))}
+                      </tbody>
                       <Button variant="info" onClick={this.handleAddBook}>Add Books</Button>
                     </Table>
+
                     <div style={{marginLeft: "10%", marginTop: "2rem", background: "#eeeeee", width: "25%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>
                       <h1 style={{fontSize: "2rem"}}>Received Requests</h1>
                     </div>
