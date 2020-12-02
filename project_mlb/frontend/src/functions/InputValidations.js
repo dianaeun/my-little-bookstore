@@ -34,3 +34,14 @@ export const validateISBN = (isbn) => {
     }
     return true;
 }
+
+export const validateEditbookInput = (title,author,publisher,price) =>{
+    if (title.trim().length === 0 || author.trim().length === 0 || publisher.trim().length === 0 || price.trim().length === 0){
+        return false;
+    }
+
+    return true;
+}
+
+
+//tag.trim().length === 0 || title.trim().length === 0 || content.trim().length === 0
