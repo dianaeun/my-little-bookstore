@@ -4,11 +4,20 @@ import MlbNavbar from '../components/NavigationBar.js'
 import AuthContext from '../context/AuthContext';
 
 const thumbs = require("../icons/thumbs.png");
+export const validatePassword = (password) => {
+    if(password.length < 6 || !password.match(/[0-9]/g) ||
+        !password.match(/[a-z]/g) || !password.match(/[A-Z]/g)){
+      return false;
+    }
+    return true;
+}
+
 
 class Signup extends Component {
   state = {
     createdAccount: false,
-    genres: []
+    genres: [],
+    passwordWarning: false
   };
   
   static contextType = AuthContext;
@@ -73,7 +82,6 @@ class Signup extends Component {
     const phoneNum1 = this.phone1Ref.current.value;
     const phoneNum2 = this.phone2Ref.current.value;
     const phoneNum3 = this.phone3Ref.current.value;
-
     const preferredGenres = this.state.genres;
     if (preferredGenres.length === 0){
       alert("Please choose at least 1 genre!");
@@ -83,6 +91,9 @@ class Signup extends Component {
         phoneNum1.trim().length === 0 || phoneNum2.trim().length === 0 || phoneNum3.trim().length === 0 ){
       console.log("warning modal (null type input)");
       return;
+    }
+    if (!validatePassword(password)){
+      
     }
    
     const email = emailPre + "@" + emailPost;
