@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Modal, Button, Form, Row, Col} from 'react-bootstrap';
 import AuthContext from '../context/AuthContext';
+import { validateEditbookInput } from '../functions/InputValidations.js';
 
 class EditBookModal extends Component{
     constructor(props){
@@ -20,7 +21,7 @@ class EditBookModal extends Component{
         const publisher = this.publisherRef.current.value;
         const price = this.priceRef.current.value;
         const date = new Date();
-        if (title.trim().length === 0 || author.trim().length === 0 || publisher.trim().length === 0 || price.trim().length === 0){
+        if (!validateEditbookInput(title,author,publisher,price)){
           console.log("warning modal (null type input)");
           return;
         }
