@@ -8,21 +8,22 @@ import { Link } from 'react-router-dom';
 
 class Profile extends Component{
     state = {
-      userInfo: {lastName:"", firstName:"", location:"", email:"", preferredGenres:[]},
+      userInfo: {lastName:"", firstName:"", location:"", email:""},
+      preferredGenres:[],
       user: [],
       prefList: [],
       editProfile: false,
       viewrequestInfo : false,
       requestSelected: null,
       sentRequests: [],
-      isLoading: false
+      isLoading: false,
     }
     static contextType = AuthContext;
     componentDidMount() {
       this.fetchUserInfo();
       this.fetchRequests();
     }
-    fetchUserInfo() {
+    fetchUserInfo = () => {
       this.setState({isLoading: true});
       const requestBody = {
         query: `
@@ -50,9 +51,13 @@ class Profile extends Component{
           console.log("User info successfully fetched", resData);
           const userInfo = resData.data.findByUserID;
           console.log("user Info is: " + userInfo);
+          this.setState({preferredGenres: userInfo.preferredGenres})
+          return userInfo
+      })
+      .then(userInfo => {
           const user = [];
           const prefList = [];
-          for (const [i, value] of userInfo.preferredGenres.entries()) {
+          for (const [i, value] of this.state.preferredGenres.entries()) {
               prefList.push(<Button key={i} variant="outline-danger" size="sm" style={{marginLeft:"0.2rem"}} disabled>{value}</Button>)
           }
           user.push(
@@ -62,7 +67,7 @@ class Profile extends Component{
                     <tr><td>Location </td><td>{userInfo.location}</td></tr>
                     <tr><td>Email </td><td>{userInfo.email}</td></tr>
                     <tr><td>Preference </td><td>{prefList}</td></tr>
-                    <tr><td></td><td style={{textAlign:"right"}}><Button variant="info" onClick={this.handleEditProfile} style={{marginRight:"0.2rem"}}>Edit Profile</Button><Button variant="info" onClick={this.handleChangePassword}>Change Password</Button></td></tr>
+                    <tr><td></td><td style={{textAlign:"right"}}><Button variant="info" onClick={this.handleEditProfile}  style={{marginRight:"0.2rem"}}>Edit Profile</Button><Button variant="info" onClick={this.handleChangePassword}>Change Password</Button></td></tr>
                 </Table>
           );
           this.setState({userInfo: userInfo, user: user, isLoading: false, prefList: prefList});
@@ -123,6 +128,7 @@ class Profile extends Component{
     }
     handleClose = () => {
       this.setState({editProfile: false, viewrequestInfo : false});
+      this.fetchUserInfo();
     }
 
     render(){
@@ -130,7 +136,7 @@ class Profile extends Component{
         return (
             <React.Fragment>
                 <MlbNavbar/>
-                <EditProfileModal show={this.state.editProfile} handleClose={this.handleClose} user={this.state.userInfo} userID = {this.context.userID}/>
+                <EditProfileModal show={this.state.editProfile} handleClose={this.handleClose} user={this.state.userInfo} preferredGenres={this.state.preferredGenres} userID = {this.context.userID} fetchUserInfo={this.fetchUserInfo}/>
                 {this.state.requestSelected && <ViewRequestInfoModal show={this.state.viewrequestInfo} handleClose={this.handleClose} request={this.state.requestSelected}/>}
                 <div style={{marginLeft: "10%", marginTop: "2rem", background: "#eeeeee", width: "15%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>
                   <h1 style={{fontSize: "2rem"}}>Profile</h1>

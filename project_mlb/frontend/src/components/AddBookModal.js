@@ -9,7 +9,8 @@ class AddBookModal extends Component{
         searchField: '',
         rawBookInfo: [],
         bookInfo: [],
-        isbn: ""
+        isbn: "",
+        genres: []
     };
     constructor(props){
         super(props);
@@ -18,7 +19,20 @@ class AddBookModal extends Component{
         this.publisherRef = React.createRef();
         this.priceRef = React.createRef();
         this.bookFile = null;
-      }
+    }
+    handleCheckBoxes = target => {
+        this.setState(prevState => {
+            let genres = [...prevState.genres];
+            console.log("prevGenres:", genres);
+            if (genres.indexOf(target) === -1) {
+                genres.push(target);
+            }
+            else {
+                genres.splice(genres.indexOf(target), 1);
+            }
+            return {genres: genres}
+        });
+    }
     setRadioValue = (n) => {
         this.setState({radioValue: n})
     };
@@ -160,7 +174,7 @@ class AddBookModal extends Component{
             const publisher = this.publisherRef.current.value;
             const price = this.priceRef.current.value;
             const date = new Date();
-            var genre = "";
+            var genre = this.state.genres.join(",");
             var image = "";
             var isbn = "";
             var description = "";
@@ -266,7 +280,6 @@ class AddBookModal extends Component{
                                             <Button type="submit" onClick={(e) => this.searchISBN(e)}>Search</Button>
                                         </Col>
                                     </Form.Group>
-
                                     <Row>
                                         <Col> Result </Col>
                                     </Row>
@@ -300,6 +313,8 @@ class AddBookModal extends Component{
                                             <Form.Control type="text" placeholder="Publisher" ref={this.publisherRef}/>
                                         </Col>
                                     </Form.Group>
+
+                                    
 
                                     <Form.Group as={Row} controlId="PriceInput">
                                         <Form.Label column sm={3}>
@@ -340,6 +355,50 @@ class AddBookModal extends Component{
                                         </Col>
                                     </Form.Group>
 
+                                    
+                                    <Form.Group controlId="formBasicGenre" as={Row}>
+                                        <Form.Label column sm={3}>
+                                            Genres
+                                        </Form.Label>
+                                        <Col key={`inline-checkbox`} className="mb-3">
+                                            <Form.Check
+                                                inline
+                                                label="Romance"
+                                                id={`inline-checkbox-1`}
+                                                onChange={() => this.handleCheckBoxes("Romance")}
+                                            />
+                                            <Form.Check
+                                                inline
+                                                label="Horror"
+                                                id={`inline-checkbox-2`}
+                                                onChange={() => this.handleCheckBoxes("Horror")}
+                                            />
+                                            <Form.Check
+                                                inline
+                                                label="Fantasy"
+                                                id={`inline-checkbox-3`}
+                                                onChange={() => this.handleCheckBoxes("Fantasy")}
+                                            />
+                                            <Form.Check
+                                                inline
+                                                label="Adventure"
+                                                id={`inline-checkbox-4`}
+                                                onChange={() => this.handleCheckBoxes("Adventure")}
+                                            />
+                                            <Form.Check
+                                                inline
+                                                label="Science"
+                                                id={`inline-checkbox-5`}
+                                                onChange={() => this.handleCheckBoxes("Science")}
+                                            />
+                                            <Form.Check
+                                                inline
+                                                label="Autobiography"
+                                                id={`inline-checkbox-6`}
+                                                onClick={() => this.handleCheckBoxes("Autobiography")}
+                                            />
+                                        </Col>
+                                    </Form.Group>
                                     <Form.Group as={Row} controlId="PriceInput">
                                         <Form.Label column sm={3}>
                                             Price ($)

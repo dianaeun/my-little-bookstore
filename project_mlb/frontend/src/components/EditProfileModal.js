@@ -3,7 +3,8 @@ import {Modal, Button, Form, Row, Col} from 'react-bootstrap';
 
 class EditBookModal extends Component{
     state = {
-        genres: this.props.user.preferredGenres
+        genres: [],
+        initialized: false
     };
     constructor(props){
         super(props);
@@ -11,19 +12,29 @@ class EditBookModal extends Component{
         this.lastNameRef = React.createRef();
         this.locationRef = React.createRef();
         this.emailRef = React.createRef();
-        this.setState({genres: this.props.user.preferredGenres});
     }
+    initializeGenres = () => {
+        if(!this.state.initialized){
+            this.setState({genres: this.props.preferredGenres, initialized: true})
+        }
+    }
+    
     handleCheckBoxes = target => {
-        const genres = this.state.genres;
-        if (genres.indexOf(target) === -1) {
-          genres.push(target);
-        }
-        else {
-          genres.splice(genres.indexOf(target), 1);
-        }
-        this.setState({genres: genres});
+        this.initializeGenres();
+        this.setState(prevState => {
+            let genres = [...prevState.genres];
+            console.log("prevGenres:", genres);
+            if (genres.indexOf(target) === -1) {
+                genres.push(target);
+            }
+            else {
+                genres.splice(genres.indexOf(target), 1);
+            }
+            return {genres: genres}
+        });
     }
     handleSubmit = event => {
+        this.initializeGenres();
         event.preventDefault();
         console.log(this.props.user);
         const firstName = this.firstNameRef.current.value;
@@ -131,39 +142,46 @@ class EditBookModal extends Component{
                                 <Form.Group controlId="formBasicGenre" as={Row}>
                                     <Col key={`inline-checkbox`} className="mb-3">
                                     <Form.Check
-                                        defaultChecked = {this.props.user.preferredGenres.includes("Romance")}
+                                        defaultChecked = {this.props.preferredGenres.includes("Romance")}
                                         inline
                                         label="Romance"
                                         id={`inline-checkbox-1`}
                                         onChange={() => this.handleCheckBoxes("Romance")}
                                     />
                                     <Form.Check
-                                        defaultChecked = {this.props.user.preferredGenres.includes("Horror")}                                    
+                                        defaultChecked = {this.props.preferredGenres.includes("Horror")}                                    
                                         inline
                                         label="Horror"
                                         id={`inline-checkbox-2`}
                                         onChange={() => this.handleCheckBoxes("Horror")}
                                     />
                                     <Form.Check
-                                        defaultChecked = {this.props.user.preferredGenres.includes("Fantasy")}
+                                        defaultChecked = {this.props.preferredGenres.includes("Fantasy")}
                                         inline
                                         label="Fantasy"
                                         id={`inline-checkbox-3`}
                                         onChange={() => this.handleCheckBoxes("Fantasy")}
                                     />
                                     <Form.Check
-                                        defaultChecked = {this.props.user.preferredGenres.includes("Adventure")}
+                                        defaultChecked = {this.props.preferredGenres.includes("Adventure")}
                                         inline
                                         label="Adventure"
                                         id={`inline-checkbox-4`}
                                         onChange={() => this.handleCheckBoxes("Adventure")}
                                     />
                                     <Form.Check
-                                        defaultChecked = {this.props.user.preferredGenres.includes("Science")}
+                                        defaultChecked = {this.props.preferredGenres.includes("Science")}
                                         inline
                                         label="Science"
                                         id={`inline-checkbox-5`}
                                         onChange={() => this.handleCheckBoxes("Science")}
+                                    />
+                                    <Form.Check
+                                        defaultChecked = {this.props.preferredGenres.includes("Science")}
+                                        inline
+                                        label="Autobiography"
+                                        id={`inline-checkbox-6`}
+                                        onClick={() => this.handleCheckBoxes("Autobiography")}
                                     />
                                     </Col>
                                 </Form.Group>
