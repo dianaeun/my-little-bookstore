@@ -21,6 +21,7 @@ module.exports = {
                 reviewer: args.reviewInput.reviewer,
                 bookTitle: args.reviewInput.bookTitle,
                 date: new Date(args.reviewInput.date),
+                title: args.reviewInput.title,
                 content: args.reviewInput.content
             });
             console.log(review);

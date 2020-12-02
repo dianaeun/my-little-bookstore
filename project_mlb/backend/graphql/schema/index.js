@@ -65,6 +65,7 @@ const schema =  buildSchema(`
         reviewer: String!
         bookTitle: String!
         date: String!
+        title: String!
         content: String!
     }
     type AuthData{
@@ -129,6 +130,7 @@ const schema =  buildSchema(`
         bookTitle: String!
         reviewer: String!
         date: String!
+        title: String!
         content: String!
     }
     input DiscussionInput {
