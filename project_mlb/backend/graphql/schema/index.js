@@ -31,6 +31,7 @@ const schema =  buildSchema(`
         userID: String!
         location: String!
         preferredGenres: [String]!
+        phoneNumber: String!
     }
     type Discussion{
         _id: ID!
@@ -105,6 +106,7 @@ const schema =  buildSchema(`
         userID: String!
         location: String
         preferredGenres: [String]!
+        phoneNumber: String
     }
     input CommentInput {
         owner: String!

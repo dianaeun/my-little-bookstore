@@ -29,6 +29,10 @@ const userSchema = new Schema({
         type: Array,
         required: true,
         default: []
+    },
+    phoneNumber: {
+        type: String,
+        required: true
     }
 });
 module.exports = mongoose.model('User', userSchema);

@@ -40,7 +40,8 @@ module.exports = {
                 password: hashedPassword,
                 userID: args.userInput.userID,
                 location: args.userInput.location,
-                preferredGenres: args.userInput.preferredGenres
+                preferredGenres: args.userInput.preferredGenres,
+                phoneNumber: args.userInput.phoneNumber
             });
 
             const result = await user.save();
