@@ -122,6 +122,22 @@ class SellerBookstorePage extends Component{
                         <div style={{marginLeft: "10%", marginTop: "2rem", background: "#eeeeee", width: "25%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>
                             <h1 style={{fontSize: "2rem"}}>{this.state.user.firstName}'s Bookstore</h1>
                         </div>
+                        <Container style={{marginLeft: "10%",  marginTop: "2rem", width: "19rem", textAlign: "center", background: "#FFFFE0", borderRadius: "4rem", padding: "0.3rem"}}>
+                            <h4>Personal Information</h4>
+                        </Container>
+                        <Table size="sm" style={{ minWidth: "900px", maxWidth: "1100px", marginLeft: "10%", marginRight: "auto", marginTop: "1.2rem"}}>
+                            <tr><td>Name </td><td>{this.state.user.firstName + " " + this.state.user.lastName}</td></tr>
+                            <tr><td>User ID </td><td>{this.state.user.userID}</td></tr>
+                            <tr><td>Location </td><td>{this.state.user.location}</td></tr>
+                            <tr><td>Email </td><td>{this.state.user.email}</td></tr>
+                            <tr><td>Preference </td><td>{this.state.user.preferredGenres.map(genre => (
+                                <Button variant="outline-danger" size="sm" style={{marginLeft:"0.2rem"}} disabled>{genre}</Button>
+                            ))}</td></tr>
+                        </Table>
+
+                        <Container style={{marginLeft: "10%",  marginTop: "2rem", width: "19rem", textAlign: "center", background: "#FFFFE0", borderRadius: "4rem", padding: "0.3rem"}}>
+                            <h4>Selling Books</h4>
+                        </Container>
                         <Table className="myTable" size="sm" style={{ width: "80%", marginTop: "1.5rem", marginLeft: "auto", marginRight: "auto", paddingTop: "1rem"}}>
                             <thead>
                                 <tr>
@@ -154,19 +170,9 @@ class SellerBookstorePage extends Component{
                                     ))}
                             </tbody>
 
-                        <Container style={{marginLeft: "10%",  marginTop: "2rem"}}>
-                            <h4>Personal Information</h4>
-                        </Container>
+                        
                         </Table>
-                        <Table size="sm" style={{ minWidth: "900px", maxWidth: "1100px", marginLeft: "10%", marginRight: "auto", marginTop: "1.2rem"}}>
-                            <tr><td>Name </td><td>{this.state.user.firstName + " " + this.state.user.lastName}</td></tr>
-                            <tr><td>User ID </td><td>{this.state.user.userID}</td></tr>
-                            <tr><td>Location </td><td>{this.state.user.location}</td></tr>
-                            <tr><td>Email </td><td>{this.state.user.email}</td></tr>
-                            <tr><td>Preference </td><td>{this.state.user.preferredGenres.map(genre => (
-                                <Button variant="outline-danger" size="sm" style={{marginLeft:"0.2rem"}} disabled>{genre}</Button>
-                            ))}</td></tr>
-                        </Table>
+                       
 
                     </React.Fragment>
                 }
