@@ -21,6 +21,9 @@ class Signup extends Component {
     this.passwordRef = React.createRef();
     this.userIDRef = React.createRef();
     this.locationRef = React.createRef();
+    this.phone1Ref = React.createRef();
+    this.phone2Ref = React.createRef();
+    this.phone3Ref = React.createRef();
     // this.preferredGenresRef = React.createRef();
   }
   handleCheckBoxes = target => {
@@ -67,16 +70,23 @@ class Signup extends Component {
     const password = this.passwordRef.current.value;
     const userID = this.userIDRef.current.value;
     const location = this.locationRef.current.value;
+    const phoneNum1 = this.phone1Ref.current.value;
+    const phoneNum2 = this.phone2Ref.current.value;
+    const phoneNum3 = this.phone3Ref.current.value;
+
     const preferredGenres = this.state.genres;
     if (preferredGenres.length === 0){
       alert("Please choose at least 1 genre!");
       return;
     }
-    if (emailPre.trim().length === 0 || password.trim().length === 0 || emailPost.trim().length === 0 || userID.trim().length === 0){
+    if (emailPre.trim().length === 0 || password.trim().length === 0 || emailPost.trim().length === 0 || userID.trim().length === 0 ||
+        phoneNum1.trim().length === 0 || phoneNum2.trim().length === 0 || phoneNum3.trim().length === 0 ){
       console.log("warning modal (null type input)");
       return;
     }
-    const email = emailPre + "@" + emailPost
+   
+    const email = emailPre + "@" + emailPost;
+    const phoneNumber = phoneNum1 + '-' + phoneNum2 + '-' + phoneNum3;
     const requestBody = {
       query: `
             mutation CreateUser($firstName: String!, $lastName: String!, $email: String!, $password: String!, $userID: String!, $location: String, $preferredGenres: [String]!){
@@ -185,6 +195,22 @@ class Signup extends Component {
                         <Form.Control type="email2" ref={this.emailPostRef} />
                       </Col>
                     </Form.Group>
+
+                    <Form.Group controlId="formBasicPhoneNumber" as={Row}>
+                      <Form.Label column sm={2} style={{fontWeight: "bold"}} > Phone Number </Form.Label>
+                      <Col sm={2}>
+                        <Form.Control type="text" ref={this.phone1Ref} />
+                      </Col>
+                      -
+                      <Col sm={2}>
+                        <Form.Control type="text" ref={this.phone2Ref} />
+                      </Col>
+                      -
+                      <Col sm={2}>
+                        <Form.Control type="text" ref={this.phone3Ref} />
+                      </Col>
+                    </Form.Group>
+
                     <Form.Group controlId="formBasicLocation" as={Row}>
                       <Form.Label column sm={2} style={{fontWeight: "bold"}}> Location </Form.Label>
                       <Col sm={3}>
@@ -223,6 +249,12 @@ class Signup extends Component {
                         label="Science"
                         id={`inline-checkbox-5`}
                         onClick={() => this.handleCheckBoxes("Science")}
+                      />
+                      <Form.Check
+                        inline
+                        label="Autobiography"
+                        id={`inline-checkbox-6`}
+                        onClick={() => this.handleCheckBoxes("Autobiography")}
                       />
                     </Col>
                     </Form.Group>
