@@ -7,6 +7,7 @@ import RequestModal from '../components/RequestModal';
 import MlbNavbar from '../components/NavigationBar.js'
 import AuthContext from '../context/AuthContext';
 import RateBookModal from '../components/RateBookModal';
+import LoginPrompt from '../components/LoginPrompt';
 
 const star = require("../icons/star.png");
 const defaultImg = require("../icons/ImageNotAvailable.png");
@@ -53,48 +54,6 @@ async function fetchBook(bookID){
   return book;
 };
 
-// async function fetchSameBooks(title){
-//   let sameBooks = null;
-//   const requestBody = {
-//     query: `
-//         query{
-//           sameBooks(bookTitle: "${title}"){
-//             _id
-//             date
-//             title
-//             author
-//             publisher
-//             rating{
-//               rating
-//               ratingSum
-//               raters
-//             }
-//             price
-//             genre
-//             owner{
-//               _id
-//               userID
-//               email
-//             }
-//           }
-//         }
-//     `
-//   };
-//   fetch('/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
-//   .then(res => {
-//     if (res.status !== 200 && res.status !== 201) {
-//         throw new Error("Failed to fetch requests!")
-//     }
-//     return res.json()
-//   })
-//   .then(resData => {
-//       console.log("Received Requests are successfully fetched", resData);
-//       sameBooks = resData.data.sameBooks;
-//       console.log(sameBooks);
-//   })
-//   return sameBooks;
-// }
-
 class IndividualBookpage extends Component{
     state = {
         book: null,
@@ -105,7 +64,8 @@ class IndividualBookpage extends Component{
         sameBooks: [],
         isLoadingReviews: false,
         reviews: [],
-        shownReviews: []
+        shownReviews: [],
+        loginPrompt: false
     }
     constructor(){
         super();
@@ -113,8 +73,7 @@ class IndividualBookpage extends Component{
     static contextType = AuthContext;
     componentDidMount() {
       this.fetchBook()
-      // this.fetchSameBooks();
-      // this.fetchReviews();
+  
     }
     fetchBook = () => {
       const bookID = this.props.match.params.book_id;
@@ -148,19 +107,23 @@ class IndividualBookpage extends Component{
       if(this.state.addReview) {
         this.fetchReviews();
       }
-      this.setState({addReview: false, request: false});
+      this.setState({addReview: false, request: false, loginPrompt: false});
     }
     handleCloseRating = () => {
       this.setState({rateBook: false});
     }
     handleAddReview = () => {
       if (this.context.userID === null){
-        alert("You must login first!");
+        this.setState({loginPrompt: true});
         return;
       }
       this.setState({addReview: true});
     }
     handleRequest = (book) => {
+      if (this.context.userID === null){
+        this.setState({loginPrompt: true});
+        return;
+      }
       this.setState({request: true});
       const requestBody = {
         query: `
@@ -286,6 +249,8 @@ class IndividualBookpage extends Component{
         return (
           <React.Fragment>
             <MlbNavbar/>
+            <LoginPrompt show={this.state.loginPrompt} handleClose={this.handleClose}/>
+
             {this.state.book &&
               <div>
                 <RateBookModal show={this.state.rateBook} handleClose={this.handleCloseRating} book={this.state.book} fetchBooks={this.fetchSameBooks}/>
