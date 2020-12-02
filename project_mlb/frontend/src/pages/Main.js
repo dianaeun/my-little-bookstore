@@ -117,12 +117,18 @@ class Main extends Component {
                 {this.context.token ? this.state.books.filter(book => book.genre.split(',').filter(genre => this.context.preferredGenres.includes(genre)).length > 0).slice(0,10).map((book, i) => (
                   <tr>
                     <td>{i+1}</td>
-                    <td><Link href="#">{book.title}</Link></td>
+                      <Link className="nav-link" to={`${this.props.match.url}/book/${book._id}`} style={{paddingLeft: 0, paddingRight: 0}}>
+                            {book.title}
+                      </Link>
                     <td><Link href="#">{book.author}</Link></td>
                     <td>
                       {book.publisher}
                     </td>
-                    <td><Link to={`${this.props.match.url}/${book.owner.userID}`}>{book.owner.userID}</Link></td>
+                    <td>
+                      <Link className="nav-link" to={`${this.props.match.url}/seller/${book.owner.userID}`} style={{paddingLeft: 0, paddingRight: 0}}>
+                        {book.owner.userID}
+                      </Link>
+                    </td>
                     <td>{book.genre.split(",").map((genre) => (
                       <Button variant="outline-danger" size="sm" style={{marginRight:"0.5rem"}} disabled>{genre}</Button>
                     ))}</td>
