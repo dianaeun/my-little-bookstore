@@ -12,7 +12,7 @@ module.exports = {
     findByBookID: async ({bookID}) => {
         try {
             const abook = await Book.findOne({_id: bookID});
-            console.log("found a book", abook);
+            // console.log("found a book", abook);
             return transformBook(abook);
         } catch (err) {
             throw err;
@@ -31,6 +31,7 @@ module.exports = {
     },
     userBooks: async ({ownerID}) => {
         try {
+            console.log("finding userBooks: ", ownerID);
             const books = await Book.find({owner: ownerID});
             console.log("userBooks:", books);
             return books.map(book => {

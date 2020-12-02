@@ -228,7 +228,7 @@ class IndividualBookpage extends Component{
         return res.json()
       })
       .then(resData => {
-          console.log("Received Requests are successfully fetched", resData);
+          console.log("Same Books are successfully fetched", resData);
           const sameBooks = resData.data.sameBooks;
           console.log(sameBooks);
           this.setState({sameBooks: sameBooks, isLoading: false});

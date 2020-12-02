@@ -7,23 +7,15 @@ const dateToString = date => {
     const month = newDate.getMonth()+1;
     return newDate.getFullYear()+'/'+month+'/'+newDate.getDate();
 }
-const DataLoader = require('dataloader');
-const userLoader = new DataLoader( userIDs => {
-    console.log("userLoader", userIDs)
-    return User.find({ _id: { $in: userIDs }});
-});
-const bookLoader = new DataLoader( bookIDs => {
-    return Book.find({ _id: { $in: bookIDs }});
-});
-const ratingLoader = new DataLoader( ratingIDs => {
-    return Rating.find({_id: { $in: ratingIDs }});
-});
+
 const findUser = async userID => {
     try{
-        console.log("findUser...");
-        const user = await userLoader.load(userID.toString()); // -> Error
+        console.log("findUser...", userID);
+        const user = await User.findOne({_id: userID});
+        // const user = await userLoader.load(userID.toString()); // -> Error ### Never Use this!!! (2, Dec, 2020)
+        console.log("found user", user);
         // const user = await User.find({_id: userID})
-        console.log("Found user while fetching book:", user._doc);
+        // console.log("Found user while fetching book:", user._doc);
         return {
             ...user._doc,
             _id: user.id,
@@ -37,8 +29,8 @@ const findUser = async userID => {
 
 const findBook = async bookID => {
     try{
-        const book = await bookLoader.load(bookID.toString());
-        console.log("Found Book while fetching book:", book._doc);
+        const book = await Book.findOne({_id: bookID});
+        // console.log("Found Book while fetching book:", book._doc);
         return {
             ...book._doc,
             _id: book.id
@@ -52,9 +44,9 @@ const findRating = async ratingID => {
     try{
         // const rating = await ratingLoader.load(ratingID.toString());
         const rating = await Rating.findById(ratingID);
-        console.log("Found Rating while fetching rating:", rating);
+        // console.log("Found Rating while fetching rating:", rating);
         const result = await rating.raters.length === 0 ? 0 : rating.ratingSum / rating.raters.length;
-        console.log("Computed Rate>>", result);
+        // console.log("Computed Rate>>", result);
 
         return {
             ...rating._doc,
@@ -68,7 +60,7 @@ const findRating = async ratingID => {
 
 
 const transformBook = book => {
-    console.log("transforming book...", book);
+    // console.log("transforming book...", book);
     //console.log("owner:", findUser(book.owner));
     return {
         ...book._doc,
@@ -133,7 +125,6 @@ const transformRating = rating => {
         _id: rating.id
     }
 }
-
 exports.transformBook = transformBook;
 exports.transformEBook = transformEBook;
 exports.transformDiscussion = transformDiscussion;
