@@ -72,7 +72,7 @@ const transformBook = book => {
 };
 
 const transformEBook = ebook => {
-    console.log("transforming Ebook...", ebook._doc.owner);
+    //console.log("transforming Ebook...", ebook._doc.owner);
     //console.log("owner:", findUser(book.owner));
     return {
         ...ebook._doc,
