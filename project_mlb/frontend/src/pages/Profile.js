@@ -4,6 +4,7 @@ import EditProfileModal from '../components/EditProfileModal';
 import ViewRequestInfoModal from '../components/ViewRequestInfoModal';
 import MlbNavbar from '../components/NavigationBar.js'
 import AuthContext from '../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 class Profile extends Component{
     state = {
@@ -85,6 +86,9 @@ class Profile extends Component{
                   email
                   phoneNumber
                 }
+                book{
+                  _id
+                }
                 status
                 date
                 _id
@@ -161,8 +165,16 @@ class Profile extends Component{
                       <tr>
                         <td>{request.date}</td>
                         <td>{request.status}</td>
-                        <td>{request.bookTitle}</td>
-                        <td>{request.receiver.userID}</td>
+                        <td>
+                          <Link className="nav-link" to={`/book/${request.book._id}`} style={{padding: 0}}>
+                            {request.bookTitle}
+                          </Link>
+                          </td>
+                        <td>
+                          <Link className="nav-link" to={`/seller/${request.receiver.userID}`} style={{padding: 0}}>
+                            {request.receiver.userID}
+                          </Link>
+                        </td>
                         <td>
                           {request.status === "accepted" ? <div style={{fontWeight: "bold", background: "#FFE4B5", textAlign: "center", width: "70%", borderRadius: "4rem", padding: "0.3rem"}}>{request.receiver.phoneNumber}</div>
                           : <div style={{background: "red", fontWeight: "bold", color: "white", textAlign: "center", width: "30%", borderRadius: "4rem", padding: "0.1rem"}}>N/A</div>}
