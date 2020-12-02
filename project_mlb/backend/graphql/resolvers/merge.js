@@ -22,6 +22,7 @@ const findUser = async userID => {
     try{
         console.log("findUser...");
         const user = await userLoader.load(userID.toString()); // -> Error
+        // const user = await User.find({_id: userID})
         console.log("Found user while fetching book:", user._doc);
         return {
             ...user._doc,
@@ -67,7 +68,7 @@ const findRating = async ratingID => {
 
 
 const transformBook = book => {
-    console.log("transforming book...", book._doc.owner);
+    console.log("transforming book...", book);
     //console.log("owner:", findUser(book.owner));
     return {
         ...book._doc,

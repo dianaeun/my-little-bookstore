@@ -10,8 +10,91 @@ const star = require("../icons/star.png");
 const harry = require("../icons/harrypotter.png");
 const blankStar = require("../icons/blank_star.png");
 
+async function fetchBook(bookID){
+  let book = null;
+  const requestBody = {
+      query: `
+          query{
+              findByBookID(bookID: "${bookID}"){
+                _id
+                date
+                title
+                author
+                publisher
+                rating{
+                  _id
+                  rating
+                  raters
+                }       
+                price
+                genre
+                isbn
+                description                    
+              }
+          }
+      `
+  }
+  await fetch('/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+  .then(res => {
+      if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed to fetch books!")
+      }
+      return res.json()
+  })
+  .then(resData => {
+      console.log("Books are successfully fetched! ", resData);
+      book = resData.data.findByBookID;
+      console.log("Book: ", book);
+  })
+  .catch(err => { console.log(err);});
+  return book;
+};
+
+// async function fetchSameBooks(title){
+//   let sameBooks = null;
+//   const requestBody = {
+//     query: `
+//         query{
+//           sameBooks(bookTitle: "${title}"){
+//             _id
+//             date
+//             title
+//             author
+//             publisher
+//             rating{
+//               rating
+//               ratingSum
+//               raters
+//             }
+//             price
+//             genre
+//             owner{
+//               _id
+//               userID
+//               email
+//             }
+//           }
+//         }
+//     `
+//   };
+//   fetch('/graphql', {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
+//   .then(res => {
+//     if (res.status !== 200 && res.status !== 201) {
+//         throw new Error("Failed to fetch requests!")
+//     }
+//     return res.json()
+//   })
+//   .then(resData => {
+//       console.log("Received Requests are successfully fetched", resData);
+//       sameBooks = resData.data.sameBooks;
+//       console.log(sameBooks);
+//   })
+//   return sameBooks;
+// }
+
 class IndividualBookpage extends Component{
     state = {
+        book: null,
         rateBook: false,
         addReview: false,
         request: false,
@@ -26,8 +109,23 @@ class IndividualBookpage extends Component{
     }
     static contextType = AuthContext;
     componentDidMount() {
-      this.fetchSameBooks();
-      this.fetchReviews();
+      this.fetchBook()
+      // this.fetchSameBooks();
+      // this.fetchReviews();
+    }
+    fetchBook = () => {
+      const bookID = this.props.match.params.book_id;
+      console.log("bookID:", bookID);
+      fetchBook(bookID).then(book => {
+        console.log(book);
+        this.setState({book: book});
+        return book.title;
+      })
+      .then(() => {
+        this.fetchSameBooks()
+        this.fetchReviews()
+      })
+
     }
     toggle = () => {
       this.setState({ isOpen: !this.state.isOpen });
@@ -97,7 +195,7 @@ class IndividualBookpage extends Component{
       const requestBody = {
         query: `
             query{
-              sameBooks(bookTitle: "${this.props.location.book.title}"){
+              sameBooks(bookTitle: "${this.state.book.title}"){
                 _id
                 date
                 title
@@ -136,11 +234,11 @@ class IndividualBookpage extends Component{
     fetchReviews() {
       //this.setState({isLoading: true});
       this.setState({isLoadingReviews: true});
-      console.log(this.props.location.book);
+      console.log("While fetching Reviews:", this.state.book);
       const requestBody = {
         query: `
             query{
-              bookReviews(bookID: "${this.props.location.book.title}"){
+              bookReviews(bookID: "${this.state.book.title}"){
                 _id
                 reviewer
                 bookTitle
@@ -189,103 +287,102 @@ class IndividualBookpage extends Component{
         return (
           <React.Fragment>
             <MlbNavbar/>
-            <div>
-              <RateBookModal show={this.state.rateBook} handleClose={this.handleCloseRating} book={this.props.location.book} fetchBooks={this.fetchSameBooks}/>
-              <AddReview show={this.state.addReview} handleClose={this.handleClose} reviewer={this.context.userID} book={this.props.location.book.title}/>
-                <RequestModal show={this.state.request} handleClose={this.handleClose}/>
-                <div style={{marginLeft: "2%", marginTop: "2rem", background: "#eeeeee", width: "30%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>
-                  <h1 style={{fontSize: "2rem"}}>Book Information</h1>
-                </div>
+            {this.state.book &&
+              <div>
+                <RateBookModal show={this.state.rateBook} handleClose={this.handleCloseRating} book={this.state.book} fetchBooks={this.fetchSameBooks}/>
+                <AddReview show={this.state.addReview} handleClose={this.handleClose} reviewer={this.context.userID} book={this.state.book.title}/>
+                  <RequestModal show={this.state.request} handleClose={this.handleClose}/>
+                  <div style={{marginLeft: "2%", marginTop: "2rem", background: "#eeeeee", width: "30%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>
+                    <h1 style={{fontSize: "2rem"}}>Book Information</h1>
+                  </div>
 
-                <CardDeck>
-                  <Card className="text-center" style={{ marginLeft: "3%",flex: "1", marginTop: "2rem", background: "#CEE4E9"}}>
-                    <Card.Body>
-                      <Card.Title><b>{this.props.location.book.title}</b></Card.Title>
-                      <Card.Img variant="top" src={harry} style={{ width: "20rem", padding: "1rem"}} />
-                      <Table className="myTable" size="sm">
-                        <tr><td><b>AUTHOR:</b> </td><td>{this.props.location.book.author}</td></tr>
-                        <tr><td><b>PUBLISHER:</b> </td><td>{this.props.location.book.publisher}</td></tr>
-                        <tr><td><b>ISBN:</b> </td><td>{this.props.location.book.isbn || 'N/A'}</td></tr>
-                        <tr><td><b>GENRE:</b> </td><td>{this.props.location.book.genre || 'N/A'}</td></tr>
-                        <tr>
-                          <td><b>RATING:</b></td>
-                          <td style={{ paddingTop: "0.5rem"}}>
-                            <Row onClick={() => {this.handleRateBook(this.props.location.book)}} style={{width: "fit-content", paddingLeft: "6rem", cursor: "pointer"}}>
-                              {this.createStar(this.props.location.book.rating.rating)} 
-                              ({this.props.location.book.rating.rating})
-                            </Row>
-                          </td>
-                        </tr>
-                        <tr><td><b>DESCRITION:</b> </td><td>{this.props.location.book.description || 'N/A'}</td></tr>
-                      </Table>
-                    </Card.Body>
-                  </Card>
-
-                  <Card className="text-center" style={{flex: "2", marginTop: "2rem"}}>
-                    <Card.Body>
-                      <Card.Title><h3>BOOKSTORE OFFERS</h3></Card.Title>                    
-                      <Table className="myTable" size="sm" style={{marginTop: "1rem"}}>
-                        <thead style={{ marginTop: "4rem" }}>
+                  <CardDeck>
+                    <Card className="text-center" style={{ marginLeft: "3%",flex: "1", marginTop: "2rem", background: "#CEE4E9"}}>
+                      <Card.Body>
+                        <Card.Title><b>{this.state.book.title}</b></Card.Title>
+                        <Card.Img variant="top" src={harry} style={{ width: "20rem", padding: "1rem"}} />
+                        <Table className="myTable" size="sm">
+                          <tr><td><b>AUTHOR:</b> </td><td>{this.state.book.author}</td></tr>
+                          <tr><td><b>PUBLISHER:</b> </td><td>{this.state.book.publisher}</td></tr>
+                          <tr><td><b>ISBN:</b> </td><td>{this.state.book.isbn || 'N/A'}</td></tr>
+                          <tr><td><b>GENRE:</b> </td><td>{this.state.book.genre || 'N/A'}</td></tr>
                           <tr>
-                            <th style={{width: '30%'}}>BOOKSTORE NAME</th>
-                            <th style={{width: '20%'}}>DATE</th>
-                            <th style={{width: '20%'}}>PRICE </th>
-                            <th style={{width: '30%'}}>PURCHASE REQUEST</th>                    
+                            <td><b>RATING:</b></td>
+                            <td style={{ paddingTop: "0.5rem"}}>
+                              <Row onClick={() => {this.handleRateBook(this.state.book)}} style={{width: "fit-content", paddingLeft: "6rem", cursor: "pointer"}}>
+                                {this.createStar(this.state.book.rating.rating)} 
+                                ({this.state.book.rating.rating})
+                              </Row>
+                            </td>
                           </tr>
-                        </thead>
-                        <tbody style={{  marginTop: "2rem" }}>
-                          {this.state.sameBooks && this.state.sameBooks.map((book) => (
+                          <tr><td><b>DESCRITION:</b> </td><td>{this.state.book.description || 'N/A'}</td></tr>
+                        </Table>
+                      </Card.Body>
+                    </Card>
+
+                    <Card className="text-center" style={{flex: "2", marginTop: "2rem"}}>
+                      <Card.Body>
+                        <Card.Title><h3>BOOKSTORE OFFERS</h3></Card.Title>                    
+                        <Table className="myTable" size="sm" style={{marginTop: "1rem"}}>
+                          <thead style={{ marginTop: "4rem" }}>
                             <tr>
-                              <td>{book.owner.userID}'s BOOKSTORE</td>
-                              <td>{book.date}</td>
-                              <td>{book.price}</td>
-                              {book.owner._id === this.context.user_id ? <td>-</td> : <td><Button variant="info" onClick={() => this.handleRequest(book)}> BUY</Button></td>}
+                              <th style={{width: '30%'}}>BOOKSTORE NAME</th>
+                              <th style={{width: '20%'}}>DATE</th>
+                              <th style={{width: '20%'}}>PRICE </th>
+                              <th style={{width: '30%'}}>PURCHASE REQUEST</th>                    
                             </tr>
-                          ))}
-                        </tbody>                    
-                      </Table>
-                    </Card.Body>
-                      
-                    <Card.Title style={{marginBottom: "0rem"}}><h3>REVIEWS</h3></Card.Title>      
-                    <Card.Body>             
-                      <Table size="sm" style={{margin: "0rem"}}>
-                        <thead style={{ textAlign: "center", marginTop: "0rem" }}>
-                            <tr>
-                              <th style={{width: '30%'}}>REVIEWER</th>
-                              <th style = {{ width: "40%"}}>CONTENT </th> 
-                              <th></th>                  
-                            </tr>
-                        </thead>
-                        <tbody style={{ textAlign: "center", marginTop: "2rem" }}>
-                          {this.state.reviews && this.state.reviews.map((review, i) => (
+                          </thead>
+                          <tbody style={{  marginTop: "2rem" }}>
+                            {this.state.sameBooks && this.state.sameBooks.map((book) => (
                               <tr>
-                                <td>{review.reviewer}</td>
-                                <td>{review.bookTitle}
-                              <div>
-                              <div style={this.state.shownReviews.includes(i + "") ? {marginLeft: "1rem", marginTop: "1rem"} : { display: "none"}}>
-                                 {review.content}
-                              </div>
-                              
+                                <td>{book.owner.userID}'s BOOKSTORE</td>
+                                <td>{book.date}</td>
+                                <td>{book.price}</td>
+                                {book.owner._id === this.context.user_id ? <td>-</td> : <td><Button variant="info" onClick={() => this.handleRequest(book)}> BUY</Button></td>}
+                              </tr>
+                            ))}
+                          </tbody>                    
+                        </Table>
+                      </Card.Body>
+                        
+                      <Card.Title style={{marginBottom: "0rem"}}><h3>REVIEWS</h3></Card.Title>      
+                      <Card.Body>             
+                        <Table size="sm" style={{margin: "0rem"}}>
+                          <thead style={{ textAlign: "center", marginTop: "0rem" }}>
+                              <tr>
+                                <th style={{width: '30%'}}>REVIEWER</th>
+                                <th style = {{ width: "40%"}}>CONTENT </th> 
+                                <th></th>                  
+                              </tr>
+                          </thead>
+                          <tbody style={{ textAlign: "center", marginTop: "2rem" }}>
+                            {this.state.reviews && this.state.reviews.map((review, i) => (
+                                <tr>
+                                  <td>{review.reviewer}</td>
+                                  <td>{review.bookTitle}
+                                <div>
+                                <div style={this.state.shownReviews.includes(i + "") ? {marginLeft: "1rem", marginTop: "1rem"} : { display: "none"}}>
+                                  {review.content}
                                 </div>
-                                </td>
-                                <td>
-                                <Button id={"button" + i} variant="info" onClick={() => this.handleShowReview(i+"")}> {this.state.shownReviews.includes(i + "") ? 'Read less' : 'Read more'}</Button>
-                                </td>
-                                </tr>
-                            ))}   
-                        </tbody>
-                      </Table>
-                      <h5 style={{ textAlign: "center", marginTop: "3.5rem",marginBottom:"2rem" }}>                            
-                        <Button variant="info" style={{ fontWeight: "bold", marginLeft: "1rem", color: "#FAC917", background: "#22525F"}} onClick={this.handleAddReview}>Add Review</Button>
-                      </h5>
-                    </Card.Body>
-                  </Card>
-                </CardDeck>
-        
-                
-           
-                          
-            </div>
+                                
+                                  </div>
+                                  </td>
+                                  <td>
+                                  <Button id={"button" + i} variant="info" onClick={() => this.handleShowReview(i+"")}> {this.state.shownReviews.includes(i + "") ? 'Read less' : 'Read more'}</Button>
+                                  </td>
+                                  </tr>
+                              ))}   
+                          </tbody>
+                        </Table>
+                        <h5 style={{ textAlign: "center", marginTop: "3.5rem",marginBottom:"2rem" }}>                            
+                          <Button variant="info" style={{ fontWeight: "bold", marginLeft: "1rem", color: "#FAC917", background: "#22525F"}} onClick={this.handleAddReview}>Add Review</Button>
+                        </h5>
+                      </Card.Body>
+                    </Card>
+                  </CardDeck>
+              </div>
+            }
+            
           </React.Fragment>
         );
     }

@@ -53,7 +53,7 @@ class App extends Component {
                     {this.state.token && <Route exact path='/MyBookstore' component={MyBookstore} />}
                     <Route exact path='/Discussion' component={Discussion} />
                     {this.state.token &&  <Route exact path='/Profile' component={Profile} />}
-                    <Route path='/IndividualBookpage' component={IndividualBookpage} />
+                    <Route path='/MyBookstore/:book_id' component={IndividualBookpage} />
                     <Route path='/Seller' component={SellerBookstorePage} />
                     <Route path='/Main/:user_id' component={SellerBookstorePage} />
                     <Route path='/Browse/:user_id' component={SellerBookstorePage} />

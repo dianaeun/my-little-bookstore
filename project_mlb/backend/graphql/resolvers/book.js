@@ -9,6 +9,15 @@ const userLoader = new DataLoader( userIDs => {
 })
 
 module.exports = {
+    findByBookID: async ({bookID}) => {
+        try {
+            const abook = await Book.findOne({_id: bookID});
+            console.log("found a book", abook);
+            return transformBook(abook);
+        } catch (err) {
+            throw err;
+        }
+    },
     books: async () => {
         try {
             const books = await Book.find();

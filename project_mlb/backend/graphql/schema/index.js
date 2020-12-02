@@ -134,6 +134,7 @@ const schema =  buildSchema(`
         content: String!
     }
     type RootQuery {
+        findByBookID(bookID: String!): Book
         books: [Book]!
         ebooks: [EBook]!
         userBooks(ownerID: String!): [Book]!

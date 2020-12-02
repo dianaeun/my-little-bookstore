@@ -76,7 +76,7 @@ class Browse extends Component{
                             userID
                             location
                             preferredGenres
-                          }
+                        }
                         price
                         isbn
                     }
