@@ -427,14 +427,14 @@ class Browse extends Component{
                             {this.state.books.map((book) => 
                             <tr style={this.state.shownReviews.includes(-1) ? {} : { display: "none"}}>                            
                                 <td>
-                                    <Link className="nav-link" to={`${this.props.match.url}/book/${book._id}`} style={{paddingLeft: 0, paddingRight: 0}}>
+                                    <Link className="nav-link" to={`/book/${book._id}`} style={{paddingLeft: 0, paddingRight: 0}}>
                                         {book.title}
                                     </Link>                           
                                 </td>                                
                                 <td><Link href="#">{book.author}</Link></td>
                                 <td>{book.genre}</td>
                                 <td>
-                                    <Link className="nav-link" to={`${this.props.match.url}/seller/${book.owner.userID}`} style={{paddingLeft: 0, paddingRight: 0}}>
+                                    <Link className="nav-link" to={`/seller/${book.owner.userID}`} style={{paddingLeft: 0, paddingRight: 0}}>
                                         {book.owner.userID}
                                     </Link>
                                 </td>                                                

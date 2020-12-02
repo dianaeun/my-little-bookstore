@@ -139,7 +139,9 @@ class SellerBookstorePage extends Component{
                                         <tr>
                                         <td style={{paddingTop: "0.5rem"}}>{book.date}</td>
                                         <td style={{paddingTop: "0rem"}}>
-                                            <Link className="nav-link" to={{pathname: "/IndividualBookpage" , book:book}} style={{paddingLeft: 0, paddingRight: 0}}>{book.title}</Link>
+                                            <Link className="nav-link" to={`/book/${book._id}`} style={{paddingLeft: 0, paddingRight: 0}}>
+                                                {book.title}
+                                            </Link>                                           
                                         </td>
                                         <td style={{paddingTop: "0.5rem"}}><Link href="#">{book.author}</Link></td>
                                         <td style={{paddingTop: "0.5rem"}}>${book.price}</td>

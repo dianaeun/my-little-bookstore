@@ -53,11 +53,17 @@ class App extends Component {
                     {this.state.token && <Route exact path='/MyBookstore' component={MyBookstore} />}
                     <Route exact path='/Discussion' component={Discussion} />
                     {this.state.token &&  <Route exact path='/Profile' component={Profile} />}
-                    <Route path='/MyBookstore/book/:book_id' component={IndividualBookpage} />
+                    <Route path='/book/:book_id' component={IndividualBookpage} />
+                    <Route path='/seller/:user_id' component={SellerBookstorePage} />
+
+                    {/* <Route path='/MyBookstore/book/:book_id' component={IndividualBookpage} />
                     <Route path='/Main/book/:book_id' component={IndividualBookpage} />
                     <Route path='/Browse/book/:book_id' component={IndividualBookpage} />
+
                     <Route path='/Main/seller/:user_id' component={SellerBookstorePage} />
-                    <Route path='/Browse/seller/:user_id' component={SellerBookstorePage} />
+                    <Route path='/Main/seller/:user_id' component={SellerBookstorePage} />
+
+                    <Route path='/Browse/seller/:user_id' component={SellerBookstorePage} /> */}
 
                     <Redirect to="/Main" />
                   </Switch>

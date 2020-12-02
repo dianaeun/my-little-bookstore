@@ -255,7 +255,7 @@ class MyBookstore extends Component{
                             <tr>
                               <td style={{paddingTop: "0.5rem"}}>{book.date}</td>
                               <td style={{paddingTop: "0rem"}}>
-                                  <Link className="nav-link" to={`${this.props.match.url}/book/${book._id}`} style={{paddingLeft: 0, paddingRight: 0}}>
+                                  <Link className="nav-link" to={`/book/${book._id}`} style={{paddingLeft: 0, paddingRight: 0}}>
                                         {book.title}
                                   </Link>
                               </td>
