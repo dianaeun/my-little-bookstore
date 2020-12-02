@@ -10,9 +10,9 @@ import EditBookModal from '../components/EditBookModal';
 import RateBookModal from '../components/RateBookModal';
 import './MyBookstore.css';
 import AuthContext from '../context/AuthContext';
+import {createStar} from './Main';
 
-const star = require("../icons/star.png");
-const blankStar = require("../icons/blank_star.png");
+
 const edit = require("../icons/edit.png");
 const edit_no = require("../icons/edit_dis.png");
 const delIcon = require("../icons/delete.png");
@@ -200,17 +200,7 @@ class MyBookstore extends Component{
       }
       this.setState({rateBook: true, bookSelected: book});
     }
-    createStar = (n) => {
-      let rounded = Math.round(n);
-      let stars = [];
-      for (let i = 0; i < rounded; i++){
-          stars.push(<img src={star} alt="star" style={{ width: "22px" }} />);
-      }
-      for (let i = rounded; i < 5; i++) {
-          stars.push(<img src={blankStar} alt="star" style={{ width: "22px" }} />);
-      }
-      return stars;
-    }
+    
     isRequested = (bookID) => {
       let count = 0;
       // console.log("isRequested......receivedRequests", this.state.receivedRequests);
@@ -265,7 +255,7 @@ class MyBookstore extends Component{
                               <td style={{paddingTop: "0.5rem"}}><Link href="#">{book.author}</Link></td>
                               <td style={{paddingTop: "0.5rem"}}>${book.price}</td>
                               <td style={{ paddingTop: "0.5rem"}}>
-                                <Row onClick={() => {this.handleRateBook(book)}} style={{width: "fit-content", paddingLeft: "2rem", cursor: "pointer"}}>{this.createStar(book.rating.rating)} ({book.rating.rating})</Row>
+                                <Row onClick={() => {this.handleRateBook(book)}} style={{width: "fit-content", paddingLeft: "2rem", cursor: "pointer"}}>{createStar(book.rating.rating)} ({book.rating.rating})</Row>
                               </td>
                               
                               {this.isRequested(book._id) ? <td style={{paddingTop: "0.5rem"}}><img src={edit_no} alt="Edit Disabled" style={{ width: "1.5rem", padding: "0rem"}} /></td>

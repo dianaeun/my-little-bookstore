@@ -6,6 +6,20 @@ import AuthContext from '../context/AuthContext';
 
 const star = require("../icons/star.png");
 const blankStar = require("../icons/blank_star.png");
+
+export const createStar = (n) => {
+  n = Math.round(n);
+  let stars = [];
+  for (let i = 0; i < n; i++){
+      stars.push(<img src={star} alt="star" style={{ width: "22px" }} />);
+  }
+  for (let i = n; i < 5; i++) {
+      stars.push(<img src={blankStar} alt="star" style={{ width: "22px" }} />);
+  }
+  return stars;
+}
+
+
 class Main extends Component {
   state={books:[], genres: []}
   static contextType = AuthContext;
@@ -58,16 +72,6 @@ class Main extends Component {
       .catch(err => { console.log(err);});
   };
     
-  createStar = (n) => {
-    let stars = [];
-    for (let i = 0; i < n; i++){
-        stars.push(<img src={star} alt="star" style={{ width: "22px" }} />);
-    }
-    for (let i = n; i < 5; i++) {
-        stars.push(<img src={blankStar} alt="star" style={{ width: "22px" }} />);
-    }
-    return stars;
-  }
   render() {
     return (
       <div>
@@ -139,7 +143,7 @@ class Main extends Component {
                       </div>
                     </td>
                     <td style={{width:"8rem"}}>
-                      {this.createStar(book.rating.rating)}
+                      {createStar(book.rating.rating)}
                     </td>
                   </tr>  
                 ))
@@ -170,7 +174,7 @@ class Main extends Component {
                       </div>
                     </td>
                     <td style={{width:"8rem"}}>
-                      {this.createStar(book.rating.rating)}
+                      {createStar(book.rating.rating)}
                     </td>
                   </tr>))   
                 }

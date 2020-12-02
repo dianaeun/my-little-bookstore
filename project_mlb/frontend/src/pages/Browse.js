@@ -5,10 +5,8 @@ import {Form, Dropdown, DropdownButton, Row, Col, Button} from 'react-bootstrap'
 import MlbNavbar from '../components/NavigationBar.js';
 import AuthContext from '../context/AuthContext';
 import { search } from 'superagent';
+import {createStar} from './Main';
 
-
-const star = require("../icons/star.png");
-const blankStar = require("../icons/blank_star.png");
 
 class Browse extends Component{
     state = { 
@@ -332,19 +330,6 @@ class Browse extends Component{
 
         this.setState({books: books, sortedbook: books});
       }
-
-
-      createStar = (n) => {
-        let rounded = Math.round(n);
-        let stars = [];
-        for (let i = 0; i < rounded; i++){
-            stars.push(<img src={star} alt="star" style={{ width: "22px" }} />);
-        }
-        for (let i = rounded; i < 5; i++) {
-            stars.push(<img src={blankStar} alt="star" style={{ width: "22px" }} />);
-        }
-        return stars;
-      }
     
 
     render(){
@@ -439,7 +424,7 @@ class Browse extends Component{
                                     </Link>
                                 </td>                                                
                                 <td style={{width:"10rem"}}>
-                                {this.createStar(book.rating.rating)}
+                                {createStar(book.rating.rating)}
                                 </td>
                                 <td>${book.price}</td>                                                                                        
                             </tr>                            

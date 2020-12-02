@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import {Button, Table, Spinner, Row, Container} from 'react-bootstrap';
 import MlbNavbar from '../components/NavigationBar.js'
+import {createStar} from './Main';
 
 import { Link} from "react-router-dom";
-const star = require("../icons/star.png");
-const blankStar = require("../icons/blank_star.png");
 
 async function findUser(userID){
     let user = null;
@@ -45,17 +44,7 @@ class SellerBookstorePage extends Component{
         books : null,
         userInfo : []
     }
-    createStar = (n) => {
-        let rounded = Math.round(n);
-        let stars = [];
-        for (let i = 0; i < rounded; i++){
-            stars.push(<img src={star} alt="star" style={{ width: "22px" }} />);
-        }
-        for (let i = rounded; i < 5; i++) {
-            stars.push(<img src={blankStar} alt="star" style={{ width: "22px" }} />);
-        }
-        return stars;
-    }
+     
     fetchUser = () => {
         this.setState({isLoading: true});
         const userID = this.props.match.params.user_id;
@@ -162,7 +151,7 @@ class SellerBookstorePage extends Component{
                                         <td style={{paddingTop: "0.5rem"}}><Link href="#">{book.author}</Link></td>
                                         <td style={{paddingTop: "0.5rem"}}>${book.price}</td>
                                         <td style={{ paddingTop: "0.5rem"}}>
-                                            <Row onClick={() => {this.handleRateBook(book)}} style={{width: "fit-content", paddingLeft: "2rem", cursor: "pointer"}}>{this.createStar(book.rating.rating)} ({book.rating.rating})</Row>
+                                            <Row onClick={() => {this.handleRateBook(book)}} style={{width: "fit-content", paddingLeft: "2rem", cursor: "pointer"}}>{createStar(book.rating.rating)} ({book.rating.rating})</Row>
                                         </td>
                                         
                                 
