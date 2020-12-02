@@ -19,6 +19,7 @@ class Main extends Component {
           query: `
               query{
                   books{
+                      _id
                       title
                       author
                       publisher
@@ -134,7 +135,11 @@ class Main extends Component {
                 this.state.books.slice(0,10).map((book, i) => (
                   <tr>
                     <td>{i+1}</td>
-                    <td><Link href="#">{book.title}</Link></td>
+                    <td>
+                      <Link className="nav-link" to={`${this.props.match.url}/${book._id}`} style={{paddingLeft: 0, paddingRight: 0}}>
+                            {book.title}
+                      </Link>
+                    </td>
                     <td><Link href="#">{book.author}</Link></td>
                     <td>
                       {book.publisher}

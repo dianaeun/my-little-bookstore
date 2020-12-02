@@ -60,6 +60,7 @@ class Browse extends Component{
             query: `
                 query{
                     books{
+                        _id
                         title
                         author
                         publisher
@@ -426,7 +427,9 @@ class Browse extends Component{
                             {this.state.books.map((book) => 
                             <tr style={this.state.shownReviews.includes(-1) ? {} : { display: "none"}}>                            
                                 <td>
-                                <Link className="nav-link" to={{pathname: "/IndividualBookpage" , book:book}} style={{paddingLeft: 0, paddingRight: 0}}>{book.title}</Link>                            
+                                    <Link className="nav-link" to={`${this.props.match.url}/${book._id}`} style={{paddingLeft: 0, paddingRight: 0}}>
+                                        {book.title}
+                                    </Link>                           
                                 </td>                                
                                 <td><Link href="#">{book.author}</Link></td>
                                 <td>{book.genre}</td>
