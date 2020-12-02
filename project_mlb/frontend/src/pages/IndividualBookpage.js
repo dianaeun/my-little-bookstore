@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {Collapse,Button, Table, Card, CardDeck, Row } from "react-bootstrap";
+import { Link } from 'react-router-dom';
+
 import AddReview from '../components/AddReview';
 import RequestModal from '../components/RequestModal';
 import MlbNavbar from '../components/NavigationBar.js'
@@ -335,7 +337,11 @@ class IndividualBookpage extends Component{
                           <tbody style={{  marginTop: "2rem" }}>
                             {this.state.sameBooks && this.state.sameBooks.map((book) => (
                               <tr>
-                                <td>{book.owner.userID}'s BOOKSTORE</td>
+                                <td>
+                                  <Link className="nav-link" to={`/seller/${book.owner.userID}`} style={{padding: 0}}>
+                                    {book.owner.userID}'s BOOKSTORE
+                                  </Link>
+                                </td>
                                 <td>{book.date}</td>
                                 <td>{book.price}</td>
                                 {book.owner._id === this.context.user_id ? <td>-</td> : <td><Button variant="info" onClick={() => this.handleRequest(book)}> BUY</Button></td>}
