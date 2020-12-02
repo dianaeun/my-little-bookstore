@@ -4,10 +4,12 @@ import {Modal, Button,Form} from 'react-bootstrap';
 class AddReview extends Component{
     constructor(props) {
         super(props);
+        this.titleRef = React.createRef();
         this.contentRef = React.createRef();
     }
     handleSubmit = event => {
         event.preventDefault();
+        const title = this.titleRef.current.value;
         const content = this.contentRef.current.value;
         const date = new Date();
         if (content.trim().length === 0){
@@ -17,8 +19,8 @@ class AddReview extends Component{
         }
         const requestBody = {
             query: `
-                mutation CreateReview($bookTitle: String!, $reviewer: String!, $date: String!, $content:String!){
-                    createReview(reviewInput: {bookTitle: $bookTitle, reviewer: $reviewer, date: $date, content: $content}){
+                mutation CreateReview($bookTitle: String!, $reviewer: String!, $date: String!, $title: String!, $content: String!){
+                    createReview(reviewInput: {bookTitle: $bookTitle, reviewer: $reviewer, date: $date, title: $title, content: $content}){
                         _id
                     }
                 }
@@ -27,7 +29,8 @@ class AddReview extends Component{
                 bookTitle: this.props.book,
                 reviewer: this.props.reviewer,
                 date: date,
-                content: content,
+                title: title,
+                content: content
             }
         };
         fetch("/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
@@ -61,12 +64,16 @@ class AddReview extends Component{
                 centered
             >
                 <Modal.Header closeButton>
-                <Modal.Title>Review message</Modal.Title>
+                <Modal.Title>Share Your Review</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                 <Form>
-                <Form.Group controlId="exampleForm.ControlTextarea1">
-                <Form.Label>Leave your comment</Form.Label>
+                <Form.Group controlId="controlTextarea1">
+                <Form.Label>Title</Form.Label>
+                <Form.Control as="textarea" rows="1" ref={this.titleRef}/>
+                </Form.Group>
+                <Form.Group controlId="controlTextarea2">
+                <Form.Label>Content</Form.Label>
                 <Form.Control as="textarea" rows="3" ref={this.contentRef}/>
                 </Form.Group>
                 </Form>

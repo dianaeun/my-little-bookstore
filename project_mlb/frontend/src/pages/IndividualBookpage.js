@@ -235,7 +235,6 @@ class IndividualBookpage extends Component{
       })
     }
     fetchReviews() {
-      //this.setState({isLoading: true});
       this.setState({isLoadingReviews: true});
       console.log("While fetching Reviews:", this.state.book);
       const requestBody = {
@@ -246,6 +245,7 @@ class IndividualBookpage extends Component{
                 reviewer
                 bookTitle
                 date
+                title
                 content
               }
             }
@@ -269,13 +269,9 @@ class IndividualBookpage extends Component{
     handleShowReview = (target) => {
       let shown = this.state.shownReviews;
       let index = shown.indexOf(target);
-      console.log("shown",shown);
-      console.log(target);
-      console.log("test",index);
       if (index === -1) {
         shown.push(target);
       } else shown.splice(index, 1);
-      console.log("why?", shown.slice(index,1));
       this.setState({ shownReviews: shown });
     };
     handleRateBook = (book) => {
@@ -366,16 +362,15 @@ class IndividualBookpage extends Component{
                             {this.state.reviews && this.state.reviews.map((review, i) => (
                                 <tr>
                                   <td>{review.reviewer}</td>
-                                  <td>{review.bookTitle}
+                                  <td>{review.title}
                                 <div>
                                 <div style={this.state.shownReviews.includes(i + "") ? {marginLeft: "1rem", marginTop: "1rem"} : { display: "none"}}>
                                   {review.content}
                                 </div>
-                                
                                   </div>
                                   </td>
                                   <td>
-                                  <Button id={"button" + i} variant="info" onClick={() => this.handleShowReview(i+"")}> {this.state.shownReviews.includes(i + "") ? 'Read less' : 'Read more'}</Button>
+                                  <Button id={"button" + i} variant="info" onClick={() => this.handleShowReview(i+"")}> {this.state.shownReviews.includes(i + "") ? 'Hide' : 'Read'}</Button>
                                   </td>
                                   </tr>
                               ))}   
