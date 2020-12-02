@@ -93,7 +93,11 @@ class Signup extends Component {
       return;
     }
     if (!validatePassword(password)){
-      
+      this.setState({passwordWarning: true})
+      return;
+    }
+    else{
+      this.setState({passwordWarning: false})
     }
    
     const email = emailPre + "@" + emailPost;
@@ -196,6 +200,7 @@ class Signup extends Component {
                       <Form.Label column sm={2} style={{fontWeight: "bold"}} > Password </Form.Label>
                       <Col sm={4}>
                         <Form.Control type="password" ref={this.passwordRef}/>
+                        {this.state.passwordWarning && <p style={{color: "red"}}>The password should contain number, capital letter, small letter, and have length longer than 5</p>}
                       </Col>
                     </Form.Group>
                     <Form.Group controlId="formBasicEmail" as={Row}>
