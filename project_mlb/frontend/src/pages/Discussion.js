@@ -3,7 +3,7 @@ import { Card, Button, Form, Row, Col, DropdownButton, Dropdown, Spinner} from "
 import AddDiscussion from "../components/AddDiscussion";
 import MlbNavbar from '../components/NavigationBar.js'
 import AuthContext from '../context/AuthContext';
-
+import LoginPrompt from '../components/LoginPrompt';
 const thumbsup = require("../icons/thumbs-up.png");
 const comment = require("../icons/comment.png");
 const tag = require("../icons/tag.png");
@@ -13,7 +13,7 @@ class Discussion extends Component {
     sortBy: "Date", searchTerm: "", searchOption: "",
     shownDiscussions: [], shownComments: [], liked: [],
     addDiscussionModal: false,
-    discussions: [], baseDiscussions: [], isLoadingDiscussion: false
+    discussions: [], baseDiscussions: [], isLoadingDiscussion: false, loginPrompt: false
   };
   constructor(props){
     super(props);
@@ -143,12 +143,12 @@ class Discussion extends Component {
     this.setState({liked: liked});
   }
   handleClose = () => {
-    this.setState({addDiscussionModal: false});
+    this.setState({addDiscussionModal: false, loginPrompt: false});
     this.fetchDiscussions();
   }
   handleAddDiscussionModal = () => {
     if (this.context.userID === null){
-      alert("You must login first!");
+      this.setState({loginPrompt: true})
       return;
     }  
     this.setState({addDiscussionModal: true});
@@ -204,6 +204,8 @@ class Discussion extends Component {
         <div>
           <MlbNavbar/>
           <AddDiscussion show={this.state.addDiscussionModal} fetchDiscussions={this.fetchDiscussions} handleClose={this.handleClose} owner={this.context.userID}/>
+          <LoginPrompt show={this.state.loginPrompt} handleClose={this.handleClose}/>
+
           <div style={{ width: "60%", marginLeft: "20%", marginTop: "2rem" }}>
             <div style={{ display: "flex", alignItems: "center"}}>
               <h1>Discussions</h1>
