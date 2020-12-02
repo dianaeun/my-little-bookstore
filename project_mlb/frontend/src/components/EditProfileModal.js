@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Modal, Button, Form, Row, Col} from 'react-bootstrap';
-
+import { validateEditProfile } from '../functions/InputValidations.js';
 class EditBookModal extends Component{
     state = {
         genres: this.props.user.preferredGenres
@@ -32,7 +32,7 @@ class EditBookModal extends Component{
         const email = this.emailRef.current.value;
         const preferredGenres = this.state.genres;
         console.log(preferredGenres);
-        if (firstName.trim().length === 0 || lastName.trim().length === 0 || email.trim().length === 0){
+        if (!validateEditProfile(firstName,lastName,email)){
           console.log("warning modal (null type input)");
           return;
         }
