@@ -139,7 +139,7 @@ class Main extends Component {
                       </div>
                     </td>
                     <td style={{width:"8rem"}}>
-                      {this.createStar(book.rating)}
+                      {this.createStar(book.rating.rating)}
                     </td>
                   </tr>  
                 ))

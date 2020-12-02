@@ -73,7 +73,7 @@ class MyBookstore extends Component{
       .then(resData => {
           console.log("user Books are successfully fetched! ", resData);
           const books = resData.data.userBooks;
-          console.log("Books: ", books);
+          // console.log("Books: ", books);
           this.setState({books: books, isLoadingBook: false});
       })
       .catch(err => { console.log(err);});
@@ -317,7 +317,7 @@ class MyBookstore extends Component{
                                 <Button onClick={() => {this.handleRequest(request, 'acceptRequest')}} variant="outline-primary" size="sm" style={{marginLeft:"0.2rem", fontWeight: "bold"}}>Accept</Button>
                                 <Button onClick={() => {this.handleRequest(request, 'declineRequest')}} variant="outline-danger" size="sm" style={{marginLeft:"0.2rem", fontWeight: "bold"}}>Decline</Button>
                                 </td>:
-                                  <td>X</td>
+                                  <td>Done</td>
                                 }
                               
                               <td>
