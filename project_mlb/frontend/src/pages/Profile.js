@@ -164,7 +164,11 @@ class Profile extends Component{
                     {this.state.sentRequests && this.state.sentRequests.map((request) => (    
                       <tr>
                         <td>{request.date}</td>
-                        <td>{request.status}</td>
+                          {request.status === "accepted" ? <td style={{fontWeight: "bold", color: "blue"}}>{request.status}</td>
+                          :
+                          request.status === "declined" ? <td style={{fontWeight: "bold", color: "red"}}>{request.status}</td>
+                          : <td style={{fontWeight: "bold", color: "darkgrey"}}>{request.status}</td>
+                        }
                         <td>
                           <Link className="nav-link" to={`/book/${request.book._id}`} style={{padding: 0}}>
                             {request.bookTitle}
