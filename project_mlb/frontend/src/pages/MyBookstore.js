@@ -300,9 +300,16 @@ class MyBookstore extends Component{
                           this.state.receivedRequests.map((request) => (
                             <tr>
                               <td>{request.date}</td>
-                              <td>{request.bookTitle}</td>
-                              <td>{request.sender.userID}</td>
-                              
+                              <td>
+                                  <Link className="nav-link" to={`/book/${request.book._id}`} style={{padding: 0}}>
+                                    {request.bookTitle}
+                                  </Link>
+                              </td>
+                              <td>
+                                <Link className="nav-link" to={`/seller/${request.sender.userID}`} style={{padding: 0}}>
+                                  {request.sender.userID}
+                                </Link>
+                              </td>
                                 {request.status === "pending" ? <td>
                                 <Button onClick={() => {this.handleRequest(request, 'acceptRequest')}} variant="outline-primary" size="sm" style={{marginLeft:"0.2rem", fontWeight: "bold"}}>Accept</Button>
                                 <Button onClick={() => {this.handleRequest(request, 'declineRequest')}} variant="outline-danger" size="sm" style={{marginLeft:"0.2rem", fontWeight: "bold"}}>Decline</Button>
