@@ -12,12 +12,20 @@ export const validatePassword = (password) => {
     return true;
 }
 
+export const validateInputFields = (firstName, lastName, emailPre, password, emailPost, userID, phoneNum1, phoneNum2, phoneNum3, location) => {
+  if (firstName.trim().length === 0 || lastName.trim().length === 0 || emailPre.trim().length === 0 || password.trim().length === 0 || emailPost.trim().length === 0 || userID.trim().length === 0 ||
+        phoneNum1.trim().length === 0 || phoneNum2.trim().length === 0 || phoneNum3.trim().length === 0 || location.trim().length === 0){
+    return false;
+  }
+  return true;
+}
 
 class Signup extends Component {
   state = {
     createdAccount: false,
     genres: [],
-    passwordWarning: false
+    passwordWarning: false,
+    inputWarning: false
   };
   
   static contextType = AuthContext;
@@ -83,15 +91,17 @@ class Signup extends Component {
     const phoneNum2 = this.phone2Ref.current.value;
     const phoneNum3 = this.phone3Ref.current.value;
     const preferredGenres = this.state.genres;
+
+    if (!validateInputFields(firstName, lastName, emailPre, password, emailPost, userID, phoneNum1, phoneNum2, phoneNum3, location)){
+      alert("Please complete!");
+      this.setState({inputWarning: true})
+      return;
+    }
     if (preferredGenres.length === 0){
       alert("Please choose at least 1 genre!");
       return;
     }
-    if (emailPre.trim().length === 0 || password.trim().length === 0 || emailPost.trim().length === 0 || userID.trim().length === 0 ||
-        phoneNum1.trim().length === 0 || phoneNum2.trim().length === 0 || phoneNum3.trim().length === 0 ){
-      console.log("warning modal (null type input)");
-      return;
-    }
+    
     if (!validatePassword(password)){
       this.setState({passwordWarning: true})
       return;
