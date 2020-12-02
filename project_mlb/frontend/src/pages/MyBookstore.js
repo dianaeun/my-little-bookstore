@@ -302,10 +302,14 @@ class MyBookstore extends Component{
                               <td>{request.date}</td>
                               <td>{request.bookTitle}</td>
                               <td>{request.sender.userID}</td>
-                              <td>
+                              
+                                {request.status === "pending" ? <td>
                                 <Button onClick={() => {this.handleRequest(request, 'acceptRequest')}} variant="outline-primary" size="sm" style={{marginLeft:"0.2rem", fontWeight: "bold"}}>Accept</Button>
                                 <Button onClick={() => {this.handleRequest(request, 'declineRequest')}} variant="outline-danger" size="sm" style={{marginLeft:"0.2rem", fontWeight: "bold"}}>Decline</Button>
-                              </td>
+                                </td>:
+                                  <td>X</td>
+                                }
+                              
                               <td>
                                 {request.status}
                               </td>
