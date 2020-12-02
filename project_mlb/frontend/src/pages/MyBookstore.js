@@ -17,6 +17,10 @@ const edit = require("../icons/edit.png");
 const edit_no = require("../icons/edit_dis.png");
 const delIcon = require("../icons/delete.png");
 
+export const createRequestsCol = (request) => {
+  return request > 0  ? <p style={{color: "red", fontWeight: "bold"}}>{request}</p> : <p>{request}</p>
+}
+
 class MyBookstore extends Component{
     state={
         addBook : false,
@@ -210,9 +214,7 @@ class MyBookstore extends Component{
       })
       return count;
     }
-    createRequestsCol = (request) => {
-      return request > 0  ? <p style={{color: "red", fontWeight: "bold"}}>{request}</p> : <p>{request}</p>
-    }
+    
     render(){
         return (
             <div>
@@ -267,7 +269,7 @@ class MyBookstore extends Component{
                                     <img src={delIcon} alt="Delete Book" style={{ width: "1.5rem", padding: "0rem" }} />
                                   </Button>
                               </td>
-                              <td style={{paddingTop: "0.5rem", paddingLeft: "3rem"}}>{this.createRequestsCol(this.isRequested(book._id))}</td>
+                              <td style={{paddingTop: "0.5rem", paddingLeft: "3rem"}}>{createRequestsCol(this.isRequested(book._id))}</td>
                             </tr>
                         ))}
                       </tbody>
