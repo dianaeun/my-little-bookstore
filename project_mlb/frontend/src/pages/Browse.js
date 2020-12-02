@@ -19,7 +19,7 @@ class Browse extends Component{
         sortedbook : [],
         init : [],
         check : "all",
-        shownReviews: []
+        shownResult: []
     };
     static contextType = AuthContext;
     constructor(){
@@ -30,13 +30,10 @@ class Browse extends Component{
         this.fetchBooks();
     }
 
-    handleShowReview = (target) => {
-        let shown = this.state.shownReviews;
+    handleShowResult = (target) => {
+        let shown = this.state.shownResult;
         let index = shown.indexOf(-1);
         let i =0;
-        console.log("shown",shown);
-        //console.log(target);
-        console.log("test",index);
 
         if (target === -1) {
           shown.push(target);
@@ -50,7 +47,7 @@ class Browse extends Component{
         else{
             shown.splice(index, 1)
         }
-        this.setState({ shownReviews: shown});
+        this.setState({ shownResult: shown});
       };
 
     fetchBooks() {
@@ -116,8 +113,6 @@ class Browse extends Component{
 
     handleGenre = (filter) => {
 
-        // let books = this.state.sortedbook;
-        // let initialization = this.state.init;
         let books = this.state.init;
         if (filter === "Horror"){
             this.state.check = "horror"
@@ -339,7 +334,7 @@ class Browse extends Component{
                 <MlbNavbar/>
                 <div style={{width: "80%", margin: "auto", marginTop: "2rem"}}>
                     <div style={{}}>
-                    <Form style={{marginTop: "2rem"}} onSubmit={(event) => this.handleSearchBook(event, this.state.search, this.state.searchTerm, this.state.init) & this.handleShowReview(-1)}> 
+                    <Form style={{marginTop: "2rem"}} onSubmit={(event) => this.handleSearchBook(event, this.state.search, this.state.searchTerm, this.state.init) & this.handleShowResult(-1)}> 
                         <Form.Group as={Row}>
                             <Col sm={5}>
                             <Form.Control type="text" placeholder="Search Term" onChange={(event) => this.setState({searchTerm: event.target.value, sortedbook: this.state.init})}/>
@@ -363,13 +358,13 @@ class Browse extends Component{
                                 <Form.Label>Genre</Form.Label>
                                 </td>
                                 <td>
-                                <Form.Check inline label='All' type='radio' name='genre' id='all' checked = {this.state.check === "all"} onClick = {() => {this.handleGenre("All"); this.handleShowReview(0)}}/>
-                                <Form.Check inline label='Romance' type='radio' name='genre' id='romance' checked = {this.state.check === "romance"} onClick = {() => {this.handleGenre("Romance"); this.handleShowReview(0)}}/>
-                                <Form.Check inline label='Horror' type='radio' name='genre' id='horror' checked = {this.state.check === "horror"} onClick={() => { this.handleGenre("Horror"); this.handleShowReview(0)}}/>
-                                <Form.Check inline label='Fantasy' type='radio' name='genre' id='fantasy' checked = {this.state.check === "fantasy"} onClick={() => {this.handleGenre("Fantasy"); this.handleShowReview(0)}}/>
-                                <Form.Check inline label='Adventure' type='radio' name='genre' id='adventure' checked = {this.state.check === "adventure"} onClick={() => {this.handleGenre( "Adventure"); this.handleShowReview(0)}}/>
-                                <Form.Check inline label='Science' type='radio' name='genre' id='science' checked = {this.state.check === "science"} onClick={() => {this.handleGenre("Science"); this.handleShowReview(0)}}/>
-                                <Form.Check inline label='Autobiography' type='radio' name='genre' id='autobiography' checked = {this.state.check === "autobiography"} onClick={() => {this.handleGenre("Autobiography"); this.handleShowReview(0)}}/>                                
+                                <Form.Check inline label='All' type='radio' name='genre' id='all' checked = {this.state.check === "all"} onClick = {() => {this.handleGenre("All"); this.handleShowResult(0)}}/>
+                                <Form.Check inline label='Romance' type='radio' name='genre' id='romance' checked = {this.state.check === "romance"} onClick = {() => {this.handleGenre("Romance"); this.handleShowResult(0)}}/>
+                                <Form.Check inline label='Horror' type='radio' name='genre' id='horror' checked = {this.state.check === "horror"} onClick={() => { this.handleGenre("Horror"); this.handleShowResult(0)}}/>
+                                <Form.Check inline label='Fantasy' type='radio' name='genre' id='fantasy' checked = {this.state.check === "fantasy"} onClick={() => {this.handleGenre("Fantasy"); this.handleShowResult(0)}}/>
+                                <Form.Check inline label='Adventure' type='radio' name='genre' id='adventure' checked = {this.state.check === "adventure"} onClick={() => {this.handleGenre( "Adventure"); this.handleShowResult(0)}}/>
+                                <Form.Check inline label='Science' type='radio' name='genre' id='science' checked = {this.state.check === "science"} onClick={() => {this.handleGenre("Science"); this.handleShowResult(0)}}/>
+                                <Form.Check inline label='Autobiography' type='radio' name='genre' id='autobiography' checked = {this.state.check === "autobiography"} onClick={() => {this.handleGenre("Autobiography"); this.handleShowResult(0)}}/>                                
                                 </td>
                             </tr>
                         
@@ -410,7 +405,7 @@ class Browse extends Component{
                         </thead>
                         <tbody>
                             {this.state.books.map((book) => 
-                            <tr style={this.state.shownReviews.includes(-1) ? {} : { display: "none"}}>                            
+                            <tr style={this.state.shownResult.includes(-1) ? {} : { display: "none"}}>                            
                                 <td>
                                     <Link className="nav-link" to={`/book/${book._id}`} style={{paddingLeft: 0, paddingRight: 0}}>
                                         {book.title}
