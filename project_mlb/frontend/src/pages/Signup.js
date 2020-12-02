@@ -89,8 +89,8 @@ class Signup extends Component {
     const phoneNumber = phoneNum1 + '-' + phoneNum2 + '-' + phoneNum3;
     const requestBody = {
       query: `
-            mutation CreateUser($firstName: String!, $lastName: String!, $email: String!, $password: String!, $userID: String!, $location: String, $preferredGenres: [String]!){
-              createUser(userInput: {firstName: $firstName, lastName: $lastName, email: $email, password: $password, userID: $userID, location: $location, preferredGenres: $preferredGenres}) {
+            mutation CreateUser($firstName: String!, $lastName: String!, $email: String!, $password: String!, $userID: String!, $location: String, $preferredGenres: [String]!, $phoneNumber: String){
+              createUser(userInput: {firstName: $firstName, lastName: $lastName, email: $email, password: $password, userID: $userID, location: $location, preferredGenres: $preferredGenres, phoneNumber: $phoneNumber}) {
                   _id
                   firstName
                   lastName
@@ -98,6 +98,7 @@ class Signup extends Component {
                   userID
                   location
                   preferredGenres
+                  phoneNumber
               }
             }
         `,
@@ -108,7 +109,8 @@ class Signup extends Component {
             password: password,
             userID: userID,
             location: location,
-            preferredGenres: preferredGenres
+            preferredGenres: preferredGenres,
+            phoneNumber: phoneNumber
         }
     };
     fetch("/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})

@@ -83,6 +83,7 @@ class Profile extends Component{
                   _id
                   userID
                   email
+                  phoneNumber
                 }
                 status
                 date
@@ -152,7 +153,7 @@ class Profile extends Component{
                       <th>Request Status</th>
                       <th>Book Title</th>
                       <th>Owner</th>
-                      {/* <th></th> */}
+                      <th>Contact</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -161,8 +162,11 @@ class Profile extends Component{
                         <td>{request.date}</td>
                         <td>{request.status}</td>
                         <td>{request.bookTitle}</td>
-                        <td>{request.receiver.userID}</td>                     
-                        {/* <td style={{textAlign:"right"}}><Button variant="info" size="sm" onClick={()=>{this.handleViewMoreInfo(request)}}>View More Information</Button></td> */}
+                        <td>{request.receiver.userID}</td>
+                        <td>
+                          {request.status === "accepted" ? <div style={{fontWeight: "bold", background: "#FFE4B5", textAlign: "center", width: "70%", borderRadius: "4rem", padding: "0.3rem"}}>{request.receiver.phoneNumber}</div>
+                          : <div style={{background: "red", fontWeight: "bold", color: "white", textAlign: "center", width: "30%", borderRadius: "4rem", padding: "0.1rem"}}>N/A</div>}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
