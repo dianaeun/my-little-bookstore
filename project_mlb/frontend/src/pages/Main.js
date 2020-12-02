@@ -136,7 +136,7 @@ class Main extends Component {
                   <tr>
                     <td>{i+1}</td>
                     <td>
-                      <Link className="nav-link" to={`${this.props.match.url}/${book._id}`} style={{paddingLeft: 0, paddingRight: 0}}>
+                      <Link className="nav-link" to={`${this.props.match.url}/book/${book._id}`} style={{paddingLeft: 0, paddingRight: 0}}>
                             {book.title}
                       </Link>
                     </td>
@@ -145,7 +145,7 @@ class Main extends Component {
                       {book.publisher}
                     </td>          
                     <td>
-                      <Link className="nav-link" to={`${this.props.match.url}/${book.owner.userID}`} style={{paddingLeft: 0, paddingRight: 0}}>
+                      <Link className="nav-link" to={`${this.props.match.url}/seller/${book.owner.userID}`} style={{paddingLeft: 0, paddingRight: 0}}>
                         {book.owner.userID}
                       </Link>
                     </td>
