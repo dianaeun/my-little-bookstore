@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Modal, Button,Form} from 'react-bootstrap';
+import { vaildateReviewInput } from '../functions/InputValidations.js';
 
 class AddReview extends Component{
     constructor(props) {
@@ -7,13 +8,13 @@ class AddReview extends Component{
         this.titleRef = React.createRef();
         this.contentRef = React.createRef();
     }
+
     handleSubmit = event => {
         event.preventDefault();
         const title = this.titleRef.current.value;
         const content = this.contentRef.current.value;
         const date = new Date();
-        if (content.trim().length === 0){
-            console.log("warning modal (null type input)");
+        if (!vaildateReviewInput(title, content)){
             alert("Please fill in all fields!");
             return;
         }

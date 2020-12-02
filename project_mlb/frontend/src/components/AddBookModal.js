@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Modal, Button, ButtonGroup, ToggleButton, Form, Card, Row, Col} from 'react-bootstrap';
 import request from 'superagent';
+import { validateISBN } from '../functions/InputValidations.js';
 
 class AddBookModal extends Component{
     state = {
@@ -30,8 +31,8 @@ class AddBookModal extends Component{
         e.preventDefault();
         // for specific isbn search, use https://www.googleapis.com/books/v1/volumes?q=isbn:ISBN number
         const term = this.state.searchField;
-        if (term.trim().length !== 13 || isNaN(term)){
-            alert("please provide ISBN13");
+        if (!validateISBN(term)){
+            alert("please provide Correct Form of ISBN13");
             return;
         }
         this.setState({isbn: term});
