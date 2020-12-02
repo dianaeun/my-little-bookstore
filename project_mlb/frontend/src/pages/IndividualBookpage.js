@@ -9,7 +9,7 @@ import AuthContext from '../context/AuthContext';
 import RateBookModal from '../components/RateBookModal';
 
 const star = require("../icons/star.png");
-const harry = require("../icons/harrypotter.png");
+const defaultImg = require("../icons/ImageNotAvailable.png");
 const blankStar = require("../icons/blank_star.png");
 
 async function fetchBook(bookID){
@@ -30,6 +30,7 @@ async function fetchBook(bookID){
                 }       
                 price
                 genre
+                image
                 isbn
                 description                    
               }
@@ -302,11 +303,11 @@ class IndividualBookpage extends Component{
                     <Card className="text-center" style={{ marginLeft: "3%",flex: "1", marginTop: "2rem", background: "#CEE4E9"}}>
                       <Card.Body>
                         <Card.Title><b>{this.state.book.title}</b></Card.Title>
-                        <Card.Img variant="top" src={harry} style={{ width: "20rem", padding: "1rem"}} />
+                        <Card.Img variant="top" src={this.state.book.image === "" ? defaultImg : this.state.book.image} style={{ width: "20rem", padding: "1rem"}} />
                         <Table className="myTable" size="sm">
                           <tr><td><b>AUTHOR:</b> </td><td>{this.state.book.author}</td></tr>
                           <tr><td><b>PUBLISHER:</b> </td><td>{this.state.book.publisher}</td></tr>
-                          <tr><td><b>ISBN:</b> </td><td>{this.state.book.isbn || 'N/A'}</td></tr>
+                          <tr><td><b>ISBN13:</b> </td><td>{this.state.book.isbn || 'N/A'}</td></tr>
                           <tr><td><b>GENRE:</b> </td><td>{this.state.book.genre || 'N/A'}</td></tr>
                           <tr>
                             <td><b>RATING:</b></td>
@@ -343,7 +344,7 @@ class IndividualBookpage extends Component{
                                   </Link>
                                 </td>
                                 <td>{book.date}</td>
-                                <td>{book.price}</td>
+                                <td>$ {book.price}</td>
                                 {book.owner._id === this.context.user_id ? <td>-</td> : <td><Button variant="info" onClick={() => this.handleRequest(book)}> BUY</Button></td>}
                               </tr>
                             ))}

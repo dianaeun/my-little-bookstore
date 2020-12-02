@@ -7,7 +7,8 @@ class AddBookModal extends Component{
         radioValue : '1',
         searchField: '',
         rawBookInfo: [],
-        bookInfo: []
+        bookInfo: [],
+        isbn: ""
     };
     constructor(props){
         super(props);
@@ -33,20 +34,20 @@ class AddBookModal extends Component{
             alert("please provide ISBN13");
             return;
         }
-
+        this.setState({isbn: term});
         request
-        .get("https://www.googleapis.com/books/v1/volumes?q=isbn:" + this.state.searchField)
+        .get("https://www.googleapis.com/books/v1/volumes?q=isbn:" + term)
         .then((data) => {
             const cleanData = this.cleanData(data)
-            this.setState({rawBookInfo: cleanData})
+            this.setState({rawBookInfo: [cleanData[0]]})
         })
 
         this.state.bookInfo.length = 0
-        
         for (const [i, book] of this.state.rawBookInfo.entries()) {
+            console.log(book);
             this.state.bookInfo.push(
                 <Card key={i}>
-                    <Card.Img variant="top" src={book.volumeInfo.imageLinks.thumbnail}/>
+                    <Card.Img variant="top" src={book.volumeInfo.imageLinks.smallThumbnail}/>
                     <Card.Body>
                         <Card.Title>{book.volumeInfo.title}</Card.Title>
                         <Card.Subtitle>{book.volumeInfo.authors}</Card.Subtitle>
@@ -158,14 +159,25 @@ class AddBookModal extends Component{
             const publisher = this.publisherRef.current.value;
             const price = this.priceRef.current.value;
             const date = new Date();
+            var genre = "";
+            var image = "";
+            var isbn = "";
+            var description = "";
+            if (this.state.radioValue === '1') {
+                const book = this.state.rawBookInfo[0].volumeInfo;
+                genre = book.categories.join(",");
+                image = book.imageLinks.thumbnail;
+                isbn = this.state.isbn;
+                description = book.description;
+            }
             if (title.trim().length === 0 || author.trim().length === 0 || publisher.trim().length === 0 || price.trim().length === 0){
                 console.log("warning modal (null type input)");
                 return;
             }
             const requestBody = {
             query: `
-                    mutation CreateBook($title: String!, $author: String!, $publisher: String!, $price: Float!, $date: String!, $owner: ID!, $genre: String!, $isbn: String!){
-                        createBook(bookInput: {title: $title, author: $author, publisher: $publisher, price: $price, date: $date, owner: $owner, genre: $genre, isbn: $isbn}) {
+                    mutation CreateBook($title: String!, $author: String!, $publisher: String!, $price: Float!, $date: String!, $owner: ID!, $genre: String!, $image: String!, $isbn: String!, $description: String!){
+                        createBook(bookInput: {title: $title, author: $author, publisher: $publisher, price: $price, date: $date, owner: $owner, genre: $genre, image: $image, isbn: $isbn, description: $description}) {
                             _id
                         }
                     }
@@ -177,8 +189,10 @@ class AddBookModal extends Component{
                     price: parseFloat(price),
                     date: date,
                     owner: this.props.owner,
-                    genre: "",
-                    isbn: ""
+                    genre: genre,
+                    image: image,
+                    isbn: isbn,
+                    description: description
                 }
             };
             fetch("/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
