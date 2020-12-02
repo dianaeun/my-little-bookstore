@@ -11,6 +11,7 @@ const schema =  buildSchema(`
         rating: Rating!
         price: Float!
         genre: String!
+        image: String
         description: String
         owner: User!
     }
@@ -89,6 +90,7 @@ const schema =  buildSchema(`
         isbn: String!
         price: Float!
         genre: String!
+        image: String!
         owner: ID!
     }
     input EBookInput {

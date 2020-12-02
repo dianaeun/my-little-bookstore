@@ -77,6 +77,7 @@ module.exports = {
             rating: rating_id,
             price: args.bookInput.price,
             genre: args.bookInput.genre,
+            image: args.bookInput.image,
             description: args.bookInput.description,
             owner: args.bookInput.owner,
             requests: [],
