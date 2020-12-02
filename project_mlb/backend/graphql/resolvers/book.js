@@ -113,10 +113,7 @@ module.exports = {
                 date: new Date(args.bookInput.date),
                 publisher: args.bookInput.publisher,
                 author: args.bookInput.author,
-                isbn: args.bookInput.isbn,
-                price: args.bookInput.price,
-                genre: args.bookInput.genre,
-                description: args.bookInput.description}, {
+                price: args.bookInput.price}, {
                 new: true
               }).populate('book');
             const editBook = transformBook(book);

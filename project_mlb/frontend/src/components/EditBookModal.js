@@ -26,8 +26,8 @@ class EditBookModal extends Component{
         }
         const requestBody = {
           query: `
-                mutation EditBook($bookId: ID!, $title: String!, $author: String!, $publisher: String!, $price: Float!, $date: String!, $owner: ID!, $genre: String!, $isbn: String!){
-                    editBook(bookId: $bookId, bookInput: {title: $title, author: $author, publisher: $publisher, price: $price, date: $date, owner: $owner, genre: $genre, isbn: $isbn}) {
+                mutation EditBook($bookId: ID!, $title: String!, $author: String!, $publisher: String!, $price: Float!, $date: String!){
+                    editBook(bookId: $bookId, bookInput: {title: $title, author: $author, publisher: $publisher, price: $price, date: $date}) {
                         _id
                     }
                 }
@@ -38,10 +38,7 @@ class EditBookModal extends Component{
                 author: author,
                 publisher: publisher,
                 price: parseFloat(price),
-                date: date,
-                owner: this.props.owner,
-                genre: this.props.book.genre,
-                isbn: this.props.book.isbn
+                date: date
             }
         };
         fetch("/graphql", {method: 'POST', body: JSON.stringify(requestBody), headers: {'Content-Type': 'application/json'}})
