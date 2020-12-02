@@ -96,6 +96,13 @@ const schema =  buildSchema(`
         owner: ID!
         description: String!
     }
+    input EditBookInput {
+        title: String!
+        date: String!
+        publisher: String!
+        author: String!
+        price: Float!
+    }
     input EBookInput {
         title: String!
         file: String!
@@ -162,7 +169,7 @@ const schema =  buildSchema(`
         createUser(userInput: UserInput): User
         editUser(userInput: UserInput): User
         deleteBook(bookId: ID!): Book!
-        editBook(bookId: ID!, bookInput: BookInput): Book!
+        editBook(bookId: ID!, bookInput: EditBookInput): Book!
         createRequest(requestInput: RequestInput): Request
         cancelRequest(requestID: ID!): Request
         acceptRequest(requestID: ID!): Request
