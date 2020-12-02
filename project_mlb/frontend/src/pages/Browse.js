@@ -367,18 +367,6 @@ class Browse extends Component{
                                 <Form.Check inline label='Autobiography' type='radio' name='genre' id='autobiography' checked = {this.state.check === "autobiography"} onClick={() => {this.handleGenre("Autobiography"); this.handleShowResult(0)}}/>                                
                                 </td>
                             </tr>
-                        
-                            <tr>
-                                <td><Form.Label>Location Level</Form.Label></td>
-                                <td>
-                                    <Form.Check inline label='Dong' name='level' type='radio' id='Dong' />
-                                    <Form.Check inline label='Gu' name='level' type='radio' id='Gu' />
-                                    <Form.Check inline label='City' name='level' type='radio' id='City' />
-                                    <Form.Check inline label='State' name='level' type='radio' id='State' />
-                                    <Form.Check inline label='Whole' name='level' type='radio' id='Whole' />
-                                    
-                                </td>
-                            </tr>
                             </Table>
                         </Form>
                     </div>

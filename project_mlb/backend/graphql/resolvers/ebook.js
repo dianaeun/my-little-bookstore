@@ -23,9 +23,9 @@ module.exports = {
     userEBooks: async ({ownerID}) => {
         try {
             const ebooks = await EBook.find({owner: ownerID});
-            console.log("userEBooks:", books);
+            //console.log("userEBooks:", ebooks);
             return ebooks.map(book => {
-                return transformBook(book);
+                return transformEBook(book);
             })
         }
         catch(err){
@@ -42,7 +42,7 @@ module.exports = {
         else{
             rating = new Rating({bookTitle: args.eBookInput.title, rating: 0, ratingSum: 0, raters: []});
             const result = await rating.save();
-            console.log("This is a new book, successfully created rating", result);
+            console.log("This is a new E-book, successfully created rating", result);
             rating_id = result.id;
         }
         console.log("rating_id", rating_id);

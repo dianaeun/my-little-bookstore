@@ -43,5 +43,10 @@ export const validateEditbookInput = (title,author,publisher,price) =>{
     return true;
 }
 
+export const validateEditProfile = (firstName,lastName,email) => {
+    if(firstName.trim().length === 0 || lastName.trim().length === 0 || email.trim().length === 0){
+        return false;
+    }
 
-//tag.trim().length === 0 || title.trim().length === 0 || content.trim().length === 0
+    return true;
+}
