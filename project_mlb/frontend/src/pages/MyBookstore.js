@@ -51,7 +51,10 @@ class MyBookstore extends Component{
                       rating
                       raters
                     }
-            
+                    owner{
+                      userID
+                      _id
+                    }
                     price
                     genre
                     isbn
@@ -68,7 +71,7 @@ class MyBookstore extends Component{
           return res.json()
       })
       .then(resData => {
-          console.log("Books are successfully fetched! ", resData);
+          console.log("user Books are successfully fetched! ", resData);
           const books = resData.data.userBooks;
           console.log("Books: ", books);
           this.setState({books: books, isLoadingBook: false});
