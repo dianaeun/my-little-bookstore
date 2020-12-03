@@ -177,7 +177,7 @@ class EditBookModal extends Component{
                                         onChange={() => this.handleCheckBoxes("Science")}
                                     />
                                     <Form.Check
-                                        defaultChecked = {this.props.preferredGenres.includes("Science")}
+                                        defaultChecked = {this.props.preferredGenres.includes("Autobiography")}
                                         inline
                                         label="Autobiography"
                                         id={`inline-checkbox-6`}
