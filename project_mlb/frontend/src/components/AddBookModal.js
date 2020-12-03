@@ -412,7 +412,7 @@ class AddBookModal extends Component{
                             {this.state.radioValue === '3' && 
                                 <Form>
                                     <Form.Group>
-                                    <Form.File onChange={(e) => this.handleFileSelected(e)} id="FormControlFile" label="The E-Book must be copyright free" />
+                                    <Form.File onChange={(e) => this.handleFileSelected(e)} id="FormControlFile" label="The E-Book must be copyright free  / File size must be less than 50KB" />
                                     </Form.Group>
                                 </Form>
                             }

@@ -273,7 +273,7 @@ class MyBookstore extends Component{
                     <div style={{marginLeft: "10%", marginTop: "2rem", background: "#eeeeee", width: "25%", textAlign: "center", borderRadius: "4rem", padding: "0.6rem"}}>
                       <h1 style={{fontSize: "2rem"}}>{this.context.firstName}'s Bookstore</h1>
                     </div>
-                    <div style={{marginLeft: "10%", marginTop: "2rem", background: "#FFFFE0", width: "6%", textAlign: "center", borderRadius: "1rem", padding: "0.1rem"}}>
+                    <div style={{marginLeft: "10%", marginTop: "2rem", background: "#FFFFE0", width: "20%", textAlign: "center", borderRadius: "1rem", padding: "0.5rem"}}>
                       <h3>Books</h3>
                     </div>
                     <Table className="myTable" size="sm" style={{ width: "80%", marginTop: "1.5rem", marginLeft: "auto", marginRight: "auto", paddingTop: "1rem"}}>
@@ -322,7 +322,7 @@ class MyBookstore extends Component{
                         ))}
                       </tbody>
                     </Table>
-                    <div style={{marginLeft: "10%", marginTop: "0.5rem", background: "#FFFFE0", width: "8%", textAlign: "center", borderRadius: "1rem", padding: "0.1rem"}}>
+                    <div style={{marginLeft: "10%", marginTop: "0.5rem", background: "#FFFFE0", width: "20%", textAlign: "center", borderRadius: "1rem", padding: "0.5rem"}}>
                       <h3>E-Books</h3>
                     </div>     
                     <Table className="myTable" size="sm" style={{ width: "80%", marginTop: "1.5rem", marginLeft: "auto", marginRight: "auto", paddingTop: "1rem"}}>
