@@ -64,7 +64,7 @@ class Main extends Component {
       .then(resData => {
           console.log("Books are successfully fetched! ", resData);
           const books = resData.data.books;
-          books.sort((a, b) => b.rating - a.rating);
+          books.sort((a, b) => b.rating.rating - a.rating.rating);
           // let selectedBooks = books.slice(0,10);
           // console.log(selectedBooks);
           this.setState({books: books});
@@ -123,7 +123,7 @@ class Main extends Component {
                 {this.context.token ? this.state.books.filter(book => book.genre.split(',').filter(genre => this.context.preferredGenres.includes(genre)).length > 0).slice(0,10).map((book, i) => (
                   <tr>
                     <td>{i+1}</td>
-                      <Link className="nav-link" to={`/book/${book._id}`} style={{padding: 0}}>
+                      <Link className="nav-link" to={`/book/${book._id}`} style={{padding: "0rem", margin: "0rem", marginTop: "0.1rem"}}>
                             {book.title}
                       </Link>
                     <td>{book.author}</td>
@@ -131,7 +131,7 @@ class Main extends Component {
                       {book.publisher}
                     </td>
                     <td>
-                      <Link className="nav-link" to={`/seller/${book.owner.userID}`} style={{padding: 0}}>
+                      <Link className="nav-link" to={`/seller/${book.owner.userID}`} style={{padding: "0rem"}}>
                         {book.owner.userID}
                       </Link>
                     </td>
@@ -152,7 +152,7 @@ class Main extends Component {
                   <tr>
                     <td>{i+1}</td>
                     <td>
-                      <Link className="nav-link" to={`/book/${book._id}`} style={{padding: 0}}>
+                      <Link className="nav-link" to={`/book/${book._id}`} style={{padding: "0rem", margin: "0rem"}}>
                             {book.title}
                       </Link>
                     </td>
@@ -161,7 +161,7 @@ class Main extends Component {
                       {book.publisher}
                     </td>          
                     <td>
-                      <Link className="nav-link" to={`/seller/${book.owner.userID}`} style={{padding: 0}}>
+                      <Link className="nav-link" to={`/seller/${book.owner.userID}`} style={{padding: "0rem"}}>
                         {book.owner.userID}
                       </Link>
                     </td>

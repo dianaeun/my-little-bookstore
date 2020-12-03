@@ -262,9 +262,8 @@ class IndividualBookpage extends Component{
                           <tr>
                             <td><b>RATING:</b></td>
                             <td style={{ paddingTop: "0.5rem"}}>
-                              <Row onClick={() => {this.handleRateBook(this.state.book)}} style={{width: "fit-content", paddingLeft: "6rem", cursor: "pointer"}}>
+                              <Row onClick={() => {this.handleRateBook(this.state.book)}} style={{width: "fit-content", paddingLeft: "6rem", cursor: "pointer", marginLeft: "2rem"}}>
                                 {createStar(this.state.book.rating.rating)} 
-                                ({this.state.book.rating.rating})
                               </Row>
                             </td>
                           </tr>

@@ -399,7 +399,7 @@ class Browse extends Component{
                                         {book.title}
                                     </Link>                           
                                 </td>                                
-                                <td><Link href="#">{book.author}</Link></td>
+                                <td>{book.author}</td>
                                 <td>{book.genre}</td>
                                 <td>
                                     <Link className="nav-link" to={`/seller/${book.owner.userID}`} style={{paddingLeft: 0, paddingRight: 0}}>

@@ -302,10 +302,10 @@ class MyBookstore extends Component{
                                         {book.title}
                                   </Link>
                               </td>
-                              <td style={{paddingTop: "0.5rem"}}><Link href="#">{book.author}</Link></td>
+                              <td style={{paddingTop: "0.5rem"}}>{book.author}</td>
                               <td style={{paddingTop: "0.5rem"}}>${book.price}</td>
                               <td style={{ paddingTop: "0.5rem"}}>
-                                <Row onClick={() => {this.handleRateBook(book)}} style={{width: "fit-content", paddingLeft: "2rem", cursor: "pointer"}}>{createStar(book.rating.rating)} ({book.rating.rating})</Row>
+                                <Row onClick={() => {this.handleRateBook(book)}} style={{width: "fit-content", paddingLeft: "2rem", cursor: "pointer"}}>{createStar(book.rating.rating)}</Row>
                               </td>
                               
                               {this.isRequested(book._id) ? <td style={{paddingTop: "0.5rem"}}><img src={edit_no} alt="Edit Disabled" style={{ width: "1.5rem", padding: "0rem"}} /></td>

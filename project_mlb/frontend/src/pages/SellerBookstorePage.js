@@ -148,7 +148,7 @@ class SellerBookstorePage extends Component{
                                                 {book.title}
                                             </Link>                                           
                                         </td>
-                                        <td style={{paddingTop: "0.5rem"}}><Link href="#">{book.author}</Link></td>
+                                        <td style={{paddingTop: "0.5rem"}}>{book.author}</td>
                                         <td style={{paddingTop: "0.5rem"}}>${book.price}</td>
                                         <td style={{ paddingTop: "0.5rem"}}>
                                             <Row onClick={() => {this.handleRateBook(book)}} style={{width: "fit-content", paddingLeft: "2rem", cursor: "pointer"}}>{createStar(book.rating.rating)} ({book.rating.rating})</Row>
