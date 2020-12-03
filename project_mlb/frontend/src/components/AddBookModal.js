@@ -8,7 +8,8 @@ class AddBookModal extends Component{
         radioValue : '1',
         searchField: '',
         rawBookInfo: [],
-        isbn: ""
+        isbn: "",
+        genres: []
     };
     constructor(props){
         super(props);
@@ -161,13 +162,13 @@ class AddBookModal extends Component{
             const publisher = this.publisherRef.current.value;
             const price = this.priceRef.current.value;
             const date = new Date();
-            var genre = this.state.genres.join(",");
+            var genre = this.state.genres.length !== 0 ? this.state.genres.join(",") : "";
             var image = "";
             var isbn = "";
             var description = "";
             if (this.state.radioValue === '1') {
                 const book = this.state.rawBookInfo[0].volumeInfo;
-                genre = book.categories.join(",");
+                genre = book.categories ? book.categories.join(",") : "";
                 image = book.imageLinks.thumbnail;
                 isbn = this.state.isbn;
                 description = book.description;
