@@ -2,7 +2,7 @@
 
 The source codes for the project are classified into two categories: front-end and back-end.
 
-The frontend is connected to our backend server; 'Fetch books', 'Add book', 'Delete book', 'Discussion', 'Login', etc functonalities can actually fetch or add data by accessing our MongoDB.
+The frontend is connected to our backend server; MERN stack and graphQL are used.
 
 To explore our application, there are two options avaiable below.
 
@@ -26,5 +26,14 @@ Currently, our application is version 1.0.0 since this is our beta release.
 For tracking ideas, enhancements, tasks, or, most importantly, bugs, we use Github Issues.  
 One can access Github Issues by simply clicking the Issues tab on the top of the repository page.  
 Checking and reporting bugs are supported.
+
+## Unit Test
+Codes related to unit tests are located in frontend side. Unit codes are under the frontend/src/unit tests.
+To run the unit tests, please do the following inside the frontend folder.
+### In a terminal
+```bash
+npm test
+```
+This will run the 8 unit tests that are inside unit tests folder.
 
 **We assume that you operate the both the front-end and back-end components of our application on MacOS or Windows.**
