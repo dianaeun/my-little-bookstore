@@ -60,16 +60,6 @@ class Profile extends Component{
           for (const [i, value] of this.state.preferredGenres.entries()) {
               prefList.push(<Button key={i} variant="outline-danger" size="sm" style={{marginLeft:"0.2rem"}} disabled>{value}</Button>)
           }
-          user.push(
-            <Table size="sm" style={{ minWidth: "900px", maxWidth: "1100px", marginLeft: "10%", marginRight: "auto", marginTop: "1.2rem"}}>
-                    <tr><td>Name </td><td>{userInfo.firstName + " " + userInfo.lastName}</td></tr>
-                    <tr><td>User ID </td><td>{userInfo.userID}</td></tr>
-                    <tr><td>Location </td><td>{userInfo.location}</td></tr>
-                    <tr><td>Email </td><td>{userInfo.email}</td></tr>
-                    <tr><td>Preference </td><td>{prefList}</td></tr>
-                    <tr><td></td><td style={{textAlign:"right"}}><Button variant="info" onClick={this.handleEditProfile}  style={{marginRight:"0.2rem"}}>Edit Profile</Button><Button variant="info" onClick={this.handleChangePassword}>Change Password</Button></td></tr>
-                </Table>
-          );
           this.setState({userInfo: userInfo, user: user, isLoading: false, prefList: prefList});
       })
     }
