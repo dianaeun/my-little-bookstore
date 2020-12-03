@@ -8,7 +8,7 @@ import DeleteBookModal from '../components/DeleteBookModal';
 // import Advertisement from '../components/Advertisement';
 import EditBookModal from '../components/EditBookModal';
 import RateBookModal from '../components/RateBookModal';
-import './MyBookstore.css';
+//import './MyBookstore.css';
 import AuthContext from '../context/AuthContext';
 import {createStar} from './Main';
 
