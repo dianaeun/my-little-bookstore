@@ -346,7 +346,7 @@ class MyBookstore extends Component{
                                   {book.title}
                               </td>
                               <td style={{ paddingTop: "0.5rem"}}>
-                                <Row onClick={() => {this.handleRateBook(book)}} style={{width: "fit-content", paddingLeft: "2rem", cursor: "pointer"}}>{this.createStar(book.rating.rating)} ({book.rating.rating})</Row>
+                                <Row onClick={() => {this.handleRateBook(book)}} style={{width: "fit-content", paddingLeft: "2rem", cursor: "pointer"}}>{createStar(book.rating.rating)} ({book.rating.rating})</Row>
                               </td>                   
                               <td>
                                   <Button variant="link" onClick={()=> {this.openEbook(book.file)}}>Read</Button>
