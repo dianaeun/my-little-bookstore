@@ -8,9 +8,10 @@ import MlbNavbar from '../components/NavigationBar.js'
 import AuthContext from '../context/AuthContext';
 import RateBookModal from '../components/RateBookModal';
 import LoginPrompt from '../components/LoginPrompt';
-import {createStar} from './Main';
 
+const star = require("../icons/star.png");
 const defaultImg = require("../icons/ImageNotAvailable.png");
+const blankStar = require("../icons/blank_star.png");
 
 async function fetchBook(bookID){
   let book = null;
@@ -91,7 +92,17 @@ class IndividualBookpage extends Component{
     toggle = () => {
       this.setState({ isOpen: !this.state.isOpen });
     }
-    
+    createStar = (n) => {
+      let rounded = Math.round(n);
+      let stars = [];
+      for (let i = 0; i < rounded; i++){
+          stars.push(<img src={star} alt="star" style={{ width: "22px" }} />);
+      }
+      for (let i = rounded; i < 5; i++) {
+          stars.push(<img src={blankStar} alt="star" style={{ width: "22px" }} />);
+      }
+      return stars;
+    }
     handleClose = () => {
       if(this.state.addReview) {
         this.fetchReviews();
@@ -261,9 +272,10 @@ class IndividualBookpage extends Component{
                           <tr><td><b>GENRE:</b> </td><td>{this.state.book.genre || 'N/A'}</td></tr>
                           <tr>
                             <td><b>RATING:</b></td>
-                            <td>
-                              <Row onClick={() => {this.handleRateBook(this.state.book)}} style={{width: "fit-content", paddingLeft: "6rem", cursor: "pointer", marginLeft: "2rem"}}>
-                                {createStar(this.state.book.rating.rating)} 
+                            <td style={{ paddingTop: "0.5rem"}}>
+                              <Row onClick={() => {this.handleRateBook(this.state.book)}} style={{width: "fit-content", paddingLeft: "6rem", cursor: "pointer"}}>
+                                {this.createStar(this.state.book.rating.rating)} 
+                                ({this.state.book.rating.rating})
                               </Row>
                             </td>
                           </tr>
@@ -337,7 +349,7 @@ class IndividualBookpage extends Component{
                   </CardDeck>
               </div>
             }
-            <div key="footer" style={{height: "30px", marginTop: "3rem"}}></div>
+            
           </React.Fragment>
         );
     }
