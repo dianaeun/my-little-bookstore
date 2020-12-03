@@ -165,6 +165,8 @@ class SellerBookstorePage extends Component{
 
                     </React.Fragment>
                 }
+                <div key="footer" style={{height: "30px", marginTop: "3rem"}}></div>
+
             </React.Fragment>
         )
     }

@@ -181,6 +181,7 @@ class Main extends Component {
               </tbody>
             </Table>
           </div>
+          <div key="footer" style={{height: "30px", marginTop: "3rem"}}></div>
       </div>
     );
   }

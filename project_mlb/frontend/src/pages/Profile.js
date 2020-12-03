@@ -193,6 +193,8 @@ class Profile extends Component{
                     ))}
                   </tbody>
                 </Table>
+                <div key="footer" style={{height: "30px", marginTop: "3rem"}}></div>
+
             </React.Fragment>
         )
     }
