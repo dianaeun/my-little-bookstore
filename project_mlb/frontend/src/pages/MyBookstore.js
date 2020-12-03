@@ -276,14 +276,14 @@ class MyBookstore extends Component{
                     <div style={{marginLeft: "10%", marginTop: "2rem", background: "#FFFFE0", width: "20%", textAlign: "center", borderRadius: "1rem", padding: "0.5rem"}}>
                       <h3>Books</h3>
                     </div>
-                    <Table className="myTable" size="sm" style={{ width: "80%", marginTop: "1.5rem", marginLeft: "auto", marginRight: "auto", paddingTop: "1rem"}}>
+                    <Table className="myTable" size="sm" style={{ width: "80%", marginLeft: "auto", marginRight: "auto"}}>
                       <thead>
                         <tr>
                           <th>Date Added</th>
                           <th>Title</th>
                           <th>Author</th>
                           <th>Price</th>
-                          <th style={{paddingLeft: "1.5rem"}}>Rating</th>
+                          <th>Rating</th>
                           <th>edit</th>
                           <th>del</th>
                           <th>Requests</th>
@@ -305,7 +305,7 @@ class MyBookstore extends Component{
                               <td style={{paddingTop: "0.5rem"}}>{book.author}</td>
                               <td style={{paddingTop: "0.5rem"}}>${book.price}</td>
                               <td style={{ paddingTop: "0.5rem"}}>
-                                <Row onClick={() => {this.handleRateBook(book)}} style={{width: "fit-content", paddingLeft: "2rem", cursor: "pointer"}}>{createStar(book.rating.rating)}</Row>
+                                <Row onClick={() => {this.handleRateBook(book)}} style={{cursor: "pointer"}}>{createStar(book.rating.rating)}</Row>
                               </td>
                               
                               {this.isRequested(book._id) ? <td style={{paddingTop: "0.5rem"}}><img src={edit_no} alt="Edit Disabled" style={{ width: "1.5rem", padding: "0rem"}} /></td>
@@ -330,7 +330,7 @@ class MyBookstore extends Component{
                         <tr>
                           <th>Date Added</th>
                           <th>Title</th>
-                          <th style={{paddingLeft: "1.5rem"}}>Rating</th>
+                          <th>Rating</th>
                           <th>View</th>
                         </tr>
                       </thead>
